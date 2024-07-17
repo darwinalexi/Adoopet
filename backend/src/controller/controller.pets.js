@@ -68,7 +68,7 @@ export const listar_pets_pendientes= async(req, res)=>{
 export const crear_pets = async (req, res) => {
     try {
        const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion, estado, edad}=req.body;
-       const foto=req.originalname;
+       const foto=req.file.originalname;
        if (foto==null) {
         return res.status(400).json({ mensaje: "No se ha cargado un archivo" });
       }

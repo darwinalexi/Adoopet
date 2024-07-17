@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faPlus, faClose, faUser, faPaw, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "../utils/axiosClent";
+import { useRef } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -17,17 +18,15 @@ const Header = () => {
   const[vacuna, setvacuna]= useState([]);
   const [adoptar, setadoptar]= useState([]);
 
-const [pet, setpet]= useState({
-  nombre_mas:'',
-  raza:'',
-  categoria_id:'',
-  genero_id:'',
-  foto:'',
-  descripcion:'',
-  estado:'',
-  edad:'',
-  id_vacuna:''
-})
+  const nombre_mas = useRef(null);
+  const razaRef = useRef(null);
+  const categoria_idRef = useRef(null);
+  const fotoRef = useRef(null);
+  const genero_idRef = useRef(null);
+  const descripcionRef = useRef(null);
+  const estadoRef = useRef(null);
+  const id_vacunaRef = useRef(null);
+  const edad = useRef(null);
 
 
   const openModal = (pet) => {
@@ -103,23 +102,14 @@ setcreate(false)
   }
 
 
-  const handinputchange= (event) => {
-    if (event.target.name === 'foto') {
-      const fileName = event.target.files[0].name;
-      setpet((prevPet) => ({...prevPet, foto: fileName }));
-      console.log('Nombre del archivo seleccionado:', fileName);
-    } else {
-      const { name, value } = event.target;
-      setpet((prevPet) => ({...prevPet, [name]: value }));
-      console.log('Valor del input:', name, value);
-    }
-  };
+ 
   const adopt = async(id)=>{
    try {
     
     const adoptar= await axiosClient.put(`/adoptar/${id}`)
     setadoptar(adoptar.data)
     console.log(adoptar.data)
+    window.location.reload();
    } catch (error) {
     console.log("paila",error.response)
    }
@@ -150,12 +140,25 @@ setcreate(false)
   const crear_mascota = async (event) => {
     try {
       event.preventDefault();
-      const register = await axiosClient.post("/crear_pets",pet);
-      console.log("respuesta",register.data.mensaje);
+      const formData = new FormData();
+      formData.append('nombre_mas', nombre_mas.current.value);
+      formData.append('raza', razaRef.current.value);
+      formData.append('categoria_id', categoria_idRef.current.value);
+      formData.append('foto', fotoRef.current.files[0]);
+      formData.append('genero_id', genero_idRef.current.value);
+      formData.append('descripcion', descripcionRef.current.value);
+      formData.append('estado', estadoRef.current.value);
+      formData.append('id_vacuna', id_vacunaRef.current.value);
+      formData.append('edad', edad.current.value);
+  
+      const register = await axiosClient.post("/crear_pets", formData);
+      console.log("respuesta", register.data.mensaje);
     } catch (error) {
-      console.log("error", error);
+      console.log("error", error.response.data.mensaje);
     }
   };
+ 
+    
 
   return (
     <>
@@ -226,13 +229,13 @@ setcreate(false)
               <div  className="w-[50%] relative left-[24%]">
               <label>Ingrese el nombre de la mascota</label>
                       <br />
-                      <input type="text" name="nombre_mas" placeholder="Nombre" onChange={handinputchange}  className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
+                      <input type="text" name="nombre_mas" placeholder="Nombre"  required ref={nombre_mas}  className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
               </div>
               <div className="w-[50%] relative left-[24%]">
               <br />
                       <label>seleccione la raza</label>
                       <br />
-                        <select name="raza" onChange={handinputchange} className="w-[100%] h-11  text-center rounded-lg focus-within:">
+                        <select name="raza" required ref={razaRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:">
                           <option hidden>seleccione..</option>
                           {raza .map((raza)=>(
                             <option key={raza.id} value={raza.id}>{raza.nombre_r}</option>
@@ -244,7 +247,7 @@ setcreate(false)
                   <br />
                         <label>  seleccione la categoria</label>
                         <br />
-                        <select name="categoria_id" onChange={handinputchange} className="w-[100%] h-11  text-center rounded-lg focus-within:">
+                        <select name="categoria_id" required ref={categoria_idRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:">
                         <option  hidden>seleccione..</option>
                         {categoria .map((categorie)=>(
                           <option key={categorie.id} value={categorie.id}>{categorie.nombre}</option>
@@ -255,13 +258,13 @@ setcreate(false)
                       <br />
                         <label>Ingrese una foto de la mascota</label>
                         <br />
-                        <input type="file" name="foto" onChange={handinputchange} className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
+                        <input type="file" name="foto" required ref={fotoRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
                       </div>
 
                     <div className="w-[50%] relative left-[24%]">
                     <label>Seleccione el genero de la mascota</label>
                         <br />
-                        <select name="genero_id" onChange={handinputchange} className="w-[100%] h-11  text-center rounded-lg focus-within:">
+                        <select name="genero_id" required ref={genero_idRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:">
                           <option  hidden>seleccione..</option>
                           {genero .map((generos)=>(
                             <option key={generos.id} value={generos.id}>{generos.nombre}</option>
@@ -272,14 +275,14 @@ setcreate(false)
                   <div  className="w-[50%] relative left-[24%]">
                     <label>Añada un descripción breve de la mascota</label>
                         <br />
-                        <input type="text" name="descripcion" placeholder="Describa la mascota" onChange={handinputchange} className="w-[100%] h-11  text-center rounded-lg focus-within:" />
+                        <input type="text" name="descripcion" placeholder="Describa la mascota" required ref={descripcionRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:" />
                         <br />
                   </div>
 
               <div className="w-[50%] relative left-[24%]">
               <label>Seleccione un  estado</label>
                       <br />
-                      <select name="estado" onChange={handinputchange} className="w-[100%] h-11  text-center rounded-lg focus-within:">
+                      <select name="estado" required ref={estadoRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:">
                         <option hidden>Seleccione...</option>
                         <option value="Adoptado">Adoptado</option>
                         <option value="Por Adoptar">Por Adoptar</option>
@@ -291,7 +294,7 @@ setcreate(false)
               <div className="w-[50%] relative left-[24%]">
               <label>seleccione una vacuna</label>
                       <br />
-                      <select name="id_vacuna" onChange={handinputchange} className="w-[100%] h-11  text-center rounded-lg focus-within:"> 
+                      <select name="id_vacuna" required ref={id_vacunaRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:"> 
                         <option hidden>seleccione...</option>
                         {vacuna .map((vacunas)=>(
                           <option key={vacunas.id}>{vacunas.nombre}</option>
@@ -301,7 +304,7 @@ setcreate(false)
               <div className="w-[50%] relative left-[24%]">
               <label>Ingrese la Edad</label>
                       <br />
-                      <input type="number" name="edad" placeholder="Ingrese la edad" onChange={handinputchange} className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
+                      <input type="number" name="edad" placeholder="Ingrese la edad" required ref={edad}  className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
                       <br />
                 </div>      
                       
