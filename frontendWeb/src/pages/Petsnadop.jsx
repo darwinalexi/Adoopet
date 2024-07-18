@@ -64,7 +64,7 @@ return(
     {mascotasp .map((mascota)=>(
         <div key={mascota.id}  value={mascota.id} className="w-80   border-spacing-20 border-[5px] border-t-orange-600 rounded-xl border-b-orange-600 border-l-orange-600 border-r-orange-600  ml-32 mt-14">
             <img src={`http://localhost:4001/img/${mascota.foto}`}  className=" w-full h-[50%]  rounded-xl " />
-            <p>Nombres: {mascota.nombre_mas}</p>
+            <p>Nombre: {mascota.nombre_mas}</p>
             <p>Edad: {mascota.edad} años</p>
             <p>Descripcion: {mascota.descripcion}</p>
             <p>Estado: {mascota.estado}</p>

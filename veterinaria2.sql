@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 15-07-2024 a las 22:06:07
+-- Tiempo de generación: 18-07-2024 a las 15:22:33
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categorias` (
   `id` int NOT NULL,
-  `nombre` varchar(67) COLLATE  utf8mb4_roman_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE= utf8mb4_roman_ci;
+  `nombre` varchar(67) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `categorias`
@@ -49,8 +49,8 @@ INSERT INTO `categorias` (`id`, `nombre`) VALUES
 
 CREATE TABLE `genero` (
   `id` int NOT NULL,
-  `nombre` varchar(67) COLLATE  utf8mb4_roman_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE= utf8mb4_roman_ci;
+  `nombre` varchar(67) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `genero`
@@ -70,28 +70,22 @@ CREATE TABLE `mascotas` (
   `id` int NOT NULL,
   `raza` int NOT NULL,
   `categoria_id` int NOT NULL,
-  `foto` varchar(45) COLLATE  utf8mb4_roman_ci NOT NULL,
+  `foto` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL,
   `genero_id` int NOT NULL,
-  `nombre_mas` varchar(34) COLLATE  utf8mb4_roman_ci DEFAULT NULL,
-  `id_vacuna` int NOT NULL,
-  `descripcion` varchar(87) COLLATE  utf8mb4_roman_ci DEFAULT NULL,
-  `estado` enum('Por Adoptar','Adoptado','Pendiente') COLLATE  utf8mb4_roman_ci DEFAULT NULL,
+  `nombre_mas` varchar(34) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL,
+  `id_vacuna` enum('Vacunado','No Vacunado') COLLATE utf8mb4_roman_ci DEFAULT NULL,
+  `descripcion` varchar(87) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL,
+  `estado` enum('Por Adoptar','Adoptado','Pendiente') CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL,
   `edad` int NOT NULL,
   `usuario` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE= utf8mb4_roman_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `mascotas`
 --
 
 INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `estado`, `edad`, `usuario`) VALUES
-(25, 1, 1, 'IMG-20220810-WA0004.jpg', 1, 'too', 1, 'esta al pelo', 'Pendiente', 12, NULL),
-(26, 1, 1, 'IMG-20220810-WA0004.jpg', 1, 'too', 1, 'esta al pelo', 'Pendiente', 12, NULL),
-(27, 1, 1, 'IMG-20220810-WA0004.jpg', 1, 'too', 1, 'esta al pelo', 'Pendiente', 12, NULL),
-(30, 1, 1, 'IMG-20220810-WA0004.jpg', 1, 'too', 1, 'esta al pelo', 'Adoptado', 12, NULL),
-(33, 1, 1, 'IMG-20220810-WA0004.jpg', 1, 'too', 1, 'esta al pelo', 'Pendiente', 12, NULL),
-(44, 1, 2, 'logo_original.png', 2, 'lola', 2, 'juegueton', 'Adoptado', 3, NULL),
-(46, 1, 2, 'logo_original.png', 2, 'lola', 2, 'juegueton', 'Por Adoptar', 3, NULL);
+(47, 1, 1, 'mi_mascota.jpg', 1, 'lucas', 'No Vacunado', 'es divertido', 'Por Adoptar', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -101,8 +95,8 @@ INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nomb
 
 CREATE TABLE `razas` (
   `id` int NOT NULL,
-  `nombre_r` varchar(23) COLLATE  utf8mb4_roman_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE= utf8mb4_roman_ci;
+  `nombre_r` varchar(23) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `razas`
@@ -120,11 +114,11 @@ INSERT INTO `razas` (`id`, `nombre_r`) VALUES
 
 CREATE TABLE `usuarios` (
   `id` int NOT NULL,
-  `nombre` varchar(54) COLLATE  utf8mb4_roman_ci NOT NULL,
-  `email` varchar(64) COLLATE  utf8mb4_roman_ci NOT NULL,
-  `password` varchar(45) COLLATE  utf8mb4_roman_ci NOT NULL,
-  `tipo` enum('Administrador','Usuario') COLLATE  utf8mb4_roman_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE= utf8mb4_roman_ci;
+  `nombre` varchar(54) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL,
+  `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL,
+  `password` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL,
+  `tipo` enum('Administrador','Usuario') CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
@@ -144,25 +138,6 @@ INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`) VALUES
 (11, 'alejandro', 'mdbaos0@misena.edu.co', '234567', 'Administrador'),
 (12, 'maria', 'mdbaos0@misena.edu.co', '123456', 'Usuario'),
 (13, 'alejandro', 'mdbaos0@misena.edu.co', '98754', 'Administrador');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `vacunas`
---
-
-CREATE TABLE `vacunas` (
-  `id` int NOT NULL,
-  `nombre` varchar(78) DEFAULT NULL,
-  `id_mascota` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
-
---
--- Volcado de datos para la tabla `vacunas`
---
-
-INSERT INTO `vacunas` (`id`, `nombre`, `id_mascota`) VALUES
-(2, 'Rabia', 7);
 
 --
 -- Índices para tablas volcadas
@@ -204,13 +179,6 @@ ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `vacunas`
---
-ALTER TABLE `vacunas`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `vacuna` (`id`);
-
---
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -230,7 +198,7 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `razas`
@@ -245,12 +213,6 @@ ALTER TABLE `usuarios`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT de la tabla `vacunas`
---
-ALTER TABLE `vacunas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- Restricciones para tablas volcadas
 --
 
@@ -262,12 +224,6 @@ ALTER TABLE `mascotas`
   ADD CONSTRAINT `mascotas_ibfk_1` FOREIGN KEY (`raza`) REFERENCES `razas` (`id`),
   ADD CONSTRAINT `mascotas_ibfk_2` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`),
   ADD CONSTRAINT `mascotas_ibfk_3` FOREIGN KEY (`genero_id`) REFERENCES `genero` (`id`);
-
---
--- Filtros para la tabla `vacunas`
---
-ALTER TABLE `vacunas`
-  ADD CONSTRAINT `vacunas_ibfk_1` FOREIGN KEY (`id`) REFERENCES `mascotas` (`id_vacuna`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

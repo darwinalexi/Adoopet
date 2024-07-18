@@ -15,7 +15,7 @@ const Header = () => {
   const [genero, setgenero]= useState([]);
   const [createpet, setcreate]= useState(false);
   const[crear, setcrear]= useState(null)
-  const[vacuna, setvacuna]= useState([]);
+
   const [adoptar, setadoptar]= useState([]);
 
   const nombre_mas = useRef(null);
@@ -71,7 +71,6 @@ setcreate(false)
    listar_raza();
    listar_categoria();
    listar_gender()
-   listar_vacunas()
   },[])
 
   const listar_user= async()=>{
@@ -125,15 +124,7 @@ setcreate(false)
     }
   }
 
-  const listar_vacunas=async()=>{
-    try {
-      const vacuna= await axiosClient.get("/listar_vacunas")
-      setvacuna(vacuna.data)
-      console.log("vacuna",vacuna.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+ 
 
 
 
@@ -150,11 +141,11 @@ setcreate(false)
       formData.append('estado', estadoRef.current.value);
       formData.append('id_vacuna', id_vacunaRef.current.value);
       formData.append('edad', edad.current.value);
-  
+  console.log("datos",formData)
       const register = await axiosClient.post("/crear_pets", formData);
       console.log("respuesta", register.data.mensaje);
     } catch (error) {
-      console.log("error", error.response.data.mensaje);
+      console.log("error", error.response);
     }
   };
  
@@ -296,9 +287,8 @@ setcreate(false)
                       <br />
                       <select name="id_vacuna" required ref={id_vacunaRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:"> 
                         <option hidden>seleccione...</option>
-                        {vacuna .map((vacunas)=>(
-                          <option key={vacunas.id}>{vacunas.nombre}</option>
-                        ))}
+                        <option value="Vacunado">Vacunado</option>
+                        <option value="No Vacunado">No Vacunado</option>
                       </select>
               </div>
               <div className="w-[50%] relative left-[24%]">
