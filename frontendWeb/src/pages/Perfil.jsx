@@ -1,13 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./Component/Header";
-import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons'
-import { Menu } from "./Component/Menu";
+import { Sidebar } from "./Component/Siderbar/siderbar";
+import axiosClient from "./utils/axiosClent";
+
+
 
 
 
 const Perfil =()=>{
+    const [usuario, setTipo] = useState([]);
+    const [username, setname]= useState('');
+    const [email,setemail]=useState('')
+
+
+ 
+    useEffect(() => {
+      const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
+      if (usuarios.length > 0) {
+        const usuario = usuarios[0];
+        setTipo(usuario.tipo || 'Invitado');
+        setname(usuario.nombre);
+        setemail(usuario.email)
+      }
+    }, [localStorage]);
+
+
+
     const [user, setuser]= useState({
         nombre:'',
         email:'',
@@ -17,30 +37,11 @@ const Perfil =()=>{
     const [createpet, setcreate]= useState(false);
     const[crear, setcrear]= useState(null)
 
-    const opencreate = (pet)=>{
-        setcrear(pet)
-        setcreate(true)
-       
-      }
-      
-      const close_modal=()=>{
-      setcreate(false)
-      }
 
-    
-function createheader(token){
-    return {
-        headers:{
-            'token':token
-        }
-    };
-  }
     const registrar_user=async(e)=>{
         try {
             e.preventDefault();
-            const token= localStorage.getItem('token')
-            const header= createheader(token)
-            const crear= await axios.post("http://localhost:4001/crear",user, header)
+            const crear= await axiosClient.post("/crear",user)
             setuser(crear)
             console.log(crear)
         } catch (error) {
@@ -63,12 +64,19 @@ function createheader(token){
         <>
         
             <Header/>
-            <Menu/>
-            
-            <div className="bg-slate-200 w-[45%] absolute left-[50%]  top-24 rounded-3xl -z-20">
+            <Sidebar/>
+            {usuario==="Administrador" &&(
+                <>
+<div className="relative top-24 left-[17%]  w-[23%] ">
+                    <h1 className="flex justify-start size-16 font-extrabold w-[100%]" >Perfil de Usuario</h1>
+                    <p className="flex justify-start pb-6">Nombre: {username}</p>
+                    <p className="flex justify-start pb-6">Tipo:{usuario}</p>
+                    <p className="flex justify-start pb-6">correo: {email}</p>
+                    </div>
+
+                    <div className="bg-slate-200 w-[45%] absolute left-[50%]  top-24 rounded-3xl -z-20">
                 <h1>Crear Usuario</h1>
                 <form  onSubmit={registrar_user} onChange={handinputchange}>
-                    
                         <div className="w-[50%] relative left-[24%] ">
                         <label>Ingrese el nombre</label>
                         <br />
@@ -103,6 +111,20 @@ function createheader(token){
                 </form>
                 
             </div>
+                </>
+            )}
+                {usuario==="Usuario" &&(
+                    <>
+                    <div className="relative top-24 left-[17%]  w-[23%] ">
+                    <h1 className="flex justify-start size-16 font-extrabold w-[100%]" >Perfil de Usuario</h1>
+                    <p className="flex justify-start pb-6">Nombre: {username}</p>
+                    <p className="flex justify-start pb-6">Tipo:{usuario}</p>
+                    <p className="flex justify-start pb-6">correo: {email}</p>
+                    </div>
+                </>
+                )}
+
+            
         </>
     
 

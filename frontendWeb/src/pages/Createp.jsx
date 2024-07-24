@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import Swal from "sweetalert2";
+import axiosClient from "./utils/axiosClent";
 const Create_Pets = () => {
     const [valores, setvalores] = useState({
         categoria_id: '',
@@ -11,14 +12,6 @@ const Create_Pets = () => {
     });
     
 
-    function createHeaders(token) {
-        return {
-          headers: {
-            'token': token
-          }
-        };
-      }
-
     const formData = new FormData();
     const [mascota, setmascotas]=useState([])
 
@@ -27,9 +20,8 @@ const Create_Pets = () => {
 
     const  listar_categorias=async()=>{
         try {
-            const token = localStorage.getItem('token')
-            const header= createHeaders(token)
-            const mostra= await axios.get("http://localhost:4001/listar_categories", header)
+            
+            const mostra= await axiosClient.get("/listar_categories")
             setmascotas(mostra.data)
             console.log(mostra.data);
         } catch (error) {
@@ -38,11 +30,8 @@ const Create_Pets = () => {
     }
 
     const  listar_razas=async()=>{
-        try {
-            const token = localStorage.getItem('token')
-            const header= createHeaders(token)
-            
-            const mostraraza= await axios.get("http://localhost:4001/listar_races", header);
+        try {            
+            const mostraraza= await axiosClient.get("/listar_races");
             setrazas(mostraraza.data)
             console.log("razas",mostraraza)
         } catch (error) {
@@ -54,9 +43,7 @@ const Create_Pets = () => {
 
 const listar_genero=async()=>{
     try {
-        const token = localStorage.getItem('token')
-        const header= createHeaders(token)
-        const trar=await axios.get("http://localhost:4001/listar_gender", header)
+        const trar=await axiosClient.get("/listar_gender",)
         setgenero(trar.data)
     } catch (error) {
         console.log(error);
@@ -92,9 +79,8 @@ const listar_genero=async()=>{
         }
     
         try {
-            const token = localStorage.getItem('token')
-            const header= createHeaders(token)
-            const response = await axios.post('http://localhost:4001/crear_pets',formData, header);
+            
+            const response = await axiosClient.post('http://localhost:4001/crear_pets',formData,);
             if (response.status === 200) {
                 Swal.fire({
                     icon: "success",

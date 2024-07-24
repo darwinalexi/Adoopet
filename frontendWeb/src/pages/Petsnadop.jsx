@@ -1,5 +1,5 @@
 import Header from "./Component/Header"
-import { Menu } from "./Component/Menu"
+import { Sidebar } from "./Component/Siderbar/siderbar"
 import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons"
@@ -24,9 +24,9 @@ const openmodal = (pet)=>{
 
     const listar_no_adop=async()=>{
         try {
-            const listar= await axiosClient.get("/listar_pet_not_adop")
+            const listar= await axiosClient.get("/listar_no_adoptados")
             setmascotasp(listar.data)
-            console.log(listar.data)
+            console.log("no",listar.data)
         
         } catch (error) {
             console.log(error)
@@ -35,10 +35,10 @@ const openmodal = (pet)=>{
     
     const borrar_mascota= async(id, e)=>{
         try {
-          e.preventDefault();
+e.preventDefault();
           const borrar= await axiosClient.delete(`/eliminar_pets/${id}`)
-          setmascotasp(borrar.data)
-          console.log(borrar)
+          setmascotasp(borrar.data.message)
+          console.log("borrar",borrar.data.message)
         } catch (error) {
           console.log(error)
         }
@@ -48,18 +48,12 @@ const openmodal = (pet)=>{
      listar_no_adop();
     },[])
 
-   const editar_mascota= async()=>{
-    try {
-        
-    } catch (error) {
-        
-    }
-   }
+
 
 return(
    <>
     <Header/>
-    <Menu/>
+    <Sidebar/>
 <div className="ml-32 w-[80%] grid grid-cols-3 gap-[7%] mt-10">
     {mascotasp .map((mascota)=>(
         <div key={mascota.id}  value={mascota.id} className="w-80   border-spacing-20 border-[5px] border-t-orange-600 rounded-xl border-b-orange-600 border-l-orange-600 border-r-orange-600  ml-32 mt-14">
@@ -68,7 +62,10 @@ return(
             <p>Edad: {mascota.edad} años</p>
             <p>Descripcion: {mascota.descripcion}</p>
             <p>Estado: {mascota.estado}</p>
-            <button onClick={borrar_mascota(mascota.id)}><FontAwesomeIcon icon={faTrashAlt}/></button>
+            <button onClick={(e) => borrar_mascota(mascota.id, e)}>
+  <FontAwesomeIcon icon={faTrashAlt} />
+</button>
+
             <button onClick={openmodal}><FontAwesomeIcon icon={faEdit}/></button>
             </div>
     ))}

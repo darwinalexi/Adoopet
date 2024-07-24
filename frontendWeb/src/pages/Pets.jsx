@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-
 import Header from './Component/Header';
-import { Menu } from './Component/Menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import axiosClient from './utils/axiosClent';
+import { Sidebar } from './Component/Siderbar/siderbar';
 
 
 const Pets = () =>{
@@ -43,7 +42,7 @@ listar_mascotas();
 return(
   <>
   <Header/>
-  <Menu/>
+  <Sidebar/>
   <div className=' ml-32 w-[90%] grid grid-cols-3 gap-[7%] mt-10'>
   {mascotas .map((pet)=>(
     <div key={pet.id} value={pet.id} className='border-spacing-20  rounded-xl w-80  border-[5px] border-t-orange-600 border-b-orange-600 border-l-orange-600 border-r-orange-600  ml-32'>

@@ -34,7 +34,7 @@ export const listar_pets_in_adop= async(req, res)=>{
 
 export const listar_pets_no_adop= async(req, res)=>{
     try {
-        const [listar]= await Conexion.query("select*from mascotas where estado='Por Adoptar'");
+        const [listar]= await Conexion.query("select*from mascotas where estado='Por adoptar'");
 
         if (listar.length>0) {
             res.status(200).json(listar);
@@ -67,13 +67,13 @@ export const listar_pets_pendientes= async(req, res)=>{
 
 export const crear_pets = async (req, res) => {
     try {
-       const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion, estado, edad}=req.body;
+       const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion,  edad}=req.body;
        const foto=req.file.originalname;
        if (foto==null) {
         return res.status(400).json({ mensaje: "No se ha cargado un archivo" });
       }
  
-       const [regiterpets]= await Conexion.query("insert into mascotas(raza, categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion, estado,edad)values(?,?,?,?,?,?,?,?,?)",[raza,categoria_id,foto,genero_id, nombre_mas, id_vacuna,descripcion, estado, edad])       
+       const [regiterpets]= await Conexion.query("insert into mascotas(raza, categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion, edad)values(?,?,?,?,?,?,?,?)",[raza,categoria_id,foto,genero_id, nombre_mas, id_vacuna,descripcion, edad])       
        if (regiterpets.affectedRows>0) {
         return res.status(200).json({
             "mensaje":"se creo con exito"

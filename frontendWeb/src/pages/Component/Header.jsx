@@ -17,6 +17,7 @@ const Header = () => {
   const[crear, setcrear]= useState(null)
 
   const [adoptar, setadoptar]= useState([]);
+  const[nombre, setNombre]= useState([])
 
   const nombre_mas = useRef(null);
   const razaRef = useRef(null);
@@ -24,7 +25,6 @@ const Header = () => {
   const fotoRef = useRef(null);
   const genero_idRef = useRef(null);
   const descripcionRef = useRef(null);
-  const estadoRef = useRef(null);
   const id_vacunaRef = useRef(null);
   const edad = useRef(null);
 
@@ -58,7 +58,7 @@ setcreate(false)
 
   const listar_pendientes= async()=>{
     try {
-      const listar= await axiosClient.get("/listar_pet_pendiente")
+      const listar= await axiosClient.get("/listar_adopciones")
       setmascotas(listar.data)
       console.log(listar.data)
     } catch (error) {
@@ -72,6 +72,15 @@ setcreate(false)
    listar_categoria();
    listar_gender()
   },[])
+
+
+  useEffect(() => {
+    const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
+    if (usuarios.length > 0) {
+      const usuario = usuarios[0];
+      setNombre(usuario.nombre || 'Invitado');
+    }
+  }, [localStorage]);
 
   const listar_user= async()=>{
     const usuario = JSON.parse(localStorage.getItem('usuario'));
@@ -128,9 +137,9 @@ setcreate(false)
 
 
 
-  const crear_mascota = async (event) => {
+  const crear_mascota = async (e) => {
     try {
-      event.preventDefault();
+      e.preventDefault();
       const formData = new FormData();
       formData.append('nombre_mas', nombre_mas.current.value);
       formData.append('raza', razaRef.current.value);
@@ -138,61 +147,86 @@ setcreate(false)
       formData.append('foto', fotoRef.current.files[0]);
       formData.append('genero_id', genero_idRef.current.value);
       formData.append('descripcion', descripcionRef.current.value);
-      formData.append('estado', estadoRef.current.value);
       formData.append('id_vacuna', id_vacunaRef.current.value);
       formData.append('edad', edad.current.value);
   console.log("datos",formData)
       const register = await axiosClient.post("/crear_pets", formData);
       console.log("respuesta", register.data.mensaje);
+    
     } catch (error) {
       console.log("error", error.response);
     }
   };
- 
-    
+  const [usuario, setTipo] = useState([]);
+
+  useEffect(() => {
+    const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
+    if (usuarios.length > 0) {
+      const usuario = usuarios[0];
+      setTipo(usuario.tipo || 'Invitado');
+    }
+  }, [localStorage]);
 
   return (
     <>
       <header className=" border-[2px] absolute top-0 w-full left-0 h-20 border-b-orange-600 h-16 ">
-     <div className="w-[30%] grid grid-cols-3 absolute right-0 ">
-        <div >
-          <p>Adopciones pendientes</p>
+     <div className="w-[30%] absolute right-0   w-[50%]">
+          {usuario==="Administrador" &&(
+          <>
+          <div className="grid grid-cols-4 gap-7">
+          <div  className="w-[100%]">
+             <p>Adopciones pendientes</p>
               <button onClick={openModal}><FontAwesomeIcon icon={faBell}/></button>
             </div>
 
-          <div className="mt-[7%]">
+          <div className="w-[100%]">
             <p>Crear Macota</p>
           <p onClick={opencreate}><FontAwesomeIcon icon={faPlus}/></p>
           </div>
-        
-          <div className=" grid grid-cols-2">
-                        <div>
-                        <h1>usuario</h1>
+         
+            
+         
+                        <div className=" w-[100%]">
+                        <h1>{nombre}</h1>
                         <FontAwesomeIcon icon={faUser}/>
                         </div>
 
-                      <div onClick={close_session} className="mt-[7%]" >
+                      <div onClick={close_session} className="w-[100%]" >
+                        <h1>Cerrar Sesion</h1>
+                        <FontAwesomeIcon icon={faSignOutAlt} />;
+                      </div>
+      </div>
+          </>
+          )}
+        
+        {usuario==="Usuario" &&(
+          <>
+           <div>
+                   
+
+                      <div onClick={close_session} >
                         <h1>Cerrar Sesion</h1>
                         <FontAwesomeIcon icon={faSignOutAlt} />;
                       </div>
             </div>
+          </>
+        )}
+         
 
      </div>
 
         {modal &&(
          <>
-          <div className="overflow-y-scroll border-orange-600 border-y-2 border-x-2 w-[29%]  relative left-[71%] top-16 grid grid-cols-1 gap-7 bg-orange-200  h-80 ">
+          <div className="overflow-y-scroll border-orange-600 border-y-2 border-x-2 w-[29%]  relative left-[29%] top-16 grid grid-cols-1 gap-7 bg-orange-200  h-80 ">
           <button onClick={closeModal}><FontAwesomeIcon icon={faClose}/></button>
             <h3>Adopciones Pendientes</h3>
             <div className="h-23">
               {mpendientes .map((mascota)=>(
                <>
-               <div className="grid grid-cols-2 h-auto pl-16 w-[100%] hover: border-y-2 hover:border-orange-600 " >
-                  <div className="w-[50%] " key={mascota.id} value={mascota.id}>
-                      <img src={`http://localhost:4001/img/${mascota.foto}`}  className="rounded-full w-full ml-3 h-full"/>
-                      </div>
+               <div className="grid grid-cols-2  h-auto pl-16 w-[100%] hover: border-y-2 hover:border-orange-600 " >
                       <div className="grid grid-cols-1  w-[50%] flex justify-start">
                       <p > Nombre: {mascota.nombre_mas}</p>
+                      <p>Edad: {mascota.edad}</p>
                       <p >Estado:{mascota.estado}</p>
                       <button onClick={()=>adopt(mascota.id)}> <FontAwesomeIcon icon={faPaw}/> </button>
                   </div>
@@ -269,17 +303,6 @@ setcreate(false)
                         <input type="text" name="descripcion" placeholder="Describa la mascota" required ref={descripcionRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:" />
                         <br />
                   </div>
-
-              <div className="w-[50%] relative left-[24%]">
-              <label>Seleccione un  estado</label>
-                      <br />
-                      <select name="estado" required ref={estadoRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:">
-                        <option hidden>Seleccione...</option>
-                        <option value="Adoptado">Adoptado</option>
-                        <option value="Por Adoptar">Por Adoptar</option>
-                        <option value="Pendiente">Pendiente</option>
-                      </select>
-              </div>
 
 
               <div className="w-[50%] relative left-[24%]">
