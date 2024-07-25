@@ -1,8 +1,8 @@
 import Header from "./Component/Header"
 import { Sidebar } from "./Component/Siderbar/siderbar"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTrashAlt, faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faTrashAlt, faEdit, faClose } from "@fortawesome/free-solid-svg-icons"
 import axiosClient from "./utils/axiosClent"
 
 
@@ -10,14 +10,63 @@ const Petsnadop =()=>{
 const [mascotasp, setmascotasp]= useState([]);
 const[crear, setcrear]= useState(null)
 const [createpet, setcreate]= useState(false);
-
+const [raza, setraza]= useState([]);
+const [categoria, setcategoria]= useState([]);
+const [genero, setgenero]= useState([]);
+const [idmascota, setidmascota]=useState([])
 
 const openmodal = (pet)=>{
     setcrear(pet)
+    setidmascota(pet.id)
     setcreate(true)
    
   }
   
+  const listar_raza=async()=>{
+    try {
+      const listar= await axiosClient.get("/listar_races")
+      setraza(listar.data)      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const listar_categoria=async()=>{
+    try {
+      
+      const categorias= await axiosClient.get("/listar_categories")
+      setcategoria(categorias.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const listar_gender=async()=>{
+    try {
+      
+      const generos= await axiosClient.get("/listar_gender")
+      setgenero(generos.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    listar_gender();
+    listar_raza();
+    listar_categoria();
+  })
+
+  const nombre_mas = useRef(null);
+  const razaRef = useRef(null);
+  const categoria_idRef = useRef(null);
+  const fotoRef = useRef(null);
+  const genero_idRef = useRef(null);
+  const descripcionRef = useRef(null);
+  const id_vacunaRef = useRef(null);
+  const edad = useRef(null);
+  const estadoRef= useRef(null)
+
   const close_modal=()=>{
     setcreate(false)
     }
@@ -26,11 +75,33 @@ const openmodal = (pet)=>{
         try {
             const listar= await axiosClient.get("/listar_no_adoptados")
             setmascotasp(listar.data)
-            console.log("no",listar.data)
         
         } catch (error) {
             console.log(error)
         }
+    }
+const [update, setupdate]=useState([]);
+    const actualizar_pet=async(e, id)=>{
+    
+try{
+  e.preventDefault();
+      const formData = new FormData();
+      formData.append('nombre_mas', nombre_mas.current.value);
+      formData.append('raza', razaRef.current.value);
+      formData.append('categoria_id', categoria_idRef.current.value);
+      formData.append('foto', fotoRef.current.files[0]);
+      formData.append('genero_id', genero_idRef.current.value);
+      formData.append('descripcion', descripcionRef.current.value);
+      formData.append('id_vacuna', id_vacunaRef.current.value);
+      formData.append('edad', edad.current.value);
+      formData.append('estado',estadoRef.current.value);
+console.log("formulario",formData);
+      const actualizar = await axiosClient.put(`/actualizar_pets/${id}`)
+      setupdate(actualizar.data.mensaje)
+      console.log("actualizar",actualizar.data.mensaje)
+    }catch(e){
+console.log("error para actualizar",e)
+    }
     }
     
     const borrar_mascota= async(id, e)=>{
@@ -73,12 +144,13 @@ return(
 
 {crear &&(
             <>
-           
-             <div className="bg-[] w-[35%] absolute left-[33%] top-16 overflow-y-scroll h-80 bg-orange-400">
+           {mascotasp .map((mascota)=>(
+            <>
+               <div className="bw-[35%] absolute left-[33%] top-16 overflow-y-scroll h-80 bg-orange-400">
              <button onClick={close_modal}><FontAwesomeIcon icon={faClose}/></button>
              <h2>Actualizar Macota</h2>
              <br />
-             <form onSubmit={crear_mascota}>
+             <form  onSubmit={actualizar_pet}>
               <div  className="w-[50%] relative left-[24%]">
               <label>Ingrese el nombre de la mascota</label>
                       <br />
@@ -149,9 +221,8 @@ return(
                       <br />
                       <select name="id_vacuna" required ref={id_vacunaRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:"> 
                         <option hidden>seleccione...</option>
-                        {vacuna .map((vacunas)=>(
-                          <option key={vacunas.id}>{vacunas.nombre}</option>
-                        ))}
+                          <option value="Vacunado">Vacunado</option>
+                          <option value="No Vacunado">No Vacunado</option>
                       </select>
               </div>
               <div className="w-[50%] relative left-[24%]">
@@ -161,13 +232,18 @@ return(
                       <br />
                 </div>      
                       
-                    
-                    <div className="w-[50%] relative left-[17%] m-12 h-10">
-                    <input type="submit" name="" className="w-[100%] border-2  border-x-orange-600  border-y-orange-600 hover:bg-orange-600 h-full rounded-xl" />
+          
+           <>
+              <div className="w-[50%] relative left-[17%] m-12 h-10">
+                    <input type="submit" name="" onClick={()=>actualizar_pet(mascota.id)}  className="w-[100%] border-2  border-x-orange-600  border-y-orange-600 hover:bg-orange-600 h-full rounded-xl" />
                     </div>
-
+           </>
              </form>
+             
              </div>
+            </>
+           ))}
+          
             </>
         )}
 

@@ -27,6 +27,7 @@ export const Sidebar = () => {
             <>
            <SidebarItem to="/perfil"><FontAwesomeIcon icon={faUser} /> Perfil</SidebarItem>
             <SidebarItem to="/mascotas_adoptadas">Mascotas Adoptadas</SidebarItem>
+            <SidebarItem to="/mascotas_por_adoptar">Mascotas por Adoptar</SidebarItem>
             </>
           )}
             

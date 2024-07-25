@@ -97,7 +97,7 @@ export const actualizar_pets = async(req, res)=>{
         const { raza, categoria_id,genero_id, nombre, id_vacuna, descripcion}= req.body;
 
         const foto=req.file.originalname
-        const [actualizar]= await Conexion.query("update mascotas set raza=?,categoria_id=? ,foto=?, genero_id=?, nombre=?, id_vacuna=? where id=?",[raza,categoria_id,foto,genero_id, id,nombre, id_vacuna, descripcion]);
+        const [actualizar]= await Conexion.query("update mascotas set raza=?,categoria_id=? ,foto=?, genero_id=?, nombre_mas=?, id_vacuna=?, descripcion=? where id=?",[raza,categoria_id,foto,genero_id,nombre, id_vacuna, descripcion,id]);
 
         if (actualizar.affectedRows>0) {
             res.status(200).json({

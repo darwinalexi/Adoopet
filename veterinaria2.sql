@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 18-07-2024 a las 15:22:33
+-- Tiempo de generación: 25-07-2024 a las 02:03:49
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -20,6 +20,40 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `veterinaria2`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `adopciones`
+--
+
+CREATE TABLE `adopciones` (
+  `id` int NOT NULL,
+  `id_adoptante` int DEFAULT NULL,
+  `edad` int DEFAULT NULL,
+  `id_mascota` int DEFAULT NULL,
+  `estado` enum('Adoptado','Por Adoptar','Pendiente') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `adopciones`
+--
+
+INSERT INTO `adopciones` (`id`, `id_adoptante`, `edad`, `id_mascota`, `estado`) VALUES
+(7, NULL, NULL, NULL, NULL),
+(9, NULL, NULL, NULL, NULL),
+(21, NULL, NULL, NULL, NULL),
+(22, NULL, NULL, NULL, NULL),
+(23, NULL, NULL, NULL, NULL),
+(24, NULL, NULL, NULL, NULL),
+(25, NULL, NULL, NULL, NULL),
+(26, NULL, NULL, NULL, NULL),
+(27, NULL, NULL, NULL, NULL),
+(29, NULL, NULL, NULL, NULL),
+(30, 3, 2, 50, 'Pendiente'),
+(31, 3, 19, 54, 'Pendiente'),
+(32, 3, 56, 54, 'Pendiente'),
+(33, 3, 45, 54, 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -73,19 +107,19 @@ CREATE TABLE `mascotas` (
   `foto` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL,
   `genero_id` int NOT NULL,
   `nombre_mas` varchar(34) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL,
-  `id_vacuna` enum('Vacunado','No Vacunado') COLLATE utf8mb4_roman_ci DEFAULT NULL,
+  `id_vacuna` enum('Vacunado','No Vacunado') CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL,
   `descripcion` varchar(87) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL,
-  `estado` enum('Por Adoptar','Adoptado','Pendiente') CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL,
   `edad` int NOT NULL,
-  `usuario` int DEFAULT NULL
+  `usuario` int DEFAULT NULL,
+  `estado` enum('Por adoptar','Adoptado','En proceso') COLLATE utf8mb4_roman_ci DEFAULT 'Por adoptar'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `mascotas`
 --
 
-INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `estado`, `edad`, `usuario`) VALUES
-(47, 1, 1, 'mi_mascota.jpg', 1, 'lucas', 'No Vacunado', 'es divertido', 'Por Adoptar', 0, NULL);
+INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `edad`, `usuario`, `estado`) VALUES
+(54, 1, 2, 'logo.png', 1, 'hector', 'No Vacunado', ' es feliz', 5, NULL, 'Por adoptar');
 
 -- --------------------------------------------------------
 
@@ -125,7 +159,6 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`) VALUES
-(1, 'migule london', 'jose@gmail.com', '1243', NULL),
 (2, 'Darwin Alexis Guerrero', 'darwin@gmail.com', '1324', 'Administrador'),
 (3, ' Alexis Guerrero', 'darwin@gmail.com', '1324', 'Administrador'),
 (4, 'alejandro', 'mdbaos0@misena.edu.co', '465', 'Administrador'),
@@ -134,14 +167,22 @@ INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`) VALUES
 (7, 'alejandro', 'mdbaos0@misena.edu.co', '67', 'Administrador'),
 (8, ' Alexis Guerrero', 'darwin@gmail.com', '1324', 'Administrador'),
 (9, 'alejandro', 'mdbaos0@misena.edu.co', '98', 'Administrador'),
-(10, 'luis', 'mdbaos0@misena.edu.co', '9876', 'Usuario'),
+(10, 'luis', 'luis@gmail.com', '1234', 'Administrador'),
 (11, 'alejandro', 'mdbaos0@misena.edu.co', '234567', 'Administrador'),
-(12, 'maria', 'mdbaos0@misena.edu.co', '123456', 'Usuario'),
-(13, 'alejandro', 'mdbaos0@misena.edu.co', '98754', 'Administrador');
+(12, 'maria', 'mdb@gmail.com', '123', 'Usuario'),
+(13, 'alejandro', 'mdbaos0@misena.edu.co', '98754', 'Administrador'),
+(14, 'palo', 'mdbaos0@misena.edu.co', '87654', 'Usuario');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `adopciones`
+--
+ALTER TABLE `adopciones`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_adoptante` (`id_adoptante`);
 
 --
 -- Indices de la tabla `categorias`
@@ -183,6 +224,12 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `adopciones`
+--
+ALTER TABLE `adopciones`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
@@ -198,7 +245,7 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de la tabla `razas`
@@ -210,11 +257,17 @@ ALTER TABLE `razas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `adopciones`
+--
+ALTER TABLE `adopciones`
+  ADD CONSTRAINT `adopciones_ibfk_1` FOREIGN KEY (`id_adoptante`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `mascotas`
