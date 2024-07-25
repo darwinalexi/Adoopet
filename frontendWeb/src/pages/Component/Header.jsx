@@ -15,6 +15,7 @@ const Header = () => {
   const [genero, setgenero]= useState([]);
   const [createpet, setcreate]= useState(false);
   const[crear, setcrear]= useState(null)
+  const [borraradoppen, setboraradoppen]=  useState([]);
 
   const [adoptar, setadoptar]= useState([]);
   const[nombre, setNombre]= useState([])
@@ -113,7 +114,6 @@ setcreate(false)
  
   const adopt = async(id)=>{
    try {
-    
     const adoptar= await axiosClient.put(`/adoptar/${id}`)
     setadoptar(adoptar.data)
     console.log(adoptar.data)
@@ -166,6 +166,18 @@ setcreate(false)
       setTipo(usuario.tipo || 'Invitado');
     }
   }, [localStorage]);
+
+  const borrar_adopcion_p= async(id)=>{
+  try {
+    const  borrar = await axiosClient.delete(`/eliminar_adopcion/${id}`)
+    setboraradoppen(borrar.data.mensaje)
+    console.log("se borro",borrar.data.mensaje)
+    window.location.reload();
+  } catch (error) {
+    console.log(error)
+  }
+
+  }
 
   return (
     <>
@@ -228,7 +240,10 @@ setcreate(false)
                       <p > Nombre: {mascota.nombre_mas}</p>
                       <p>Edad: {mascota.edad}</p>
                       <p >Estado:{mascota.estado}</p>
+                      <div className="grid grid-cols-2">
                       <button onClick={()=>adopt(mascota.id)}> <FontAwesomeIcon icon={faPaw}/> </button>
+                      <button onClick={()=>borrar_adopcion_p(mascota.id)}>Borrar Adopcion</button>
+                      </div>
                   </div>
                </div>
                
@@ -246,7 +261,7 @@ setcreate(false)
         {createpet &&(
             <>
            
-             <div className="bg-[] w-[35%] absolute left-[33%] top-16 overflow-y-scroll h-80 bg-orange-400">
+             <div className="bg-[] w-[35%] absolute left-[33%] top-16 overflow-y-scroll h-80 bg-orange-400 ">
              <button onClick={close_modal}><FontAwesomeIcon icon={faClose}/></button>
              <h2>Crea Una Macota</h2>
              <br />

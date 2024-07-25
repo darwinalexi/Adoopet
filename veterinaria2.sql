@@ -33,7 +33,7 @@ CREATE TABLE `adopciones` (
   `edad` int DEFAULT NULL,
   `id_mascota` int DEFAULT NULL,
   `estado` enum('Adoptado','Por Adoptar','Pendiente') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `adopciones`

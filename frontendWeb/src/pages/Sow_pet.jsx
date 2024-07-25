@@ -7,8 +7,11 @@ const Sow_pet=()=>{
 
   const  [user, setuser]= useState([]);
   
-
-    const count_user = async () => {
+  const backgroundImageStyle = {
+    backgroundImage: "url('./img/chispitas.JPG')",
+    backgroundSize: "cover",
+  }
+  const count_user = async () => {
         try {
           const listar = await axiosClient.get("http://localhost:4001/contar_usuarios")
           const resultado= (listar,JSON.stringify.listar.data)
@@ -26,12 +29,15 @@ return(
     <>
 <Header/>
 <Sidebar/>
-<div className="w-[80%] grid-cols-4 bg-sky-400 mt-14 ml-56 w-[34%]">
-  <div>Usuarios</div>
-  <div>Adopciones</div>
-  <div>Por Adoptar</div>
-  <div>Pendientes Por Adoptar</div>
-</div>
+      <div className="w-[90%] gap-36 grid-flow-row auto-rows-max bg-sky-400 mt-14 ml-56 w-[34%]">
+            <div className="bg-red-400 w-[80%] h-[100%]  ml-24">
+               <img src="./src/img/chiribico.jpeg" className="w-[100%] h-[100%] " />
+            </div>
+            <div >
+              <h1>koko</h1>
+              <p>En <p className="">ADOPPET</p></p>
+            </div>
+      </div>
     </>
 )
 }

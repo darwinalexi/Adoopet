@@ -11,8 +11,9 @@ export const crear_adopcion = async(req, res)=>{
         }
         
         const [crear]= await Conexion.query("insert into adopciones(id_adoptante, edad, id_mascota, estado)values(?,?,?,?)",[id_adoptante,edad,id_mascota, estado])
+        const [actualizar]= await Conexion.query("update mascotas set estado='Pendiente' where id=?",[id_mascota])
         
-        if (crear.affectedRows>0){
+        if (crear.affectedRows > 0 && actualizar.affectedRows > 0){
             res.status(200).json({
                 "mensaje":"se creo con adopcion la adopcion"
             })
@@ -22,6 +23,7 @@ export const crear_adopcion = async(req, res)=>{
             })
         }
     } catch (error) {
+        
         res.status(500).json({
             "mensaje":error
         })

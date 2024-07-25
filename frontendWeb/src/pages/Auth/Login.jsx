@@ -6,7 +6,7 @@ import axiosClient from "../utils/axiosClent";
 
 function Login() {
   const backgroundImageStyle = {
-    backgroundImage: "url('./src/img/bg-login.svg')",
+    backgroundImage: "url('./src/img/chispitas.JPG')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     height: '100vh'

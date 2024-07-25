@@ -49,6 +49,15 @@ const Perfil =()=>{
         }
     }
 
+    const lisar_adoptadas= async()=>{
+        try {
+            
+            const listar= await axiosClient.get(`/`)
+        } catch (error) {
+            
+        }
+    }
+
     const handinputchange = (event) => {
         const { name, value } = event.target;
         setuser((prevUsuarios) => {
@@ -65,9 +74,10 @@ const Perfil =()=>{
         
             <Header/>
             <Sidebar/>
+            
             {usuario==="Administrador" &&(
                 <>
-<div className="relative top-24 left-[17%]  w-[23%] ">
+                <div className="relative top-24 left-[17%]  w-[23%] -z-50">
                     <h1 className="flex justify-start size-16 font-extrabold w-[100%]" >Perfil de Usuario</h1>
                     <p className="flex justify-start pb-6">Nombre: {username}</p>
                     <p className="flex justify-start pb-6">Tipo:{usuario}</p>
@@ -115,11 +125,16 @@ const Perfil =()=>{
             )}
                 {usuario==="Usuario" &&(
                     <>
-                    <div className="relative top-24 left-[17%]  w-[23%] ">
+                    <div className="relative top-24 left-[17%]  w-[23%]  -z-50 ">
                     <h1 className="flex justify-start size-16 font-extrabold w-[100%]" >Perfil de Usuario</h1>
                     <p className="flex justify-start pb-6">Nombre: {username}</p>
                     <p className="flex justify-start pb-6">Tipo:{usuario}</p>
                     <p className="flex justify-start pb-6">correo: {email}</p>
+                    </div>
+
+
+                    <div>
+
                     </div>
                 </>
                 )}

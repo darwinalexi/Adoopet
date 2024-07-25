@@ -21,7 +21,7 @@ const Adoptar = ()=>{
         console.log("adoptantes",listar_user.data)
     }
 
-   const mascotas = async(req, res)=>{
+   const mascotas = async()=>{
         
         const mascotas = await axiosClient.get("/listar_no_adoptados") 
         setmascota(mascotas.data)
@@ -40,10 +40,11 @@ const Adoptar = ()=>{
         });
       }
      
-const crear_adopcion=async()=>{
+const crear_adopcion=async(e)=>{
+        e.prevntDefailt();
     const crear = await axiosClient.post("/crear_adopcion", adoptar)
     setadoptar(crear.data.mensaje)
-    console.log(crear.data.mensaje)
+    console.log("crear",crear.data.mensaje)
 }
     useEffect(()=>{
         user();
