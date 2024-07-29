@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faPlus, faClose, faUser, faPaw, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "../utils/axiosClent";
 import { useRef } from "react";
+import Swal from"sweetalert2"
 
 const Header = () => {
-  const navigate = useNavigate();
+  
   const [modal, setModal] = useState(false);
   const [selectPet, setSelectedPet] = useState(null); 
   const [mpendientes, setmascotas]= useState([])
@@ -16,9 +17,9 @@ const Header = () => {
   const [createpet, setcreate]= useState(false);
   const[crear, setcrear]= useState(null)
   const [borraradoppen, setboraradoppen]=  useState([]);
-
   const [adoptar, setadoptar]= useState([]);
   const[nombre, setNombre]= useState([])
+  const [user, setuser]= useState([]);
 
   const nombre_mas = useRef(null);
   const razaRef = useRef(null);
@@ -28,10 +29,14 @@ const Header = () => {
   const descripcionRef = useRef(null);
   const id_vacunaRef = useRef(null);
   const edad = useRef(null);
+  const usuarioref= useRef(null);
+  const historial_medicor= useRef(null);
 
 
-  const openModal = (pet) => {
-    setSelectedPet(pet); 
+  const openModal = (mpendientes) => {
+    setSelectedPet(mpendientes);
+    setboraradoppen(mpendientes.id) 
+    
     setModal(true);
   };
 
@@ -49,45 +54,40 @@ const close_modal=()=>{
 setcreate(false)
 }
 
-
+const navigate = useNavigate();
   const close_session = async () => {
     localStorage.clear();
     navigate('/', { replace: true });
+    window.location.reload();
   };
 
+  useEffect(()=>{
+    listar_raza();
+    listar_categoria();
+    listar_gender();
+    listar_pendientes();
+    listar_user();
+   },[])
  
 
   const listar_pendientes= async()=>{
     try {
       const listar= await axiosClient.get("/listar_adopciones")
-      setmascotas(listar.data)
-      console.log(listar.data)
+        setmascotas(listar.data)
+        console.log("pendientes",listar.data)
+      
     } catch (error) {
       console.log(error)
     }
   }
-  useEffect(()=>{
-   listar_pendientes();
-   listar_user();
-   listar_raza();
-   listar_categoria();
-   listar_gender()
-  },[])
-
-
   useEffect(() => {
     const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
     if (usuarios.length > 0) {
       const usuario = usuarios[0];
-      setNombre(usuario.nombre || 'Invitado');
+      setNombre(usuario.nombre);
     }
-  }, [localStorage]);
+  }, []);
 
-  const listar_user= async()=>{
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
-    const nombreCompleto = usuario ? usuario.nombre : '';
-    console.log(nombreCompleto)
-  }
 
   const listar_raza=async()=>{
     try {
@@ -99,6 +99,11 @@ setcreate(false)
     }
   }
 
+  const listar_user=async()=>{
+    const listar= await axiosClient.get("listar")
+    setuser(listar.data)
+    console.log("usurios",listar.data)
+  }
   const listar_categoria=async()=>{
     try {
       
@@ -112,14 +117,21 @@ setcreate(false)
 
 
  
-  const adopt = async(id)=>{
-   try {
-    const adoptar= await axiosClient.put(`/adoptar/${id}`)
-    setadoptar(adoptar.data)
-    console.log(adoptar.data)
-    window.location.reload();
+  const adopt = async(id_adopcion, id_mascota)=>{
+
+    try {
+    const adoptar= await axiosClient.put(`/adoptar/${id_adopcion}/${id_mascota}`)
+       setadoptar(adoptar.data.mensaje)
+    console.log("adopcion",adoptar.data.mensaje)
+        Swal.fire({
+          icon: "success",
+          title: "Felicidades, Paso de Estar En Proceso A Adoptado ",
+          showConfirmButton: true,
+          timer: 2500
+        })
+           window.location.reload();
    } catch (error) {
-    console.log("paila",error.response)
+    console.log("paila",error)
    }
   }
   const listar_gender=async()=>{
@@ -149,9 +161,21 @@ setcreate(false)
       formData.append('descripcion', descripcionRef.current.value);
       formData.append('id_vacuna', id_vacunaRef.current.value);
       formData.append('edad', edad.current.value);
+      formData.append('usuario',usuarioref.current.value);
+      formData.append('historial_medico',historial_medicor.current.value);
   console.log("datos",formData)
       const register = await axiosClient.post("/crear_pets", formData);
-      console.log("respuesta", register.data.mensaje);
+      if (register.status===200) {
+        Swal.fire({
+          icon: "success",
+          title: "se creo",
+          text:register.data.mensaje,
+          showConfirmButton: true,
+          timer: 3500
+        })
+        window.location.reload();
+      }
+      
     
     } catch (error) {
       console.log("error", error.response);
@@ -163,49 +187,54 @@ setcreate(false)
     const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
     if (usuarios.length > 0) {
       const usuario = usuarios[0];
-      setTipo(usuario.tipo || 'Invitado');
+      setTipo(usuario.tipo);
     }
-  }, [localStorage]);
+  }, []);
 
-  const borrar_adopcion_p= async(id)=>{
+  const borrar_adopcion_p= async(id_adopcion, id_mascota)=>{
   try {
-    const  borrar = await axiosClient.delete(`/eliminar_adopcion/${id}`)
-    setboraradoppen(borrar.data.mensaje)
-    console.log("se borro",borrar.data.mensaje)
-    window.location.reload();
-  } catch (error) {
-    console.log(error)
-  }
+ 
+    const  borrar = await axiosClient.delete(`/eliminar_adopcion/${id_adopcion}/${id_mascota}`)
+    Swal.fire({
+      icon: "success",
+      title: "",
+      text:borrar.data.mensaje,
+      showConfirmButton: true,
+      timer: 1500
+    })
 
+  } catch (e) {
+    console.log(e)
+  }
   }
 
   return (
     <>
-      <header className=" border-[2px] absolute top-0 w-full left-0 h-20 border-b-orange-600 h-16 ">
-     <div className="w-[30%] absolute right-0   w-[50%]">
+      <header className=" sm:w-[30%] lg:w-[100%] border-[2px] absolute top-0  left-0 h-20 border-b border-b-[#1999a6] lg:border-b border-b-[#1999a6] h-16  z-30">
+     <div className=" sm:w-[70%]  lg:absolute right-[34%] lg:w-[100%]">
           {usuario==="Administrador" &&(
           <>
-          <div className="grid grid-cols-4 gap-7">
-          <div  className="w-[100%]">
-             <p>Adopciones pendientes</p>
-              <button onClick={openModal}><FontAwesomeIcon icon={faBell}/></button>
-            </div>
+          <div className=" grid grid-cols-4 w-[73%] gap-6 fixed right-[4%] lg:fixed top-0 border-b   lg:w-[60%] lg:grid lg:grid-cols-4 lg:absolute  lg:left-[54%]">
+                      <div  className="sm:w-[50%] lg:w-[70%]">
+                        <p>Adopciones pendientes</p>
+                          <button onClick={openModal}><FontAwesomeIcon icon={faBell} color="#1999a6"/></button>
+                        </div>
 
-          <div className="w-[100%]">
-            <p>Crear Macota</p>
-          <p onClick={opencreate}><FontAwesomeIcon icon={faPlus}/></p>
-          </div>
+                      <div className="sm:w-[50%] lg:w-[100%]">
+                        <p>Crear Macota</p>
+                      <p onClick={opencreate}><FontAwesomeIcon icon={faPlus} color="#1999a6"/></p>
+                      </div>
          
             
          
-                        <div className=" w-[100%]">
+                        <div className=" sm:w-[50%] lg:w-[100%]">
                         <h1>{nombre}</h1>
-                        <FontAwesomeIcon icon={faUser}/>
+                        <FontAwesomeIcon icon={faUser} color="#1999a6"/>
                         </div>
 
                       <div onClick={close_session} className="w-[100%]" >
                         <h1>Cerrar Sesion</h1>
-                        <FontAwesomeIcon icon={faSignOutAlt} />;
+                        <FontAwesomeIcon icon={faSignOutAlt}  color="#1999a6"/>;
                       </div>
       </div>
           </>
@@ -229,20 +258,27 @@ setcreate(false)
 
         {modal &&(
          <>
-          <div className="overflow-y-scroll border-orange-600 border-y-2 border-x-2 w-[29%]  relative left-[29%] top-16 grid grid-cols-1 gap-7 bg-orange-200  h-80 ">
+          <div className="overflow-y-scroll border-orange-600 border-y-2 border-x-2 lg:w-[29%] relative top-20 right-[12%]  w-[78%]  lg:relative left-[3%] top-16 grid grid-cols-1 gap-7 bg-orange-200  h-80 ">
           <button onClick={closeModal}><FontAwesomeIcon icon={faClose}/></button>
             <h3>Adopciones Pendientes</h3>
             <div className="h-23">
               {mpendientes .map((mascota)=>(
                <>
-               <div className="grid grid-cols-2  h-auto pl-16 w-[100%] hover: border-y-2 hover:border-orange-600 " >
-                      <div className="grid grid-cols-1  w-[50%] flex justify-start">
-                      <p > Nombre: {mascota.nombre_mas}</p>
-                      <p>Edad: {mascota.edad}</p>
-                      <p >Estado:{mascota.estado}</p>
+               <div className="h-auto  w-[100%] hover: border-y-2 hover:border-orange-600 " >
+                      <div className="grid grid-cols-2  w-[50%] w-full">
+                      <div className="grid grid-cols-2 w-[100%] w-full">
+                        <p className="w-36 mt-4">Nombre Mascota: {mascota.nombre_mascota}</p>
+                        <p  className="relative left-24  top-9 w-40"> Nombre del Adoptante: {mascota.nombre_usuario}</p>
+                        <img  src={`http://localhost:4001/img/${mascota.foto}`} className="rounded-full h-[73%] ml-11" />
+                      </div>
+                      <div>
+                      <p className="mt-36">Edad: {mascota.edad}</p>
+                      <p >Estado:{mascota.estado_adopcion}</p>
+                      </div>
                       <div className="grid grid-cols-2">
-                      <button onClick={()=>adopt(mascota.id)}> <FontAwesomeIcon icon={faPaw}/> </button>
-                      <button onClick={()=>borrar_adopcion_p(mascota.id)}>Borrar Adopcion</button>
+                      <button onClick={()=>adopt(mascota.id_adopcion, mascota.id_mascota)}> <FontAwesomeIcon icon={faPaw}/> </button>
+                      <button onClick={() => borrar_adopcion_p(mascota.id_adopcion, mascota.id_mascota)}>Borrar</button>
+
                       </div>
                   </div>
                </div>
@@ -321,7 +357,7 @@ setcreate(false)
 
 
               <div className="w-[50%] relative left-[24%]">
-              <label>seleccione una vacuna</label>
+              <label>seleccione estado de vacuna</label>
                       <br />
                       <select name="id_vacuna" required ref={id_vacunaRef}  className="w-[100%] h-11  text-center rounded-lg focus-within:"> 
                         <option hidden>seleccione...</option>
@@ -329,16 +365,35 @@ setcreate(false)
                         <option value="No Vacunado">No Vacunado</option>
                       </select>
               </div>
+              <div>
+                <label>Selecciona el usuario qure registra la mascota</label>
+                <br />
+                <select  required ref={usuarioref}  className=" h-11  text-center rounded-lg focus-within:">
+                  <>
+                  <option hidden>seleccione...</option>
+                  {user .map((usuario)=>(
+                      <option key={usuario.id} value={usuario.id}>{usuario.nombre}</option>
+                  ))}
+                  </>
+                </select>
+              </div>
               <div className="w-[50%] relative left-[24%]">
               <label>Ingrese la Edad</label>
                       <br />
                       <input type="number" name="edad" placeholder="Ingrese la edad" required ref={edad}  className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
                       <br />
-                </div>      
+                </div>     
+
+                 <div className="w-[50%] relative left-[24%]">
+                 <label>Ingrese  el Historia medico </label>
+                      <br />
+                      <input type="text" name="historial_medico" placeholder="Ingrese la edad" required ref={historial_medicor}  className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
+                      <br />
+                </div>   
                       
                     
                     <div className="w-[50%] relative left-[17%] m-12 h-10">
-                    <input type="submit" name="" className="w-[100%] border-2  border-x-orange-600  border-y-orange-600 hover:bg-orange-600 h-full rounded-xl" />
+                    <input type="submit" name="" className="w-[100%] border-2  border-x border-x-[#1999a6]  border-y border-y-[#1999a6] hover:bg-[#1999a6] h-full rounded-xl" />
                     </div>
 
              </form>

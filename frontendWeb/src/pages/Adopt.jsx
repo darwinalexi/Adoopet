@@ -7,8 +7,9 @@ import axiosClient from "./utils/axiosClent"
 const Adoptar = ()=>{
     const [adoptantes, setadoptantes]= useState([])
     const [mascota, setmascota]= useState([]);
+    
 
-    const [adoptar, setadoptar]= useState({
+    const [adoptar, setAdoptar]= useState({
         id_adoptante:'',
         edad:'',
         id_mascota:'',
@@ -30,7 +31,7 @@ const Adoptar = ()=>{
 
     const handinputchange = (event) => {
         const { name, value } = event.target;
-        setadoptar((prevadop) => {
+        setAdoptar((prevadop) => {
           const updatedUsuarios = {
           ...prevadop,
             [name]: value
@@ -40,12 +41,21 @@ const Adoptar = ()=>{
         });
       }
      
-const crear_adopcion=async(e)=>{
-        e.prevntDefailt();
-    const crear = await axiosClient.post("/crear_adopcion", adoptar)
-    setadoptar(crear.data.mensaje)
-    console.log("crear",crear.data.mensaje)
-}
+      const crear_adopcion = async (e) => {
+        e.preventDefault(); 
+        try {
+          const respuesta = await axiosClient.post("/crear_adopcion", adoptar);
+          console.log("Respuesta del servidor:", respuesta.data.mensaje);
+          setAdoptar({
+            id_adoptante: '',
+            edad: '',
+            id_mascota: '',
+            estado: ''
+          });
+        } catch (error) {
+          console.log("Error al crear la adopción:", error);
+        }
+      };
     useEffect(()=>{
         user();
         mascotas()

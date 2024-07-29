@@ -4,7 +4,7 @@ import { Conexion } from "../database/conexion.js";
 export const listar_user= async(req,res)=>{
     try {
         
-       const [consulta]= await Conexion.query("select*from usuarios");
+       const [consulta]= await Conexion.query("select*from usuarios where tipo='Administrador'");
 
         if(consulta.length>0){
             res.status(200).json(consulta)

@@ -67,13 +67,13 @@ export const listar_pets_pendientes= async(req, res)=>{
 
 export const crear_pets = async (req, res) => {
     try {
-       const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion,  edad}=req.body;
+       const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion, edad, usuario,historia_medico}=req.body;
        const foto=req.file.originalname;
        if (foto==null) {
         return res.status(400).json({ mensaje: "No se ha cargado un archivo" });
       }
  
-       const [regiterpets]= await Conexion.query("insert into mascotas(raza, categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion, edad)values(?,?,?,?,?,?,?,?)",[raza,categoria_id,foto,genero_id, nombre_mas, id_vacuna,descripcion, edad])       
+       const [regiterpets]= await Conexion.query("insert into mascotas(raza, categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion, edad, usuario, historial_medico)values(?,?,?,?,?,?,?,?,?,?)",[raza,categoria_id,foto,genero_id, nombre_mas, id_vacuna,descripcion, edad, usuario, historia_medico])       
        if (regiterpets.affectedRows>0) {
         return res.status(200).json({
             "mensaje":"se creo con exito"
@@ -94,10 +94,10 @@ export const crear_pets = async (req, res) => {
 export const actualizar_pets = async(req, res)=>{
     try {
         const{id}= req.params;
-        const { raza, categoria_id,genero_id, nombre, id_vacuna, descripcion}= req.body;
+        const { raza, categoria_id,genero_id, nombre_mas, id_vacuna, descripcion, estado, usuario, historial_medico}= req.body;
 
         const foto=req.file.originalname
-        const [actualizar]= await Conexion.query("update mascotas set raza=?,categoria_id=? ,foto=?, genero_id=?, nombre_mas=?, id_vacuna=?, descripcion=? where id=?",[raza,categoria_id,foto,genero_id,nombre, id_vacuna, descripcion,id]);
+        const [actualizar]= await Conexion.query("update mascotas set raza=?,categoria_id=? ,foto=?, genero_id=?, nombre_mas=?, id_vacuna=?, descripcion=?, estado=?, usuario=?, historial_medico=? where id=?",[raza,categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion,estado,usuario,historial_medico,id]);
 
         if (actualizar.affectedRows>0) {
             res.status(200).json({
@@ -184,3 +184,21 @@ export const actualizar_pets_ADOP = async(req, res)=>{
         })
     }
 }
+
+export const listar_pets=async(req, res)=>{
+    try {
+        const {id}= req.params;
+        const [listar]= await Conexion.query("select*from mascotas where estado='Adoptado' and usuario=?",[id])
+        if (listar.length>0) {
+            res.status(200).json(listar)
+        }else{
+            res.status(404).json({
+                "mensaje":"no se encontraron mascotas adoptadas"
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            "mensaje":error
+        })
+    }
+    }

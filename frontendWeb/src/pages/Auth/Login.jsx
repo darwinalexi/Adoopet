@@ -5,12 +5,7 @@ import Swal from"sweetalert2"
 import axiosClient from "../utils/axiosClent";
 
 function Login() {
-  const backgroundImageStyle = {
-    backgroundImage: "url('./src/img/chispitas.JPG')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    height: '100vh'
-  };
+
 
   const navigate = useNavigate(); 
 
@@ -28,7 +23,6 @@ function Login() {
       const consulta = await axiosClient.post(`/login`, usuarios);
       if (consulta.status === 200) {
         Swal.fire({
-          
           icon: "success",
           title: "Ingreso exiosamente a nuestro sistema;",
           showConfirmButton: true,
@@ -68,26 +62,36 @@ function Login() {
   }
 
   return (
-    <div className="w-full h-screem rounded-xl relative left-0 sm:w-2/4 sm:left-52 sm:ml-14 sm:h-screen " style={backgroundImageStyle}>
-      <div className="p-5 absolute top-40 w-full">
-        <form onSubmit={login} className="pr-12 absolute top-40 w-full">
-          <h1 className="text-4xl font-bold text-white">Iniciar Sesion</h1>
-          <br />
-          <input type="email" name="correo" placeholder="Ingresa Tu Usuario" onChange={handinputchange} className="w-full h-full rounded-full bg-custom-gray opacity-50 p-4 placeholder:text-slate-400 focus:outline-none"/>
-          <br />
-          <br />
-          <input
-            type="password"
-            name="contrasena"
-            placeholder="Ingrese La Clave"
-            className="w-full h-full rounded-full opacity-50 placeholder:text-slate-400 focus:outline-none p-4 bg-custom-gray"
-            onChange={handinputchange}
-          />
-          <br />
-          <input type="submit" className="bg-sky-800 p-4 w-full m-2 rounded-full" value="Ingresar" />
-          
-        </form>
-      </div>
+    <div className="w-full grid grid-cols-2  bg-[#1999a6] border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] h-screen overflow-hidden rounded-xl" >
+            <div className="w-[100%]">
+            <img src="./src/img/login.jpg" className="w-[100%] h-[100%]" />
+            </div>
+            <div >
+              <div className="relative top-[30%] left-4 grid grid-rows-2 ">
+                <div className="h-3  relative  bottom-32">
+                <h1 className="text-5xl font-bold" >ADOPPET</h1>
+                </div >
+                <div className="relative bottom-48">
+                <form onSubmit={login} className="pr-12 w-full">
+                      <h1 className="text-4xl font-bold text-white">Iniciar Sesion</h1>
+                      <br />
+                      <input type="email" name="correo" placeholder="Ingresa Tu Usuario" onChange={handinputchange} className="w-full h-full rounded-full bg-custom-gray opacity-50 p-4 placeholder:text-slate-400 focus:outline-none"/>
+                      <br />
+                      <br />
+                      <input
+                        type="password"
+                        name="contrasena"
+                        placeholder="Ingrese La Clave"
+                        className="w-full h-full rounded-full opacity-50 placeholder:text-slate-400 focus:outline-none p-4 bg-custom-gray"
+                        onChange={handinputchange}
+                      />
+                      <br />
+                      <input type="submit" className="bg-sky-800 p-4 w-full m-2 rounded-full" value="Ingresar" />
+                    </form>
+                </div>
+                    
+              </div>
+            </div>
     </div>
   );
 }

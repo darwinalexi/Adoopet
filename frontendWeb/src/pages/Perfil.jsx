@@ -13,6 +13,8 @@ const Perfil =()=>{
     const [usuario, setTipo] = useState([]);
     const [username, setname]= useState('');
     const [email,setemail]=useState('')
+    const [id, setiduser]=useState([])
+    const [pet, setpet]= useState([]);
 
 
  
@@ -23,8 +25,9 @@ const Perfil =()=>{
         setTipo(usuario.tipo || 'Invitado');
         setname(usuario.nombre);
         setemail(usuario.email)
+        setiduser(usuario.id)
       }
-    }, [localStorage]);
+    }, []);
 
 
 
@@ -43,21 +46,52 @@ const Perfil =()=>{
             e.preventDefault();
             const crear= await axiosClient.post("/crear",user)
             setuser(crear)
-            console.log(crear)
+            
         } catch (error) {
             console.log(error)
         }
     }
 
-    const lisar_adoptadas= async()=>{
-        try {
-            
-            const listar= await axiosClient.get(`/`)
-        } catch (error) {
-            
+    useEffect(()=>{
+        if (id) {
+            lisar_adoptadas();
         }
-    }
+            },[id])
+            const lisar_adoptadas = async () => {
+                try {
+                    if (!id) {
+                        throw new Error("ID no está definido o es vacío");
+                    }
+                    const url = `/listas_pets_adop/${id}`;
+                    console.log("Haciendo solicitud a:", url);
+                    const listar = await axiosClient.get(url);
+                    if (listar.status === 200) {
+                        setpet(listar.data);
+                        console.log("Mascotas adoptadas:", listar.data);
+                    } else if (listar.status === 204) {
+                        console.log("No hay mascotas adoptadas.");
+                        setpet([]); // Limpia los datos si no hay mascotas
+                    }
+                } catch (error) {
+                    if (error.response) {
+                        // La respuesta del servidor con error
+                        console.log('Respuesta de error:', error.response.data); // Información del error
+                        console.log('Código de estado:', error.response.status); // Código de estado HTTP
+                        console.log('Encabezados:', error.response.headers); // Encabezados de la respuesta
+                    } else if (error.request) {
+                        // Error en la solicitud, sin respuesta del servidor
+                        console.log('Petición realizada pero sin respuesta:', error.request);
+                    } else {
+                        // Error al configurar la solicitud
+                        console.log('Error al configurar la petición:', error.message);
+                    }
+                }
+            };
+            
+            
+            
 
+    
     const handinputchange = (event) => {
         const { name, value } = event.target;
         setuser((prevUsuarios) => {
@@ -90,34 +124,34 @@ const Perfil =()=>{
                         <div className="w-[50%] relative left-[24%] ">
                         <label>Ingrese el nombre</label>
                         <br />
-                        <FontAwesomeIcon icon={faUser} color="orange" className="relative top-9 left-[-42%]  size-6"/>
+                        <FontAwesomeIcon icon={faUser} color="#1999a6" className="relative top-9 left-[-42%]  size-6"/>
                         <input type="text" name="nombre" onChange={handinputchange}  placeholder="Ingrese el nombre" className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
                         </div>
                     <br />
                     <div  className="w-[50%] relative left-[24%]">
                     <label>Ingrese el correo</label>
                     <br />
-                    <FontAwesomeIcon icon={faEnvelope} color="orange" className="relative top-9 left-[-42%]  size-6"/>
+                    <FontAwesomeIcon icon={faEnvelope} color="#1999a6" className="relative top-9 left-[-42%]  size-6"/>
                     <input type="email" name="email"  onChange={handinputchange}   placeholder="Ingrese  el correo"className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
                     </div>
                     <br />
                     <div className="w-[50%] relative left-[24%]">
                     <label>Ingrese Clave</label>
                     <br />
-                    <FontAwesomeIcon icon={faLock} color="orange" className="relative top-9 left-[-42%]  size-6" />
+                    <FontAwesomeIcon icon={faLock} color="#1999a6" className="relative top-9 left-[-42%]  size-6" />
                     <input type="password" name="password"  onChange={handinputchange}  placeholder="Ingrese la contraseña" className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
                     </div>
                     
                     <br />
                     <label>seleccione su rol</label>
                   <br />
-                    <select name="tipo" id=""  onChange={handinputchange}  className="w-[50%] h-11  border-orange-600 border-x-2 border-y-2  text-center rounded-lg focus-within:invalid">
+                    <select name="tipo" id=""  onChange={handinputchange}  className="w-[50%] h-11    text-center rounded-lg focus-within:invalid">
                     <option hidden>seleccione...</option>
                         <option value="Administrador">Administrador</option>
                         <option value="Usuario">Usuario</option>
                     </select>
                     <br />
-                    <input type="submit"  value="Registrar"  className=" border-orange-600 border-x-2 border-y-2 mt-7 w-[50%] h-11  text-center rounded-lg focus-within:invalid:"/>
+                    <input type="submit"  value="Registrar"  className="mt-7 w-[50%] h-11  text-center rounded-lg focus-within:invalid:"/>
                 </form>
                 
             </div>
@@ -131,7 +165,15 @@ const Perfil =()=>{
                     <p className="flex justify-start pb-6">Tipo:{usuario}</p>
                     <p className="flex justify-start pb-6">correo: {email}</p>
                     </div>
-
+                    <div className="bg-red-400  h-7 w-14 ">
+                    {pet .map((adopciones)=>(
+                        <>
+                        <p>{adopciones.nombre_mas}</p>
+                        </>
+                        
+                    ))}
+                    </div>
+                   
 
                     <div>
 

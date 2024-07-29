@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 25-07-2024 a las 02:03:49
+-- Tiempo de generación: 29-07-2024 a las 02:56:57
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -32,28 +32,8 @@ CREATE TABLE `adopciones` (
   `id_adoptante` int DEFAULT NULL,
   `edad` int DEFAULT NULL,
   `id_mascota` int DEFAULT NULL,
-  `estado` enum('Adoptado','Por Adoptar','Pendiente') DEFAULT NULL
+  `estado` enum('Adoptado','Por Adoptar','Pendiente') COLLATE utf8mb4_roman_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
-
---
--- Volcado de datos para la tabla `adopciones`
---
-
-INSERT INTO `adopciones` (`id`, `id_adoptante`, `edad`, `id_mascota`, `estado`) VALUES
-(7, NULL, NULL, NULL, NULL),
-(9, NULL, NULL, NULL, NULL),
-(21, NULL, NULL, NULL, NULL),
-(22, NULL, NULL, NULL, NULL),
-(23, NULL, NULL, NULL, NULL),
-(24, NULL, NULL, NULL, NULL),
-(25, NULL, NULL, NULL, NULL),
-(26, NULL, NULL, NULL, NULL),
-(27, NULL, NULL, NULL, NULL),
-(29, NULL, NULL, NULL, NULL),
-(30, 3, 2, 50, 'Pendiente'),
-(31, 3, 19, 54, 'Pendiente'),
-(32, 3, 56, 54, 'Pendiente'),
-(33, 3, 45, 54, 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -111,15 +91,19 @@ CREATE TABLE `mascotas` (
   `descripcion` varchar(87) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL,
   `edad` int NOT NULL,
   `usuario` int DEFAULT NULL,
-  `estado` enum('Por adoptar','Adoptado','En proceso') COLLATE utf8mb4_roman_ci DEFAULT 'Por adoptar'
+  `estado` enum('Por adoptar','Adoptado','En proceso') CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT 'Por adoptar',
+  `historial_medico` varchar(200) COLLATE utf8mb4_roman_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `mascotas`
 --
 
-INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `edad`, `usuario`, `estado`) VALUES
-(54, 1, 2, 'logo.png', 1, 'hector', 'No Vacunado', ' es feliz', 5, NULL, 'Por adoptar');
+INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `edad`, `usuario`, `estado`, `historial_medico`) VALUES
+(59, 2, 2, 'princesa.JPG', 1, 'princesa', 'Vacunado', 'es tuqui tuqui', 5, 2, NULL, 'es saludable con todas lsas vacunas al dia  y se kas pusieron gratis '),
+(60, 2, 3, 'rufo.JPG', 1, 'rufo', 'Vacunado', 'es hjhj', 2, 2, 'Por adoptar', 'resta bien vacunado'),
+(61, 2, 2, 'princesa.JPG', 1, 'princesa', 'Vacunado', 'es paila buena', 3, 2, 'Por adoptar', NULL),
+(62, 2, 3, 'Vainilla.JPG', 2, 'vainilla', 'Vacunado', 'es paila de pi ', 4, 2, 'Adoptado', NULL);
 
 -- --------------------------------------------------------
 
@@ -160,18 +144,7 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`) VALUES
 (2, 'Darwin Alexis Guerrero', 'darwin@gmail.com', '1324', 'Administrador'),
-(3, ' Alexis Guerrero', 'darwin@gmail.com', '1324', 'Administrador'),
-(4, 'alejandro', 'mdbaos0@misena.edu.co', '465', 'Administrador'),
-(5, 'alejandro', 'mdbaos0@misena.edu.co', '123', 'Administrador'),
-(6, 'alejandro', 'mdbaos0@misena.edu.co', '123', 'Administrador'),
-(7, 'alejandro', 'mdbaos0@misena.edu.co', '67', 'Administrador'),
-(8, ' Alexis Guerrero', 'darwin@gmail.com', '1324', 'Administrador'),
-(9, 'alejandro', 'mdbaos0@misena.edu.co', '98', 'Administrador'),
-(10, 'luis', 'luis@gmail.com', '1234', 'Administrador'),
-(11, 'alejandro', 'mdbaos0@misena.edu.co', '234567', 'Administrador'),
-(12, 'maria', 'mdb@gmail.com', '123', 'Usuario'),
-(13, 'alejandro', 'mdbaos0@misena.edu.co', '98754', 'Administrador'),
-(14, 'palo', 'mdbaos0@misena.edu.co', '87654', 'Usuario');
+(12, 'maria', 'mdb@gmail.com', '123', 'Usuario');
 
 --
 -- Índices para tablas volcadas
@@ -227,7 +200,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `adopciones`
 --
 ALTER TABLE `adopciones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -245,7 +218,7 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT de la tabla `razas`
