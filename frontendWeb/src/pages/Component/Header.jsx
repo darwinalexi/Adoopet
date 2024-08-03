@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faPlus, faClose, faUser, faPaw, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faPlus, faClose, faUser, faPaw, faSignOutAlt, faHeart } from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "../utils/axiosClent";
 import { useRef } from "react";
 import Swal from"sweetalert2"
@@ -74,7 +74,6 @@ const navigate = useNavigate();
     try {
       const listar= await axiosClient.get("/listar_adopciones")
         setmascotas(listar.data)
-        console.log("pendientes",listar.data)
       
     } catch (error) {
       console.log(error)
@@ -175,7 +174,16 @@ const navigate = useNavigate();
         })
         window.location.reload();
       }
-      
+      nombre_mas.current.value = '';
+      razaRef.current.value = '';
+      categoria_idRef.current.value = '';
+      fotoRef.current.value = ''; 
+      genero_idRef.current.value = '';
+      descripcionRef.current.value = '';
+      id_vacunaRef.current.value = '';
+      edad.current.value = '';
+      usuarioref.current.value = '';
+      historial_medicor.current.value = '';
     
     } catch (error) {
       console.log("error", error.response);
@@ -202,7 +210,7 @@ const navigate = useNavigate();
       showConfirmButton: true,
       timer: 1500
     })
-
+window.location.reload();
   } catch (e) {
     console.log(e)
   }
@@ -210,29 +218,24 @@ const navigate = useNavigate();
 
   return (
     <>
-      <header className=" sm:w-[30%] lg:w-[100%] border-[2px] absolute top-0  left-0 h-20 border-b border-b-[#1999a6] lg:border-b border-b-[#1999a6] h-16  z-30">
-     <div className=" sm:w-[70%]  lg:absolute right-[34%] lg:w-[100%]">
+      <header className=" sm:w-[30%] lg:w-[100%]  absolute top-0  left-0 h-24 border-b border-b-[#1999a6] lg:border-b border-b-[#1999a6] h-16  z-30 ">
+     <div className=" sm:w-[70%]  lg:absolute left-[15%]">
           {usuario==="Administrador" &&(
           <>
-          <div className=" grid grid-cols-4 w-[73%] gap-6 fixed right-[4%] lg:fixed top-0 border-b   lg:w-[60%] lg:grid lg:grid-cols-4 lg:absolute  lg:left-[54%]">
-                      <div  className="sm:w-[50%] lg:w-[70%]">
+          <div className=" grid grid-cols-4 w-[90%] gap-6 fixed right-[4%] lg:fixed top-0  ww-[34%]  lg:w-[60%] lg:grid lg:grid-cols-4 lg:absolute  lg:left-[54%] b">
+                      <div  className="sm:w-4 lg:w-[70%] mt-5">
                         <p>Adopciones pendientes</p>
                           <button onClick={openModal}><FontAwesomeIcon icon={faBell} color="#1999a6"/></button>
                         </div>
-
-                      <div className="sm:w-[50%] lg:w-[100%]">
-                        <p>Crear Macota</p>
+                      <div className="w-[90%] mt-6">
+                        <p>Crear Mascota</p>
                       <p onClick={opencreate}><FontAwesomeIcon icon={faPlus} color="#1999a6"/></p>
                       </div>
-         
-            
-         
-                        <div className=" sm:w-[50%] lg:w-[100%]">
+                        <div className=" w-[90%]  mt-6">
                         <h1>{nombre}</h1>
                         <FontAwesomeIcon icon={faUser} color="#1999a6"/>
                         </div>
-
-                      <div onClick={close_session} className="w-[100%]" >
+                      <div onClick={close_session} className=" w-[90%]  mt-6">
                         <h1>Cerrar Sesion</h1>
                         <FontAwesomeIcon icon={faSignOutAlt}  color="#1999a6"/>;
                       </div>
@@ -245,9 +248,9 @@ const navigate = useNavigate();
            <div>
                    
 
-                      <div onClick={close_session} >
+                      <div onClick={close_session} className="w-4">
                         <h1>Cerrar Sesion</h1>
-                        <FontAwesomeIcon icon={faSignOutAlt} />;
+                        <FontAwesomeIcon icon={faSignOutAlt} color="#1999a6" />;
                       </div>
             </div>
           </>
@@ -258,26 +261,29 @@ const navigate = useNavigate();
 
         {modal &&(
          <>
-          <div className="overflow-y-scroll border-orange-600 border-y-2 border-x-2 lg:w-[29%] relative top-20 right-[12%]  w-[78%]  lg:relative left-[3%] top-16 grid grid-cols-1 gap-7 bg-orange-200  h-80 ">
-          <button onClick={closeModal}><FontAwesomeIcon icon={faClose}/></button>
+          <div className="overflow-y-scroll  border-y-2 rounded-xl border-x-2 lg:w-[29%] relative top-20   w-[78%]  lg:relative left-[25%] top-16 grid grid-cols-1 gap-7 bg-[#1999a6]  h-80 ">
+          <button onClick={closeModal} className="absolute right-[12%]"><FontAwesomeIcon icon={faClose} className="size-8 mt-"/></button>
             <h3>Adopciones Pendientes</h3>
             <div className="h-23">
               {mpendientes .map((mascota)=>(
                <>
-               <div className="h-auto  w-[100%] hover: border-y-2 hover:border-orange-600 " >
+               <div className="h-auto mt-7  w-[100%]  hover:border-b border-slate-200 hover:border-t border-slate-200 " >
                       <div className="grid grid-cols-2  w-[50%] w-full">
                       <div className="grid grid-cols-2 w-[100%] w-full">
                         <p className="w-36 mt-4">Nombre Mascota: {mascota.nombre_mascota}</p>
                         <p  className="relative left-24  top-9 w-40"> Nombre del Adoptante: {mascota.nombre_usuario}</p>
+                       
+
                         <img  src={`http://localhost:4001/img/${mascota.foto}`} className="rounded-full h-[73%] ml-11" />
+                        <p  className="relative left-24 top-9 w-40"> Correo del Adoptante: {mascota.correo}</p>
                       </div>
                       <div>
-                      <p className="mt-36">Edad: {mascota.edad}</p>
-                      <p >Estado:{mascota.estado_adopcion}</p>
+                      <p className="relative top-[62%] right-[35%]">Edad de la mascota : {mascota.edad}</p>
+                      <p className="relative top-[65%] right-[35%]">Estado: {mascota.estado_adopcion}</p>
                       </div>
-                      <div className="grid grid-cols-2">
-                      <button onClick={()=>adopt(mascota.id_adopcion, mascota.id_mascota)}> <FontAwesomeIcon icon={faPaw}/> </button>
-                      <button onClick={() => borrar_adopcion_p(mascota.id_adopcion, mascota.id_mascota)}>Borrar</button>
+                      <div className="grid grid-cols-2 relative left-[55%] mb-6">
+                      <button  className="hover:bg-[#1999a6] hover: rounded-xl "onClick={()=>adopt(mascota.id_adopcion, mascota.id_mascota)}>Adoptar Macota</button>
+                      <button    className="hover:bg-[#1999a6] hover:rounded-xl"  onClick={() => borrar_adopcion_p(mascota.id_adopcion, mascota.id_mascota)}>Borrar</button>
 
                       </div>
                   </div>
@@ -296,9 +302,8 @@ const navigate = useNavigate();
 
         {createpet &&(
             <>
-           
-             <div className="bg-[] w-[35%] absolute left-[33%] top-16 overflow-y-scroll h-80 bg-orange-400 ">
-             <button onClick={close_modal}><FontAwesomeIcon icon={faClose}/></button>
+             <div className=" w-[35%] absolute left-[33%] top-16 overflow-y-scroll h-80 bg-[#1999a6] rounded-lg">
+             <button className="relative left-[44%] top-6" onClick={close_modal}><FontAwesomeIcon icon={faClose} className="size-6"/></button>
              <h2>Crea Una Macota</h2>
              <br />
              <form onSubmit={crear_mascota}>
@@ -390,17 +395,13 @@ const navigate = useNavigate();
                       <input type="text" name="historial_medico" placeholder="Ingrese la edad" required ref={historial_medicor}  className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
                       <br />
                 </div>   
-                      
-                    
                     <div className="w-[50%] relative left-[17%] m-12 h-10">
-                    <input type="submit" name="" className="w-[100%] border-2  border-x border-x-[#1999a6]  border-y border-y-[#1999a6] hover:bg-[#1999a6] h-full rounded-xl" />
+                    <input type="submit" name="" className="w-[100%] border-2 bg-slate-200 h-full rounded-xl" />
                     </div>
-
              </form>
              </div>
             </>
         )}
-
       </header>
     </>
   );

@@ -28,7 +28,7 @@ export const crear_user=async(req,res)=>{
 
         if (crear.affectedRows>0) {
             res.status(200).json({
-                "menaje":"se creo con exito"
+                "mensaje":"se creo con exito"
             })
         }else{
             res.status(404).json({
@@ -102,3 +102,22 @@ export const contarUsuarios = async (req, res) => {
         res.status(500).json({ mensaje: error.message });
     }
 };
+
+export const listar_type_user=async(req,res)=>{
+    try{
+        const [actualiza]= await Conexion.query("select*from usuarios where tipo='Usuario'")
+
+        if (actualiza.length>0) {
+            res.status(200).json(actualiza)
+        }else{
+            res.status(404).json({
+                "message":"no se pudo encontrar el usurio"
+            })
+        }
+    }catch(error){
+        console.log(error)
+        res.status(500).json({
+                "mensaje":error
+        })
+    }
+}

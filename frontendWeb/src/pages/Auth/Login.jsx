@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from"sweetalert2"
@@ -62,31 +62,28 @@ function Login() {
   }
 
   return (
-    <div className="w-full grid grid-cols-2  bg-[#1999a6] border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] h-screen overflow-hidden rounded-xl" >
+    <div className="w-[100%] grid grid-cols-2 h-[37%]  border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] h-screen overflow-hidden rounded-xl shadow-2xl" >
             <div className="w-[100%]">
             <img src="./src/img/login.jpg" className="w-[100%] h-[100%]" />
             </div>
             <div >
-              <div className="relative top-[30%] left-4 grid grid-rows-2 ">
-                <div className="h-3  relative  bottom-32">
-                <h1 className="text-5xl font-bold" >ADOPPET</h1>
-                </div >
-                <div className="relative bottom-48">
-                <form onSubmit={login} className="pr-12 w-full">
-                      <h1 className="text-4xl font-bold text-white">Iniciar Sesion</h1>
+              <div className="relative top-[30%] left-4">
+                <div className="relative bottom-[64%]">
+                <form onSubmit={login} className="pr-12 w-full ">
+                      <h1 className="text-4xl font-bold text-[#1999a6] mb-6">Iniciar Sesion</h1>
                       <br />
-                      <input type="email" name="correo" placeholder="Ingresa Tu Usuario" onChange={handinputchange} className="w-full h-full rounded-full bg-custom-gray opacity-50 p-4 placeholder:text-slate-400 focus:outline-none"/>
+                      <input type="email" name="correo" placeholder="Ingresa Tu Usuario" onChange={handinputchange} className="border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] w-full h-full rounded-full bg-custom-gray opacity-50 p-4 placeholder:text-slate-400 focus:outline-none"/>
                       <br />
                       <br />
                       <input
                         type="password"
                         name="contrasena"
                         placeholder="Ingrese La Clave"
-                        className="w-full h-full rounded-full opacity-50 placeholder:text-slate-400 focus:outline-none p-4 bg-custom-gray"
+                        className="w-full h-full rounded-full opacity-50 placeholder:text-slate-400 focus:outline-none p-4 bg-custom-gray border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"
                         onChange={handinputchange}
                       />
                       <br />
-                      <input type="submit" className="bg-sky-800 p-4 w-full m-2 rounded-full" value="Ingresar" />
+                      <input type="submit" className="bg-sky-800 p-4 w-full m-2 rounded-full text-white" value="Ingresar" />
                     </form>
                 </div>
                     

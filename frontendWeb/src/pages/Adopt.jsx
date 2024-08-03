@@ -17,7 +17,7 @@ const Adoptar = ()=>{
      })
  
     const user= async()=>{
-        const listar_user = await axiosClient.get("/listar")
+        const listar_user = await axiosClient.get("/listar_user")
         setadoptantes(listar_user.data)
         console.log("adoptantes",listar_user.data)
     }
@@ -46,12 +46,18 @@ const Adoptar = ()=>{
         try {
           const respuesta = await axiosClient.post("/crear_adopcion", adoptar);
           console.log("Respuesta del servidor:", respuesta.data.mensaje);
-          setAdoptar({
-            id_adoptante: '',
-            edad: '',
-            id_mascota: '',
-            estado: ''
-          });
+          
+          if (respuesta.status===200) {
+            Swal.fire({
+              icon: "success",
+              title: "Adopcion",
+              text:respuesta.data.mensaje,
+              showConfirmButton: true,
+              timer: 3500
+            })
+           
+
+          }
         } catch (error) {
           console.log("Error al crear la adopción:", error);
         }
@@ -66,12 +72,12 @@ const Adoptar = ()=>{
         <>
         <Header/>
         <Sidebar/>
-        <div className="relative top-20 left-[37%]  bg-orange-300 w-[43%]">
-        <h1>Adoptar Una Macota</h1>
+        <div className="relative top-20 left-[17%] rounded-xl  w-[80%] h-full border-b border-b-[#1999a6] border-t border-t-[#1999a6] border-b border-b-[#1999a6] h-16  border-r border-r-[#1999a6] border-l border-l-[#1999a6] bg-[#b7f0f5]">
+        <h1 className="text-4xl mb-10">Adoptar Una Macota</h1>
             <form onSubmit={crear_adopcion}>
             <label>Seleccione el usuario Adoptante</label>
             <br />
-            <select name="id_adoptante" onChange={handinputchange}>
+            <select name="id_adoptante" onChange={handinputchange}  className="w-[30%] h-11  text-center rounded-lg focus-within:">
                 <option hidden>Seleccion....</option>
                 {adoptantes .map((usuario)=>(
                     <option key={usuario.id} value={usuario.id}>{usuario.id} {usuario.nombre}</option>
@@ -80,11 +86,11 @@ const Adoptar = ()=>{
             <br />
             <label>Ingresa Tu Edad</label>
             <br />
-            <input type="number" name="edad" placeholder="Edad...." onChange={handinputchange}/>
+            <input type="number" name="edad" placeholder="Edad...." onChange={handinputchange}  className="w-[30%] h-11  text-center rounded-lg focus-within:"/>
             <br />
             <label>Seleccione la mascota que desea adoptar </label>
             <br />
-            <select name="id_mascota" onChange={handinputchange}>
+            <select name="id_mascota" onChange={handinputchange}  className="w-[30%] h-11  text-center rounded-lg ">
             <option hidden>Seleccion....</option>
             {mascota .map((mascota)=>(
                 <option value={mascota.id} key={mascota.id}>{mascota.id} {mascota.nombre_mas}</option>
@@ -93,12 +99,12 @@ const Adoptar = ()=>{
             <br />
             <label>Seleccione el estado con el que desea iniciar la adopcion </label>
             <br />
-            <select name="estado" onChange={handinputchange}>
+            <select name="estado" onChange={handinputchange} className="w-[30%] h-11  text-center rounded-lg ">
             <option hidden>Seleccion....</option>
             <option value="Pendiente">Pendiente</option>
             </select>
             <br />
-            <input type="submit" name="" id="" />
+            <input type="submit" name="" className="border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-l border-l-[#1999a6]  border-r border-r-[#1999a6] w-[30%] mt-5 mb-5 rounded-xl cursor-pointer" />
             </form>
         </div>
         </>

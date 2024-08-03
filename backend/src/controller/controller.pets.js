@@ -67,13 +67,13 @@ export const listar_pets_pendientes= async(req, res)=>{
 
 export const crear_pets = async (req, res) => {
     try {
-       const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion, edad, usuario,historia_medico}=req.body;
+       const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion, edad, usuario,historial_medico}=req.body;
        const foto=req.file.originalname;
        if (foto==null) {
         return res.status(400).json({ mensaje: "No se ha cargado un archivo" });
       }
  
-       const [regiterpets]= await Conexion.query("insert into mascotas(raza, categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion, edad, usuario, historial_medico)values(?,?,?,?,?,?,?,?,?,?)",[raza,categoria_id,foto,genero_id, nombre_mas, id_vacuna,descripcion, edad, usuario, historia_medico])       
+       const [regiterpets]= await Conexion.query("insert into mascotas(raza, categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion, edad, usuario, historial_medico)values(?,?,?,?,?,?,?,?,?,?)",[raza,categoria_id,foto,genero_id, nombre_mas, id_vacuna,descripcion, edad, usuario, historial_medico])       
        if (regiterpets.affectedRows>0) {
         return res.status(200).json({
             "mensaje":"se creo con exito"
@@ -145,9 +145,7 @@ const{id}=req.params
 
         if (mostrar.length>0) {
 
-            res.status(200).json({
-                "MENSAJE":mostrar
-            })
+            res.status(200).json(mostrar)
         }else{
             res.status(404).json({
                 "MENSAJE":"no hay registro de  mascotas"
@@ -202,3 +200,17 @@ export const listar_pets=async(req, res)=>{
         })
     }
     }
+
+    export const contarmascotas = async (req, res) => {
+        try {
+            const [resultado] = await Conexion.query("SELECT COUNT(*) as total FROM mascotas");
+            if (resultado[0].total > 0) {
+                res.status(200).json({ total: resultado[0].total });
+               
+            } else {
+                res.status(404).json({ mensaje: "No se encontraron  mascotas"});
+            }
+        } catch (error) {
+            res.status(500).json({ mensaje: error.message });
+        }
+    };

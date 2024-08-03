@@ -2,210 +2,213 @@ import Header from "./Component/Header";
 import { Sidebar } from "./Component/Siderbar/siderbar";
 import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faEdit, faClose } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faEdit, faClose, faSearch } from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "./utils/axiosClent";
-import Swal from"sweetalert2"
+import Swal from "sweetalert2";
 
 const Petsnadop = () => {
-  const [mascotasp, setmascotasp] = useState([]);
-  const [crear, setcrear] = useState(null);
-  const [createpet, setcreate] = useState(false);
-  const [raza, setraza] = useState([]);
-  const [categoria, setcategoria] = useState([]);
-  const [genero, setgenero] = useState([]);
-  const [idmascota, setidmascota] = useState([]);
+  const [mascotasp, setMascotasp] = useState([]);
+  const [crear, setCrear] = useState(null);
+  const [createPet, setCreatePet] = useState(false);
+  const [raza, setRaza] = useState([]);
+  const [categoria, setCategoria] = useState([]);
+  const [genero, setGenero] = useState([]);
   const [currentPetId, setCurrentPetId] = useState(null);
-  const [actualizar, setactualizar] = useState(false);
-  const [update, setupdate]= useState([])
-  const [user, setuser]= useState([]);
+  const [actualizar, setActualizar] = useState(false);
+  const [update, setUpdate] = useState('');
+  const [user, setUser] = useState([]);
+  const [show, setShow] = useState(false);
+  const [idPet, setIdPet] = useState(null);
 
-  const openmodal = (pet) => {
-    setcrear(pet);
-    setidmascota(pet.id);
-    setcreate(true);
+  const nombreMasRef = useRef(null);
+  const razaRef = useRef(null);
+  const categoriaIdRef = useRef(null);
+  const fotoRef = useRef(null);
+  const generoIdRef = useRef(null);
+  const descripcionRef = useRef(null);
+  const idVacunaRef = useRef(null);
+  const edadRef = useRef(null);
+  const estadoRef = useRef(null);
+  const usuarioRef = useRef(null);
+  const historialMedicoRef = useRef(null);
+
+  const openModal = (pet) => {
+    setCrear(pet);
+    setCurrentPetId(pet.id);
+    setCreatePet(true);
   };
 
-  const openupdate = (mascota) => {
+  const openUpdate = (mascota) => {
     setCurrentPetId(mascota.id);
-    setactualizar(true);
+    setActualizar(true);
   };
 
-  const listar_raza = async () => {
+  const openShow = (mascota) => {
+    setShow(true);
+    setIdPet(mascota.id);
+  };
+
+  const closeShow = () => {
+    setShow(false);
+  };
+
+  const listarRaza = async () => {
     try {
       const listar = await axiosClient.get("/listar_races");
-      setraza(listar.data);
+      setRaza(listar.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const listar_categoria = async () => {
+  const listarCategoria = async () => {
     try {
       const categorias = await axiosClient.get("/listar_categories");
-      setcategoria(categorias.data);
+      setCategoria(categorias.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const listar_gender = async () => {
+  const listarGenero = async () => {
     try {
       const generos = await axiosClient.get("/listar_gender");
-      setgenero(generos.data);
+      setGenero(generos.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const listarMascotasNoAdoptadas = async () => {
+    try {
+      const listar = await axiosClient.get("/listar_no_adoptados");
+      setMascotasp(listar.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const listarUsuarios = async () => {
+    try {
+      const listar = await axiosClient.get("/listar");
+      setUser(listar.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    listar_gender();
-    listar_raza();
-    listar_categoria();
-    listar_no_adop();
-    listar_user();
+    listarGenero();
+    listarRaza();
+    listarCategoria();
+    listarMascotasNoAdoptadas();
+    listarUsuarios();
   }, []);
 
-  const nombre_masRef = useRef(null);
-  const razaRef = useRef(null);
-  const categoria_idRef = useRef(null);
-  const fotoRef = useRef(null);
-  const genero_idRef = useRef(null);
-  const descripcionRef = useRef(null);
-  const id_vacunaRef = useRef(null);
-  const edad = useRef(null);
-  const estadoRef = useRef(null);
-  const usuarioref= useRef(null);
-  const historial_medicor= useRef(null);
-
-  const close_modal = () => {
-    setcreate(false);
+  const closeModal = () => {
+    setCreatePet(false);
   };
 
-  const listar_no_adop = async () => {
-    try {
-      const listar = await axiosClient.get("/listar_no_adoptados");
-      setmascotasp(listar.data);
-      console.log("mascotap",listar.data)
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const actualizar_pet = async (e) => {
-
+  const actualizarPet = async (e) => {
+    e.preventDefault();
     if (!currentPetId) return;
 
     try {
-      e.preventDefault()
       const formData = new FormData();
-      formData.append('nombre_mas', nombre_masRef.current.value);
+      formData.append('nombre_mas', nombreMasRef.current.value);
       formData.append('raza', razaRef.current.value);
-      formData.append('categoria_id', categoria_idRef.current.value);
+      formData.append('categoria_id', categoriaIdRef.current.value);
       formData.append('foto', fotoRef.current.files[0]);
-      formData.append('genero_id', genero_idRef.current.value);
+      formData.append('genero_id', generoIdRef.current.value);
       formData.append('descripcion', descripcionRef.current.value);
-      formData.append('id_vacuna', id_vacunaRef.current.value);
-      formData.append('edad', edad.current.value);
+      formData.append('id_vacuna', idVacunaRef.current.value);
+      formData.append('edad', edadRef.current.value);
       formData.append('estado', estadoRef.current.value);
-      formData.append('usuario',usuarioref.current.value);
-      formData.append('historial_medico',historial_medicor.current.value);
+      formData.append('usuario', usuarioRef.current.value);
+      formData.append('historial_medico', historialMedicoRef.current.value);
 
-      const formDataObject = {};
-      formData.forEach((value, key) => {
-        formDataObject[key] = value;
-      });
-      console.log("Datos del FormData:", formDataObject);
       const respuesta = await axiosClient.put(`/actualizar_pets/${currentPetId}`, formData);
-      setmascotasp(prevMas => prevMas.map(pet => pet.id === currentPetId ? { ...pet, ...respuesta.data } : pet));
-      if (respuesta.status===200) {
-        setupdate(respuesta.data.mensaje);
-        console.log(respuesta.data.mensaje)
+      setMascotasp(prevMas => prevMas.map(pet => pet.id === currentPetId ? { ...pet, ...respuesta.data } : pet));
+      if (respuesta.status === 200) {
+        setUpdate(respuesta.data.mensaje);
         Swal.fire({
           icon: "success",
           title: "",
-          text:respuesta.data.mensaje,
+          text: respuesta.data.mensaje,
           showConfirmButton: true,
           timer: 1500
-        })
-        window.location.reload()
+        });
+        window.location.reload();
       }
-      
-    } catch (e) {
-      console.log("error para actualizar", e);
+    } catch (error) {
+      console.log("error para actualizar", error);
     }
   };
 
-  const listar_user=async()=>{
-    const listar= await axiosClient.get("listar")
-    setuser(listar.data)
-    console.log("usurios",listar.data)
-  }
-
-  const borrar_mascota = async (id, e) => {
+  const borrarMascota = async (id, e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       const borrar = await axiosClient.delete(`/eliminar_pets/${id}`);
-      setmascotasp(prevMas => prevMas.filter(pet => pet.id !== id));
+      setMascotasp(prevMas => prevMas.filter(pet => pet.id !== id));
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [usuario, setTipo] = useState('');
+  const [usuarioTipo, setUsuarioTipo] = useState('');
+
   useEffect(() => {
     const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
     if (usuarios.length > 0) {
       const usuario = usuarios[0];
-      setTipo(usuario.tipo || 'Invitado');
+      setUsuarioTipo(usuario.tipo || 'Invitado');
     }
-  }, [localStorage]);
+  }, [])
+  
+  // Encuentra la mascota seleccionada
+  const selectedPet = mascotasp.find((mascota) => mascota.id === idPet);
+
   return (
     <>
       <Header />
-      <Sidebar />                                             {/*screen-samall     screnen-large*/}
-      <div className="lg:ml-32 w-[80%] absolute left-[8%] grid grid-cols-2 gap-2 mt-10 sm:grid-cols-1 lg:grid-cols-3">
+      <Sidebar />
+      <div className="lg:ml-32 w-[50%] absolute left-[23%] grid grid-cols-2 gap-8 mt-10 sm:grid-cols-1 lg:grid-cols-3">
         {mascotasp.map((mascota) => (
-          <div key={mascota.id} className="w-[100%]  lg:w-[100%] lg:border-spacing-20 border-[5px] border-t border-t-[#1999a6] rounded-xl border-b border-b-[#1999a6] border-l border-l border-l-[#1999a6] border-r border-r-[#1999a6]  mt-14 h-[75%] ">
-            <img src={`http://localhost:4001/img/${mascota.foto}`} className="w-full h-[50%] rounded-xl" />
+          <div key={mascota.id} className="w-[100%] lg:w-[100%] border-[5px]  border-t border-t-[#1999a6] rounded-xl border-b border-b-[#1999a6] border-l border-l border-l-[#1999a6] border-r border-r-[#1999a6] mt-14 h-[75%]">
+            <img src={`http://localhost:4001/img/${mascota.foto}`} className="w-[100%] h-[50%] rounded-xl" alt={`Imagen de ${mascota.nombre_mas}`} />
             <p>Nombre: {mascota.nombre_mas}</p>
             <p>Edad: {mascota.edad} años</p>
             <p>Descripcion: {mascota.descripcion}</p>
-            <p>Estado: {mascota.estado}</p>
-            
-
-
-            {usuario=== "Administrador" && (
-            <>
-              <div  className="grid grid-cols-2 gap-3 w-[34%] relative left-[37%] top-4">
-                <button onClick={(e) => borrar_mascota(mascota.id, e)}>
-                  <FontAwesomeIcon icon={faTrashAlt}   className="size-8" color="red"/>
+            {usuarioTipo === "Administrador" && (
+              <div className="grid grid-cols-3 gap-3 w-[34%] relative left-[37%] top-4">
+                <button onClick={(e) => borrarMascota(mascota.id, e)}>
+                  <FontAwesomeIcon icon={faTrashAlt} className="size-8" color="red" />
                 </button>
-                <button onClick={() => openupdate(mascota)}>
-                  <FontAwesomeIcon icon={faEdit} className="size-8" color="#1999a6"/>
+                <button onClick={() => openUpdate(mascota)}>
+                  <FontAwesomeIcon icon={faEdit} className="size-8" color="#1999a6" />
                 </button>
-            </div>
-            </>
-          )}
-           
+                <button onClick={() => openShow(mascota)}>
+                  <FontAwesomeIcon icon={faSearch} className="size-8" color="#1999a6" />
+                </button>
+              </div>
+            )}
           </div>
         ))}
 
         {actualizar && (
-          <div className="bw-[35%] absolute left-[33%] top-16 overflow-y-scroll h-80 bg-orange-400">
-            <button onClick={close_modal}><FontAwesomeIcon icon={faClose} /></button>
+          <div className="w-[65%] absolute left-[2%] top-16 overflow-y-scroll h-80 bg-[#1999a6] rounded-lg">
+            <button onClick={closeModal} className="relative left-[44%] top-6">
+              <FontAwesomeIcon icon={faClose}  className="size-6"/>
+            </button>
             <h2>Actualizar Mascota</h2>
-            <br />
-            <form onSubmit={actualizar_pet}>
+            <form onSubmit={actualizarPet}>
               <div className="w-[50%] relative left-[24%]">
                 <label>Ingrese el nombre de la mascota</label>
-                <br />
-                <input type="text" name="nombre_mas" placeholder="Nombre" required ref={nombre_masRef} className="w-[100%] h-11 text-center rounded-lg" />
+                <input type="text" placeholder="Nombre" required ref={nombreMasRef} className="w-[100%] h-11 text-center rounded-lg" />
               </div>
               <div className="w-[50%] relative left-[24%]">
-                <br />
                 <label>Seleccione la raza</label>
-                <br />
-                <select name="raza" required ref={razaRef} className="w-[100%] h-11 text-center rounded-lg">
+                <select required ref={razaRef} className="w-[100%] h-11 text-center rounded-lg">
                   <option hidden>Seleccione..</option>
                   {raza.map((r) => (
                     <option key={r.id} value={r.id}>{r.nombre_r}</option>
@@ -213,10 +216,8 @@ const Petsnadop = () => {
                 </select>
               </div>
               <div className="w-[50%] relative left-[24%]">
-                <br />
                 <label>Seleccione la categoría</label>
-                <br />
-                <select name="categoria_id" required ref={categoria_idRef} className="w-[100%] h-11 text-center rounded-lg">
+                <select required ref={categoriaIdRef} className="w-[100%] h-11 text-center rounded-lg">
                   <option hidden>Seleccione..</option>
                   {categoria.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.nombre}</option>
@@ -224,15 +225,12 @@ const Petsnadop = () => {
                 </select>
               </div>
               <div className="w-[50%] relative left-[24%]">
-                <br />
                 <label>Ingrese una foto de la mascota</label>
-                <br />
-                <input type="file" name="foto" required ref={fotoRef} className="w-[100%] h-11 text-center rounded-lg" />
+                <input type="file" required ref={fotoRef} className="w-[100%] h-11 text-center rounded-lg" />
               </div>
               <div className="w-[50%] relative left-[24%]">
                 <label>Seleccione el género de la mascota</label>
-                <br />
-                <select name="genero_id" required ref={genero_idRef} className="w-[100%] h-11 text-center rounded-lg">
+                <select required ref={generoIdRef} className="w-[100%] h-11 text-center rounded-lg">
                   <option hidden>Seleccione..</option>
                   {genero.map((gen) => (
                     <option key={gen.id} value={gen.id}>{gen.nombre}</option>
@@ -241,14 +239,11 @@ const Petsnadop = () => {
               </div>
               <div className="w-[50%] relative left-[24%]">
                 <label>Añada una descripción breve de la mascota</label>
-                <br />
-                <input type="text" name="descripcion" placeholder="Describa la mascota" required ref={descripcionRef} className="w-[100%] h-11 text-center rounded-lg" />
-                <br />
+                <input type="text" placeholder="Describa la mascota" required ref={descripcionRef} className="w-[100%] h-11 text-center rounded-lg" />
               </div>
               <div className="w-[50%] relative left-[24%]">
                 <label>Seleccione un estado</label>
-                <br />
-                <select name="estado" required ref={estadoRef} className="w-[100%] h-11 text-center rounded-lg">
+                <select required ref={estadoRef} className="w-[100%] h-11 text-center rounded-lg">
                   <option hidden>Seleccione...</option>
                   <option value="Adoptado">Adoptado</option>
                   <option value="Por Adoptar">Por Adoptar</option>
@@ -257,8 +252,7 @@ const Petsnadop = () => {
               </div>
               <div className="w-[50%] relative left-[24%]">
                 <label>Seleccione una vacuna</label>
-                <br />
-                <select name="id_vacuna" required ref={id_vacunaRef} className="w-[100%] h-11 text-center rounded-lg">
+                <select required ref={idVacunaRef} className="w-[100%] h-11 text-center rounded-lg">
                   <option hidden>Seleccione...</option>
                   <option value="Vacunado">Vacunado</option>
                   <option value="No Vacunado">No Vacunado</option>
@@ -266,33 +260,44 @@ const Petsnadop = () => {
               </div>
               <div className="w-[50%] relative left-[24%]">
                 <label>Ingrese la Edad</label>
-                <br />
-                <input type="number" name="edad" placeholder="Ingrese la edad" required ref={edad} className="w-[100%] h-11 text-center rounded-lg" />
-                <br />
+                <input type="number" placeholder="Ingrese la edad" required ref={edadRef} className="w-[100%] h-11 text-center rounded-lg" />
               </div>
-              <div>
-                <label>Selecciona el usuario qure registra la mascota</label>
-                <br />
-                <select  required ref={usuarioref}  className=" h-11  text-center rounded-lg focus-within:">
-                  <>
-                  <option hidden>seleccione...</option>
-                  {user .map((usuario)=>(
-                      <option key={usuario.id} value={usuario.id}>{usuario.nombre}</option>
+              <div className="w-[50%] relative left-[24%]">
+                <label>Selecciona el usuario que registra la mascota</label>
+                <select required ref={usuarioRef} className="w-[100%] h-11 text-center rounded-lg">
+                  <option hidden>Seleccione...</option>
+                  {user.map((usuario) => (
+                    <option key={usuario.id} value={usuario.id}>{usuario.nombre}</option>
                   ))}
-                  </>
                 </select>
               </div>
               <div className="w-[50%] relative left-[24%]">
-                 <label>Ingrese  el Historia medico </label>
-                      <br />
-                      <input type="text" name="historial_medico" placeholder="Ingrese la edad" required ref={historial_medicor}  className="w-[100%] h-11  text-center rounded-lg focus-within:"/>
-                      <br />
-                </div> 
-
+                <label>Ingrese el Historial médico</label>
+                <input type="text" placeholder="Ingrese el historial médico" required ref={historialMedicoRef} className="w-[100%] h-11 text-center rounded-lg" />
+              </div>
               <div className="w-[50%] relative left-[17%] m-12 h-10">
-                <input type="submit" value="Actualizar" className="w-[100%] border-2 border-x-orange-600 border-y-orange-600 hover:bg-orange-600 h-full rounded-xl" />
+                <input type="submit" value="Actualizar" className="w-[100%] border-2 border-x-slate-200 border-y-slate-200 hover:bg-slate-200 h-full rounded-xl" />
               </div>
             </form>
+          </div>
+        )}
+
+        {show && selectedPet && (
+          <div className="absolute top-16 left-[50%] transform -translate-x-1/2 bg-white p-4 shadow-lg rounded-lg w-1/2">
+            <button onClick={closeShow} className="absolute top-2 right-2">
+              <FontAwesomeIcon icon={faClose}  size="23px"/>
+            </button>
+            <h1 className="text-xl font-bold">Detalles de la Mascota</h1>
+            <p><strong>Nombre:</strong> {selectedPet.nombre_mas}</p>
+            <p><strong>Edad:</strong> {selectedPet.edad} años</p>
+            <p><strong>Raza:</strong> {raza.find(r => r.id === selectedPet.raza)?.nombre_r}</p>
+            <p><strong>Categoría:</strong> {categoria.find(cat => cat.id === selectedPet.categoria_id)?.nombre}</p>
+            <p><strong>Género:</strong> {genero.find(gen => gen.id === selectedPet.genero_id)?.nombre}</p>
+            <p><strong>Descripción:</strong> {selectedPet.descripcion}</p>
+            <p><strong>Estado:</strong> {selectedPet.estado}</p>
+            <p><strong>Vacuna:</strong> {selectedPet.id_vacuna}</p>
+            <p><strong>Usuario que Registro  la mascota:</strong> {user.find(u => u.id === selectedPet.usuario)?.nombre}</p>
+            <p><strong>Historial Médico:</strong> {selectedPet.historial_medico}</p>
           </div>
         )}
       </div>
