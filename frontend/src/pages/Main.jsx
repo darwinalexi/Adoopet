@@ -1,72 +1,74 @@
-import { Text } from "@rneui/base";
-import { ScrollView, View, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet } from "react-native";
-import Header from "../Component/Header";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import { Text, ScrollView, View, Image, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../Component/Header';
+import axiosClient from '../utils/AxiosClient';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUser } from '@fortawesome/free-regular-svg-icons';
 
-import axiosClient from "../utils/AxiosClient";
+export function Main() {
+  const [pet, setPet] = useState([]);
 
-export function Main(){
-const [pet, setpet]= useState([])
-
- 
-const listar_mascotas = async () => {
+  const listarMascotas = async () => {
     try {
-       
-        const response = await axiosClient.get("/listar_no_adoptados");
-        setpet(response.data);
-        console.log("respuesta", response.data);
+      const response = await axiosClient.get('/listar_no_adoptados');
+      setPet(response.data);
+      console.log('respuesta', response.data);
     } catch (error) {
-        console.error("Error en listar mascotas:", error.response ? error.response.data : error.message);
-        
+      console.error('Error en listar mascotas:', error.response ? error.response.data : error.message);
     }
-};
+  };
 
-useEffect(() => {
-    listar_mascotas();
-}, []);
+  useEffect(() => {
+    listarMascotas();
+  }, []);
 
-    return(
-        <SafeAreaView >
-            <ScrollView style={{height:'100%'}}>
-          
-            <Text >Mascotas Para Adoptar</Text>
-            <View style={style.container}>
-
-{pet.map((mascota, index) => (
-  <View key={index} style={style.itemContainer}>
-    <Text>Nombre De La Mascota: {mascota.nombre_mas}</Text>
-    <Text>Descripcion: {mascota.descripcion}</Text>
-    <Text>Edad: {mascota.edad}</Text>
-    <Text>Estado: {mascota.estado}</Text>
-    <Image
-        source={{ url: `http://192.168.1.7:4001/img/${mascota.foto}`}}
-    />
-  </View>
-))}
-</View>
-           
-            </ScrollView>
-        </SafeAreaView>
-     
-    )
+  return (
+    <SafeAreaView style={{ backgroundColor: '#FFD166'}}>
+       
+      <ScrollView>
+      <Header />
+        <Text style={{color:'black', fontSize:23, paddingLeft:53, paddingTop:23}}>Mascotas Para Adoptar</Text>
+        <View style={styles.container}>
+          {pet.map((mascota, index) => (
+            <View key={mascota.id || index} style={styles.itemContainer}>
+                  <Image
+                source={{ uri: `http://192.168.1.7:4001/img/${mascota.foto}` }}
+                style={{ width: '70%', height: 130 }} 
+              />
+              <Text style={{color:'black'}}>Nombre: {mascota.nombre_mas}</Text>
+              <Text style={{color:'black'}}>Descripcion: {mascota.descripcion}</Text>
+              <Text style={{color:'black'}}>Edad: {mascota.edad}</Text>
+              <Text style={{color:'black'}}>Estado: {mascota.estado}</Text>
+              <FontAwesomeIcon  icon={faUser}/>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-      },
-      itemContainer: {
-        width: '50%', 
-        padding: 10, 
-        alignItems: 'center', 
-      },
-      
-})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap', 
+    gap:23,
+    justifyContent: 'space-between', 
+    paddingTop: 25,
+    paddingBottom:23,
+  },
+  itemContainer: {
+    width: '45%',
+    padding: 10,
+    alignItems: 'center',
+    borderWidth: 4,
+    height:270,
+    borderColor: '#194F71',
+    color:'black',
+  },
+});
 
 
 

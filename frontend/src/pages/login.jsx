@@ -3,6 +3,8 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, TextInpu
 import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosClient from '../utils/AxiosClient';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 
 export const Login = ({navigation}) => {
     
@@ -44,14 +46,17 @@ const login = async () => {
            <Text style={[styles.title,{color:'black', fontSize:45 }]}>Iniciar Sesion</Text>
            <View style={{marginTop:94, width:'96%', paddingLeft:14}}>
            <Text style={{color:'black', textTransform:'capitalize', fontSize:18}}>correo electronico</Text>
+           <FontAwesomeIcon icon={faEnvelope} size={33} color="#194F71"style={{position:'absolute', left:26, top:33}}/>
            <TextInput
               placeholderTextColor="gray"
               placeholder='Ingresa tu Correo'
               onChangeText={(text) => handinputchange(text, 'correo')}
               style={styles.input}
             />
-    
+    </View>
+          <View>
            <Text style={{color:'black', textTransform:'capitalize', fontSize:18}}>Contraseña</Text>
+        
            <TextInput
               placeholderTextColor='gray'
               placeholder='Ingresa tu Contraseña'
