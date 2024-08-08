@@ -159,10 +159,8 @@ const Petsnadop = () => {
 
   useEffect(() => {
     const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
-    if (usuarios.length > 0) {
-      const usuario = usuarios[0];
-      setUsuarioTipo(usuario.tipo || 'Invitado');
-    }
+    const tipo = usuarios ? usuarios.tipo : '';
+    setUsuarioTipo(tipo)
   }, [])
   
   // Encuentra la mascota seleccionada

@@ -20,10 +20,8 @@ export const Sidebar = () => {
 
   useEffect(() => {
     const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
-    if (usuarios.length > 0) {
-      const usuario = usuarios[0];
-      setUsuario(usuario.tipo || 'Invitado');
-    }
+    const tipo = usuarios ? usuarios.tipo : '';
+    setUsuario(tipo)
   }, []);
   return (
     <>
@@ -46,6 +44,7 @@ export const Sidebar = () => {
                     </SidebarItem> 
                     <SidebarItem to="/mascotas_adoptadas"> <FontAwesomeIcon icon={faDog} className='size-8 mr-10'/>Mascotas Adoptadas </SidebarItem>
                     <SidebarItem to="/mascotas_por_adoptar"><FontAwesomeIcon icon={faDog} className='size-8 mr-10'/>Mascotas por Adoptar</SidebarItem>
+                    <SidebarItem to="/categorias" >Categorias</SidebarItem>
                   </>
                 )}
 
@@ -56,7 +55,7 @@ export const Sidebar = () => {
                     </SidebarItem>
                     <SidebarItem to="/adoptar"> <FontAwesomeIcon icon={faDog} className='size-8 mr-10'/>Adoptar Mascota </SidebarItem>
                     <SidebarItem to="/mascotas_por_adoptar"><FontAwesomeIcon icon={faDog} className='size-8 mr-10'/>Mascotas por Adoptar</SidebarItem>
-                  </>
+                 </>
                 )}
               </ul>
               <SidebarLogo />

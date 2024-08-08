@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 29-07-2024 a las 02:56:57
+-- Tiempo de generación: 08-08-2024 a las 01:36:05
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -95,16 +95,6 @@ CREATE TABLE `mascotas` (
   `historial_medico` varchar(200) COLLATE utf8mb4_roman_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
---
--- Volcado de datos para la tabla `mascotas`
---
-
-INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `edad`, `usuario`, `estado`, `historial_medico`) VALUES
-(59, 2, 2, 'princesa.JPG', 1, 'princesa', 'Vacunado', 'es tuqui tuqui', 5, 2, NULL, 'es saludable con todas lsas vacunas al dia  y se kas pusieron gratis '),
-(60, 2, 3, 'rufo.JPG', 1, 'rufo', 'Vacunado', 'es hjhj', 2, 2, 'Por adoptar', 'resta bien vacunado'),
-(61, 2, 2, 'princesa.JPG', 1, 'princesa', 'Vacunado', 'es paila buena', 3, 2, 'Por adoptar', NULL),
-(62, 2, 3, 'Vainilla.JPG', 2, 'vainilla', 'Vacunado', 'es paila de pi ', 4, 2, 'Adoptado', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -134,7 +124,7 @@ CREATE TABLE `usuarios` (
   `id` int NOT NULL,
   `nombre` varchar(54) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL,
   `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL,
-  `password` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci NOT NULL,
+  `password` varchar(213) COLLATE utf8mb4_roman_ci DEFAULT NULL,
   `tipo` enum('Administrador','Usuario') CHARACTER SET utf8mb4 COLLATE utf8mb4_roman_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
@@ -143,8 +133,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`) VALUES
-(2, 'Darwin Alexis Guerrero', 'darwin@gmail.com', '1324', 'Administrador'),
-(12, 'maria', 'mdb@gmail.com', '123', 'Usuario');
+(26, 'ale', 'ale@gmail.com', '$2a$10$xFsFOmV3APRjb9aXaAQIzu5JjpOsyFEjKWxOrO7a2.JbyAmDWu1IC', 'Usuario'),
+(27, 'Darwin Alexis Guerrero', 'darwin@gmail.com', '$2a$10$zWolupg5N/Gwi14JQFzydOKRZjdLg03es2nFhoumBP276613qqw8.', 'Administrador'),
+(28, 'alejandro', 'adarwin1@soy.sena.edu.co', '$2a$10$mV9DjgCsibTMHhhDSHrHZu5HQDKwu0Pul3C2xjJkamDD7EyMup7rO', 'Usuario');
 
 --
 -- Índices para tablas volcadas
@@ -218,7 +209,7 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de la tabla `razas`
@@ -230,7 +221,7 @@ ALTER TABLE `razas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Restricciones para tablas volcadas

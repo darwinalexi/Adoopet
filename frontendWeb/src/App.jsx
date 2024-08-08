@@ -8,6 +8,7 @@ import Petsnadop from './pages/Petsnadop';
 import Perfil from './pages/Perfil';
 import Adoptar from './pages/Adopt';
 import { PrivateRouter } from './pages/Router/PrivateRouter';
+import Categorias from './pages/Categorias';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="mascotas_adoptadas" element={<Pets />} />
             <Route path="perfil" element={<Perfil />} />
             <Route path="adoptar" element={<Adoptar />} />
+            <Route path='categorias' element={<Categorias/>}/>
         </Route>
         {/* Redireccionamiento para rutas no coincidentes */}
         <Route path='*' element={<Navigate to="/" />} />

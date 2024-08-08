@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import Header from "./Component/Header";
 import axiosClient from "./utils/axiosClent";
 import { Sidebar } from "../pages/Component/Siderbar/siderbar";
@@ -11,17 +11,13 @@ const Sow_pet = () => {
   const [pet, setPetCount] = useState([]);
   const [adopciones, setadopciones]=useState([])
 
-  const backgroundImageStyle = {
-    backgroundImage: "url('./img/chispitas.JPG')",
-    backgroundSize: "cover",
-  };
+
 
   useEffect(() => {
     const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
-    if (usuarios.length > 0) {
-      const usuario = usuarios[0];
-      setUsertype(usuario.tipo || 'Invitado');
-    }
+    const tipo = usuarios ? usuarios.tipo : '';
+    setUsertype(tipo)
+
   }, []);
 
   useEffect(() => {

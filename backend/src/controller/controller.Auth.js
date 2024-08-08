@@ -1,29 +1,37 @@
 import { Conexion } from "../database/conexion.js";
 import jwt from"jsonwebtoken"
+import { compare } from "./encrypter.js";
 
-export const login= async (req, res) => {
-try {
-    const {correo, contrasena}=req.body;
-    const[logueo]= await Conexion.query("select*from usuarios where email=? and password=?",[correo,contrasena])
-const user= logueo[0]
-    if (logueo.length>0) {
-        const token = jwt.sign({logueo},process.env.AUTO_SECRET,{expiresIn:process.env.AUTO_EXPIRE})
-        return res.status(200).json({
-            "mensaje":logueo,
-            "token":token
-        })
-    }else{
-        res.status(404).json({
-            "mensaje":"usuario no se enconto"
-        })
+export const login = async (req, res) => {
+    try {
+        const { correo, contrasena } = req.body;
+        const [result] = await Conexion.query('SELECT * FROM usuarios WHERE email=?', [correo]);
+        const user = result[0];
+        if (!user) {
+            return res.status(404).json({
+                message: 'Usuario no encontrado'
+            });
+        }
+        const passwordMatches = await compare(contrasena, user.password);
+
+        if (!passwordMatches) {
+            return res.status(404).json({
+                message: 'Credenciales inválidas'
+            });
+        } else {
+            const token = jwt.sign({ userId: user.id }, process.env.AUTO_SECRET, { expiresIn: process.env.AUTO_EXPIRE });
+            return res.status(200).json({
+                "mensaje":user,
+                "token":token
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            mensaje: error.message
+        });
     }
-} catch (error) {
-   console.log(error) 
-   res.status(500).json({
-    "mensaje":error
-})
-}
-}
+};
 
 
 export const validarToken = async (req, res, next) => {

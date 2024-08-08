@@ -193,10 +193,8 @@ const navigate = useNavigate();
 
   useEffect(() => {
     const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
-    if (usuarios.length > 0) {
-      const usuario = usuarios[0];
-      setTipo(usuario.tipo);
-    }
+    const tipo = usuarios ? usuarios.tipo : '';
+    setTipo(tipo)
   }, []);
 
   const borrar_adopcion_p= async(id_adopcion, id_mascota)=>{

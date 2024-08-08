@@ -1,5 +1,7 @@
 
 import { Conexion } from "../database/conexion.js";
+import { encrypter } from "./encrypter.js";
+
 
 export const listar_user= async(req,res)=>{
     try {
@@ -24,7 +26,11 @@ export const listar_user= async(req,res)=>{
 export const crear_user=async(req,res)=>{
     try{
         const{nombre,email,password,tipo}=req.body
-        const [crear]= await Conexion.query("insert into usuarios(nombre,email,password,tipo)values(?,?,?,?)",[nombre,email,password, tipo])
+
+
+        const clave =  await encrypter(password)
+
+        const [crear]= await Conexion.query("insert into usuarios(nombre,email,password,tipo)values(?,?,?,?)",[nombre,email,clave, tipo])
 
         if (crear.affectedRows>0) {
             res.status(200).json({
@@ -47,7 +53,9 @@ export const actualizar_user=async(req,res)=>{
     try{
         const {id}=req.params
         const{ nombre_completo,correo,contrasena}=req.body
-        const [actualiza]= await Conexion.query("update usuarios set nombre_completo=?, correo=?,contrasena=? where id=?",[nombre_completo,correo,contrasena, id])
+        const clave = await bcryptjs.hash(contrasena, 10);
+        console.log("claves",clave)
+        const [actualiza]= await Conexion.query("update usuarios set nombre_completo=?, correo=?,contrasena=? where id=?",[nombre_completo,correo,clave, id])
 
         if (actualiza.affectedRows>0) {
             res.status(200).json({

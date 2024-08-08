@@ -22,9 +22,10 @@ const Perfil = () => {
 
     useEffect(() => {
         const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
+        const tipo = usuarios ? usuarios.tipo : '';
+        setUsuario(tipo)
         if (usuarios.length > 0) {
             const usuario = usuarios[0];
-            setUsuario(usuario.tipo || 'Invitado');
             setName(usuario.nombre);
             setEmail(usuario.email);
             setIdUser(usuario.id);
