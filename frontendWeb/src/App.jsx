@@ -9,6 +9,13 @@ import Perfil from './pages/Perfil';
 import Adoptar from './pages/Adopt';
 import { PrivateRouter } from './pages/Router/PrivateRouter';
 import Categorias from './pages/Categorias';
+import Usuarios from './pages/User';
+import Razas from './pages/Races';
+import Municipios from './pages/Municipios';
+import Departamento from './pages/DeARTAMENTO';
+import Vacunas from './pages/Vacunas';
+
+
 
 function App() {
   return (
@@ -23,6 +30,12 @@ function App() {
             <Route path="perfil" element={<Perfil />} />
             <Route path="adoptar" element={<Adoptar />} />
             <Route path='categorias' element={<Categorias/>}/>
+            <Route path='user' element={<Usuarios/>}/>
+            <Route path='races' element={<Razas/>}/>
+            <Route path='Municipios' element={<Municipios/>}/>
+            <Route path='Departamento' element={<Departamento/>}/>
+            <Route path='Vacunas' element={<Vacunas/>}/>
+            
         </Route>
         {/* Redireccionamiento para rutas no coincidentes */}
         <Route path='*' element={<Navigate to="/" />} />
@@ -30,7 +43,6 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;
 
 

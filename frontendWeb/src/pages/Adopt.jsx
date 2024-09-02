@@ -56,7 +56,7 @@ const Adoptar = ()=>{
               timer: 3500
             })
            
-
+window.location.reload();
           }
         } catch (error) {
           console.log("Error al crear la adopción:", error);
@@ -93,7 +93,7 @@ const Adoptar = ()=>{
             <select name="id_mascota" onChange={handinputchange}  className="w-[30%] h-11  text-center rounded-lg ">
             <option hidden>Seleccion....</option>
             {mascota .map((mascota)=>(
-                <option value={mascota.id} key={mascota.id}>{mascota.id} {mascota.nombre_mas}</option>
+                <option value={mascota.id} key={mascota.id}>{mascota.id} {mascota.nombre_mascota}</option>
             ))}
             </select>
             <br />

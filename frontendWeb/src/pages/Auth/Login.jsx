@@ -17,8 +17,27 @@ function Login() {
   const [mensaje, setMensaje] = useState('');
   const [token, setToken] = useState('');
 
+  const validarEmail = (email) => {
+    // Expresión regular básica para validar el formato del correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
   const login = async (event) => {
     event.preventDefault();
+    if (!usuarios.correo || !usuarios.contrasena) {
+      Swal.fire({
+        icon: "error",
+        text: "Llena los datos para poder loguearte",
+        showConfirmButton: false,
+        timer: 1500
+    });
+    return ;
+    }
+const correo= usuarios.correo;
+    if (  !validarEmail(correo)) {
+      
+    }
     try {
       const consulta = await axiosClient.post(`/login`, usuarios);
       if (consulta.status === 200) {
@@ -34,7 +53,7 @@ function Login() {
         localStorage.setItem('usuario', JSON.stringify(consulta.data.mensaje));
         navigate('/mascotap'); 
       } 
-      if (consulta.status===404) {
+      if (consulta.status==404) {
         Swal.fire({
           position: "top-end",
           icon: "error",
@@ -46,6 +65,11 @@ function Login() {
       }
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Hubo un problema al iniciar sesión",
+        text: "Credenciales Incorrectas",
+      });
     }
   };
 

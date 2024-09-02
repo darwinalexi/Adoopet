@@ -1,80 +1,81 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "./Component/Header";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faClose, faEnvelope, faLock, faPlus, faUser } from '@fortawesome/free-solid-svg-icons'
 import { Sidebar } from "./Component/Siderbar/siderbar";
 import axiosClient from "./utils/axiosClent";
 import Swal from "sweetalert2";
+import Editarperfil from "./Component/Modal/Editaprofile";
+import Create_User from "./Component/Modal/CreateUser";
+
 const Perfil = () => {
     const [usuario, setUsuario] = useState([]);
-    const [username, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [id, setIdUser] = useState([]);
+    const [profile, setprofileUser] = useState([]);
+    const [Editprofile,setprofile]= useState(false);
+    const [fotos, setfoto]= useState([]);
+    const [update, setupdate] = useState(false);
     const [user, setUser] = useState({
         nombre: '',
         email: '',
         password: '',
         tipo: ''
     });
+
+    const [open, setopen]= useState(false);
     const [createPet, setCreatePet] = useState(false);
     const [crear, setCrear] = useState(null);
     const [pets, setPets] = useState([]);
 
-    useEffect(() => {
+    const Open =()=>{
+        setopen(true)
+    }
+    const close=()=>{
+        setopen(false)
+    }
+    const updateProfile=(profile)=>{
+    setupdate(true)
+    }
+    const closeupdate=()=>{
+        setupdate(false)
+    }
+        
+const listar_profile=async()=>{
+    try {
         const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
-        const tipo = usuarios ? usuarios.tipo : '';
+        const id_user = usuarios ? usuarios.id : '';
+        const tipo= usuarios.tipo ? usuarios.tipo:'';
         setUsuario(tipo)
-        if (usuarios.length > 0) {
-            const usuario = usuarios[0];
-            setName(usuario.nombre);
-            setEmail(usuario.email);
-            setIdUser(usuario.id);
-        }
-    }, []);
 
-    useEffect(() => {
-        if (id) {
-            listAdoptedPets();
+        const profile= await axiosClient.get(`/buscar/${id_user}`)
+        //itera sobre el array que da la api ya que el id del user es un objeto almacenado en localstorage por lo cual devolvera un array y no un arreglo 
+        for (const item of profile.data) {
+            console.log("dato3",item); 
+            setprofileUser(item)
         }
-    }, [id]);
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+    useEffect(() => {
+        listar_profile()
+            listAdoptedPets();
+    },[]);
 
     const listAdoptedPets = async () => {
         try {
-            const listar = await axiosClient.get(`/listas_pets_adop/${id}`);
+            const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
+            const id= usuarios? usuarios.id:'';
+            const listar = await axiosClient.get(`/solicitudes_aceptadas/${id}`);
             setPets(listar.data);
-            console.log("adop", listar.data)
+            console.log("adop",listar.data)
         } catch (error) {
             console.log(error);
         }
     };
 
-    const registerUser = async (e) => {
-        try {
-            e.preventDefault();
-            const crear = await axiosClient.post("/crear", user);
-            setCrear(crear.data.mensaje);
-            console.log(crear.data.mensaje)
-            Swal.fire({
-                icon: "success",
-                title: "",
-                text:crear.data.mensaje,
-                showConfirmButton: true,
-                timer: 1500
-              })
-            
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setUser((prevUser) => ({
-            ...prevUser,
-            [name]: value
-        }));
-    };
-
+  
+   
     return (
         <>
             <Header />
@@ -82,48 +83,31 @@ const Perfil = () => {
            
             {usuario === "Administrador" && (
                 <>
-                    <div className="relative top-24 left-[17%] w-[13%] -z-50">
-                        <h1 className="flex justify-start size-16 font-extrabold w-[100%]">Perfil de Usuario</h1>
-                        <p className="flex justify-start pb-6">Nombre: {username}</p>
-                        <p className="flex justify-start pb-6">Tipo: {usuario}</p>
-                        <p className="flex justify-start pb-6">Correo: {email}</p>
+                 <button onClick={Open} className="relative top-24">  <FontAwesomeIcon icon={faPlus}/> crear Usuario</button>
+                 <div className="grid  grid-cols-2 rounded-xl shadow-2xl absolute top-[36%] ml-[13%] border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] w-[64%]">
+                    <div>
+                    <h1 className="flex justify-center size-16 font-extrabold w-[100%]">Perfil de Usuario</h1>
+                    <p className="flex justify-center text-center pb-6 pt-6">Nombre: {profile.nombre}</p>
+                    <p className="flex justify-center pb-6 text-center">Celular: {profile.telefono}</p>
+                    <p className="flex justify-center pb-6">Correo {profile.email}</p>
+                    <p className="flex justify-center pb-6">Tipo de Usuaro: {profile.tipo}</p>
+                    <p className="flex justify-center pb-6">Tipo de Documento: {profile.tipo_de_documento}</p>
+                    <p className="flex justify-center pb-6">No° de  Documento: {profile.documento}</p>
+                    <p className="flex justify-center pb-6">Direccion: {profile.direccion}</p>
+                    <div className="bg-[#1999a6] w-[45%] relative left-[78%]">
+                        <button onClick={updateProfile}>Editar Perfil</button>
+                        {/*se  mana al modal mandando los datos del user */}
+                        {update && <Editarperfil closeModal={closeupdate} profile={profile} />}
                     </div>
-
-                    <div className="bg-slate-200 w-[45%] absolute left-[50%] top-[34%] rounded-3xl -z-20 border-t border-t-[#1999a6]  border-l border-l-[#1999a6] border-t border-r-[#1999a6]">
-                        <h1>Crear Usuario</h1>
-                        <form onSubmit={registerUser} onChange={handleInputChange} >
-                            <div className="w-[50%] relative left-[24%]">
-                                <label>Ingrese el nombre</label>
-                                <br />
-                                <FontAwesomeIcon icon={faUser} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
-                                <input type="text" name="nombre" placeholder="Ingrese el nombre" className="w-[100%] h-11 text-center rounded-lg focus-within:" />
-                            </div>
-                            <br />
-                            <div className="w-[50%] relative left-[24%]">
-                                <label>Ingrese el correo</label>
-                                <br />
-                                <FontAwesomeIcon icon={faEnvelope} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
-                                <input type="email" name="email" placeholder="Ingrese el correo" className="w-[100%] h-11 text-center rounded-lg focus-within:" />
-                            </div>
-                            <br />
-                            <div className="w-[50%] relative left-[24%]">
-                                <label>Ingrese Clave</label>
-                                <br />
-                                <FontAwesomeIcon icon={faLock} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
-                                <input type="password" name="password" placeholder="Ingrese la contraseña" className="w-[100%] h-11 text-center rounded-lg focus-within:" />
-                            </div>
-                            <br />
-                            <label>Seleccione su rol</label>
-                            <br />
-                            <select name="tipo" id="" onChange={handleInputChange} className="w-[50%] h-11 text-center rounded-lg focus-within:invalid">
-                                <option hidden>Seleccione...</option>
-                                <option value="Administrador">Administrador</option>
-                                <option value="Usuario">Usuario</option>
-                            </select>
-                            <br />
-                            <input type="submit" value="Registrar" className="mt-7 w-[50%] h-11 text-center rounded-lg  border-t  border-t-[#1999a6] border-b border-b-[#1999a6]  border-r border-r-[#1999a6] border-l border-l-[#1999a6] hover:bg-[#1999a6] cursor-pointer" />
-                        </form>
                     </div>
+                
+                    <div>
+                        <img src={`http://localhost:4001/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
+                    </div>
+                
+                </div>
+             
+                   {open &&(< Create_User onclose={close}/>)}
                 </>
             )}
 
@@ -134,6 +118,7 @@ const Perfil = () => {
                         <p className="flex justify-start pb-6">Nombre: {username}</p>
                         <p className="flex justify-start pb-6">Tipo: {usuario}</p>
                         <p className="flex justify-start pb-6">Correo: {email}</p>
+                        <img src={`http://localhost:4001/img/${fotos}`} alt="" />
                     </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3  h-[32%]   w-[80%] absolute left-[10%] top-[65%]  mb-14 gap-5">

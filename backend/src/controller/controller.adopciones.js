@@ -5,8 +5,7 @@ export const crear_adopcion = async (req, res) => {
        
         const { id_adoptante, edad, id_mascota, estado } = req.body;
         
-        // Validar edad
-        if (edad <= 18) {
+        if (edad <= 17) {
             return res.status(400).json({
                 "mensaje": "La edad mínima para adoptar es mayor a 18 años."
             });
@@ -63,7 +62,7 @@ export const borrar= async(req, res)=>{
 
 export const listar_adopciones= async(req, res)=>{
     try {
-        const [listar]= await Conexion.query("SELECT u.id AS id_usuario, u.email AS correo,  u.nombre AS nombre_usuario, m.id AS id_mascota, a.id AS id_adopcion, m.edad AS edad, m.nombre_mas AS nombre_mascota, a.estado AS estado_adopcion, m.foto AS foto FROM adopciones a JOIN mascotas m ON a.id_mascota = m.id JOIN usuarios u ON a.id_adoptante = u.id where a.estado='Pendiente'")
+        const [listar]= await Conexion.query("SELECT u.id AS id_usuario, u.email AS correo, u.telefono As celular, u.nombre AS nombre_usuario, m.id AS id_mascota, a.id AS id_adopcion, m.edad AS edad, m.nombre_mas AS nombre_mascota, a.estado AS estado_adopcion, m.foto AS foto FROM adopciones a JOIN mascotas m ON a.id_mascota = m.id JOIN usuarios u ON a.id_adoptante = u.id where a.estado='Pendiente'")
         
         if (listar.length>0) {
             res.status(200).json(listar)
@@ -81,18 +80,15 @@ export const listar_adopciones= async(req, res)=>{
 
 export const actualizar_pet = async (req, res) => {
     try {
-        const { id, id_mascota } = req.params;
-        
-        // Validar edad
+        const { id_mascota } = req.params;
     
-        const [actualizar] = await Conexion.query("delete from adopciones where id=?",[id]);
-        if (actualizar.affectedRows) {
             const [mascota]= await Conexion.query("update mascotas set estado='Adoptado' where id=?",[id_mascota])
             if (mascota.affectedRows>0) {
+                const [mascota]= await Conexion.query("update adopciones set estado='Adoptado' where id_mascota=?",[id_mascota])
                 return res.status(200).json({
                     "mensaje": "Se actualizo la adopción con éxito"
-                });   
-            }
+                });  
+            
         } else {
             return res.status(404).json({
                 "mensaje": "No se pudo crear la adopción con éxito"
@@ -119,3 +115,35 @@ export const contaradopciones = async (req, res) => {
         res.status(500).json({ mensaje: error.message });
     }
 };
+
+export const listar_solicitudes= async(req, res)=> {
+try {
+    const {id}= req.params;
+    const [listar]= await Conexion.query("SELECT  a.estado AS etado_adopcion, u.id AS id_usuario, m.historial_medico AS historial, d.nombre AS departamento, u.email AS correo,mu.nombre AS municipio, u.telefono As celular, u.nombre AS nombre_usuario,  m.id AS id_mascota, a.id AS id_adopcion, m.edad AS edad, m.nombre_mas AS nombre_mascota, a.estado AS estado_adopcion, m.foto AS foto FROM adopciones a JOIN mascotas m ON a.id_mascota = m.id join municipio mu on m.municipio join departamento d on m.departamento=d.id JOIN usuarios u ON a.id_adoptante = u.id where a.estado='Pendiente' and a.id_adoptante=?",[id])
+    if (listar.length>0) {
+        res.status(200).json(listar)
+    } else {
+        res.status(404).json({"mensaje":"no se encontro ninguna solicitud tuya"})
+    }
+} catch (error) {
+    res.status(500).json({
+        "mensaje":error
+    })
+}
+}
+export const listar_solicitudes_aceptadas= async(req, res)=> {
+    try {
+        const {id}= req.params;
+        const [listar]= await Conexion.query("SELECT u.id AS id_usuario, u.email AS correo,a.estado, u.telefono As celular, u.nombre AS nombre_usuario, m.id AS id_mascota, a.id AS id_adopcion, m.edad AS edad, m.nombre_mas AS nombre_mascota, a.estado AS estado_adopcion, m.foto AS foto FROM adopciones a JOIN mascotas m ON a.id_mascota = m.id JOIN usuarios u ON a.id_adoptante = u.id where a.id_adoptante=? and a.estado='Adoptado'",[id])
+        if (listar.length>0) {
+            res.status(200).json(listar)
+        } else {
+            res.status(404).json({"mensaje":"no se encontro ninguna solicitud  aceptada"})
+        }
+    } catch (error) {
+        res.status(500).json({
+            "mensaje":error
+        })
+    }
+    
+    }

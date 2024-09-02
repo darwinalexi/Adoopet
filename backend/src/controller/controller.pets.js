@@ -3,22 +3,11 @@ import  multer from"multer";
 import { validationResult } from "express-validator";
 
 
-const storage= multer.diskStorage({
-    destination:function(req, file, cb ){
-        cb(null, './public/img')
-    },
-    filename:function(req, file, cb ){
-        cb(null, file.originalname)
-    }
-})
 
-const upload= multer({storage:storage})
-
-export const saveimg=upload.single('foto')
 
 export const listar_pets_in_adop= async(req, res)=>{
     try {
-        const [listar] = await Conexion.query("select*from mascotas where estado='Adoptado'");
+        const [listar] = await Conexion.query("SELECT m.id AS id,u.email AS correo, u.telefono AS  celular,   u.nombre AS nombre_usuario, g.nombre As genero,c.nombre AS nombre_categoria, r.nombre_r AS nombre_raza,     m.edad AS edad, m.nombre_mas AS nombre_mascota, m.estado AS estado, c.nombre AS categoria, m.descripcion AS descripcion,m.historial_medico AS historial_medico,m.id_vacuna AS estado_vacuna,  m.foto AS foto,mu.nombre   AS municipio,d.nombre AS nombre_departamento  FROM mascotas m   JOIN categorias c ON m.categoria_id = c.id  JOIN razas r ON m.raza = r.id  JOIN usuarios u ON m.usuario= u.id JOIN municipio mu ON m.municipio = mu.id Join departamento d on m.departamento= d.id    join  genero g on m.genero_id = g.id where m.estado='Adoptado'");
 
         if (listar.length > 0) {
             res.status(200).json(listar);
@@ -34,7 +23,7 @@ export const listar_pets_in_adop= async(req, res)=>{
 
 export const listar_pets_no_adop= async(req, res)=>{
     try {
-        const [listar]= await Conexion.query("select*from mascotas where estado='Por adoptar'");
+        const [listar]= await Conexion.query("SELECT m.id AS id, u.nombre AS nombre_usuario, g.nombre As genero,c.nombre AS nombre_categoria, r.nombre_r AS nombre_raza,  m.categoria_id AS categoria_id, m.departamento AS id_departamento, m.municipio AS id_municipio, u.id AS id_usuario, r.id AS raza_id, g.id AS genero_id,   m.edad AS edad, m.nombre_mas AS nombre_mascota, m.estado AS estado, c.nombre AS categoria, m.descripcion AS descripcion,m.historial_medico AS historial_medico,m.id_vacuna AS estado_vacuna,  m.foto AS foto,mu.nombre   AS municipio,d.nombre AS nombre_departamento  FROM mascotas m   JOIN categorias c ON m.categoria_id = c.id  JOIN razas r ON m.raza = r.id  JOIN usuarios u ON m.usuario= u.id JOIN municipio mu ON m.municipio = mu.id Join departamento d on m.departamento= d.id    join  genero g on m.genero_id = g.id where m.estado='Por Adoptar'");
 
         if (listar.length>0) {
             res.status(200).json(listar);
@@ -65,27 +54,50 @@ export const listar_pets_pendientes= async(req, res)=>{
 }
 
 
+const storage= multer.diskStorage({
+    destination:function(req, file, cb ){
+        cb(null, './public/img')
+    },
+    filename:function(req, file, cb ){
+        cb(null, file.originalname)
+    }
+})
+
+const upload= multer({storage:storage})
+
+
+export const saveimg=upload.array('foto',6)
+
 export const crear_pets = async (req, res) => {
     try {
-       const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion, edad, usuario,historial_medico}=req.body;
-       const foto=req.file.originalname;
-       if (foto==null) {
-        return res.status(400).json({ mensaje: "No se ha cargado un archivo" });
-      }
- 
-       const [regiterpets]= await Conexion.query("insert into mascotas(raza, categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion, edad, usuario, historial_medico)values(?,?,?,?,?,?,?,?,?,?)",[raza,categoria_id,foto,genero_id, nombre_mas, id_vacuna,descripcion, edad, usuario, historial_medico])       
+        const {raza, categoria_id, genero_id, nombre_mas, id_vacuna, descripcion, edad, usuario,historial_medico, municipio,departamento, vacuna}=req.body;
+       
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ mensaje: "No se han subido imágenes." });
+        }
+        // Procesar los archivos
+        const fotos = req.files.map(file => file.originalname);
+      //separa los nombre de las fotos 
+        const fotosString = fotos.join(',');
+        const [regiterpets]= await Conexion.query("insert into mascotas(raza, categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion, edad, usuario, historial_medico, municipio, departamento,vacunas)values(?,?,?,?,?,?,?,?,?,?,?,?,?)",[raza,categoria_id,fotosString,genero_id, nombre_mas, id_vacuna,descripcion, edad, usuario, historial_medico, municipio, departamento, vacuna])       
        if (regiterpets.affectedRows>0) {
         return res.status(200).json({
-            "mensaje":"se creo con exito"
+            "mensaje":"se creo con exito",
+            fotos: fotos
         })
         }else{
             res.status(404).json({
                 "mensaje":"no se creo con exito"
             })
         }
+
+        // Puedes realizar más operaciones con las fotos aquí
+
+       
+
     } catch (error) {
         console.log(error);
-        res.status(500).json({ "mensaje":error });
+        res.status(500).json({ mensaje: error.message });
     }
 };
 
@@ -96,8 +108,14 @@ export const actualizar_pets = async(req, res)=>{
         const{id}= req.params;
         const { raza, categoria_id,genero_id, nombre_mas, id_vacuna, descripcion, estado, usuario, historial_medico}= req.body;
 
-        const foto=req.file.originalname
-        const [actualizar]= await Conexion.query("update mascotas set raza=?,categoria_id=? ,foto=?, genero_id=?, nombre_mas=?, id_vacuna=?, descripcion=?, estado=?, usuario=?, historial_medico=? where id=?",[raza,categoria_id,foto,genero_id,nombre_mas, id_vacuna, descripcion,estado,usuario,historial_medico,id]);
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ mensaje: "No se han subido imágenes." });
+        }
+        // Procesar los archivos
+        const fotos = req.files.map(file => file.originalname);
+      //separa los nombre de las fotos 
+        const fotosString = fotos.join(',');
+        const [actualizar]= await Conexion.query("update mascotas set raza=?,categoria_id=? ,foto=?, genero_id=?, nombre_mas=?, id_vacuna=?, descripcion=?, estado=?, usuario=?, historial_medico=? where id=?",[raza,categoria_id,fotosString,genero_id,nombre_mas, id_vacuna, descripcion,estado,usuario,historial_medico,id]);
 
         if (actualizar.affectedRows>0) {
             res.status(200).json({
@@ -183,23 +201,7 @@ export const actualizar_pets_ADOP = async(req, res)=>{
     }
 }
 
-export const listar_pets=async(req, res)=>{
-    try {
-        const {id}= req.params;
-        const [listar]= await Conexion.query("select*from mascotas where estado='Adoptado' and usuario=?",[id])
-        if (listar.length>0) {
-            res.status(200).json(listar)
-        }else{
-            res.status(404).json({
-                "mensaje":"no se encontraron mascotas adoptadas"
-            })
-        }
-    } catch (error) {
-        res.status(500).json({
-            "mensaje":error
-        })
-    }
-    }
+
 
     export const contarmascotas = async (req, res) => {
         try {

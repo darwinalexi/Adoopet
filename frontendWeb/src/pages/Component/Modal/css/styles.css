@@ -1,0 +1,38 @@
+/* styles.css */
+.my-hot-table {
+
+    border-radius: 8px; /* Bordes redondeados */
+    width:"56%";
+    position: relative;
+    top: 78px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+}
+
+.my-hot-table .ht_master {
+    border: 1px solid #ddd; /* Borde alrededor de la tabla maestra */
+
+}
+
+.my-hot-table .htCore th {
+    background-color: #f4f4f4; /* Fondo de los encabezados */
+    color: #333; /* Color del texto en los encabezados */
+    font-weight: bold; /* Fuente en negrita para encabezados */
+}
+
+.my-hot-table .htCore td {
+    border: 1px solid black; /* Borde alrededor de las celdas */
+    padding: 8px; /* Espaciado interno de las celdas */
+    text-align: center; /* Alinear el texto al centro */
+    position: relative;
+    top: 0;
+    
+}
+
+.my-hot-table .htCore tr:nth-child(even) {
+    background-color: #f9f9f9; /* Fondo alterno para filas pares */
+    
+}
+
+.my-hot-table .htCore tr:hover {
+    background-color: #e0e0e0; /* Fondo al pasar el cursor sobre la fila */
+}
