@@ -78,8 +78,9 @@ const listar_profile=async()=>{
    
     return (
         <>
-            <Header />
-            <Sidebar />
+        <Header />
+        <Sidebar />
+           
            
             {usuario === "Administrador" && (
                 <>
@@ -111,17 +112,27 @@ const listar_profile=async()=>{
                 </>
             )}
 
+
+
             {usuario === "Usuario" && (
                 <>
-                    <div className="relative top-24 left-[17%] w-[17%] -z-50">
-                        <h1 className="flex justify-start size-16 font-extrabold w-[100%]">Perfil de Usuario</h1>
-                        <p className="flex justify-start pb-6">Nombre: {username}</p>
-                        <p className="flex justify-start pb-6">Tipo: {usuario}</p>
-                        <p className="flex justify-start pb-6">Correo: {email}</p>
-                        <img src={`http://localhost:4001/img/${fotos}`} alt="" />
-                    </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3  h-[32%]   w-[80%] absolute left-[10%] top-[65%]  mb-14 gap-5">
+<div className="grid  grid-cols-2 rounded-xl shadow-2xl absolute top-[36%] ml-[13%] border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] w-[64%]">
+                        <div>
+                        <h1 className="flex justify-start size-16 font-extrabold w-[100%] ml-7 mt-5">Perfil de Usuario</h1>
+                        <p className="flex justify-start pb-6 ml-6">Nombre: {profile.nombre}</p>
+                        <p className="flex justify-start pb-6 ml-7">Tipo: {profile.tipo}</p>
+                        <p className="flex justify-start pb-6 ml-6">Correo: {profile.email}</p>
+                        <button onClick={updateProfile}>Editar Perfil</button>
+
+                        {update && <Editarperfil closeModal={closeupdate} profile={profile} />}
+                        </div>
+                        <div>
+                        <img src={`http://localhost:4001/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
+                        </div>
+                        </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3  h-[32%]   w-[80%] absolute left-[10%] top-[95%]  mb-14 gap-5">
                     <h1 className="col-span-full  font-bold text-4xl   h-full">Adopciones Realizadas</h1>
                         {pets.map((pet) => (
                             <div key={pet.id} className="h-[54%] w-[53%] top-[35%] border-t-[#1999a6]  rounded-xl grid-rows-2 border-b border-b-[#1999a6] border-l border-l-[#1999a6] border-r border-r-[#1999a6] ">

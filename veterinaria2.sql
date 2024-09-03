@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2024 a las 00:39:45
+-- Tiempo de generación: 03-09-2024 a las 23:33:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -206,24 +206,19 @@ CREATE TABLE `usuarios` (
   `tipo` enum('Administrador','Usuario','Invitado') DEFAULT NULL,
   `foto` varchar(768) DEFAULT NULL,
   `direccion` varchar(67) DEFAULT NULL,
-  `telefono` int(11) DEFAULT NULL,
   `documento` int(11) DEFAULT NULL,
-  `tipo_de_documento` enum('Cedula','Cedula Extranjera') DEFAULT NULL
+  `tipo_de_documento` enum('Cedula','Cedula Extranjera') DEFAULT NULL,
+  `telefono` varchar(19) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`, `foto`, `direccion`, `telefono`, `documento`, `tipo_de_documento`) VALUES
-(44, 'victor', 'victor@gmail.com', '$2a$10$Hz/FSP3isdjQG0IU28clq.Q2hIkEQm2u7Fl49hzZHgth8oJ8Q4AVG', 'Administrador', 'rifle.JPG', 'calle 3', 2147483647, 2387654, 'Cedula'),
-(45, 'victor', 'victor@gmail.com', '$2a$10$mle0X1hMr1/S4BPUYbf5F.JezZkhrv7oiWo36kw7AvlUrZmOI8zLu', 'Administrador', 'chiribico.jpeg', 'yughhj', 44654654, 123, 'Cedula'),
-(47, 'kko', 'kpkp@gmail.com', '$2a$10$BlQ4CRXJRX.ynjf6QlunYOhy7KTtr0SA8M5QOtosV03vSA5JdYuhy', 'Administrador', 'nuche.JPG', 'ghfghf', 456456, 465465, 'Cedula'),
-(49, 'kko', 'kpkp@gmail.com', '$2a$10$woiLTBcQvNthfDcT6dOvSeEA9WjsBn8BggGrtiGi2eYkFVupduXEa', 'Administrador', 'nuche.JPG', 'ghfghf', 456456, 465465, 'Cedula'),
-(50, 'kko', 'kpkp@gmail.com', '$2a$10$/mWIayHoeFeEJompQ9xuHOzE6Ilp32f9NSpGN2CkIhtTyXRw4.l9u', 'Administrador', 'nuche.JPG', 'ghfghf', 456456, 465465, 'Cedula'),
-(51, 'kko', 'kpkp@gmail.com', '$2a$10$IeAhwxyfu0ueCQ1j0J8Pu.5m7Bl.dP5eQPv10uXFlwhMZX2StA3/G', 'Administrador', 'nuche.JPG', 'ghfghf', 456456, 465465, 'Cedula'),
-(53, 'manuel', 'darwin@gmail.com', '$2a$10$sq0RRxCCW634A..pUNSgG.hIBzwzCH05iTJO2o6SN601/KxZiWaL2', 'Usuario', 'Fox.jpeg', 'calle 2 barrio   jasmin', 2147483647, 2147483647, 'Cedula'),
-(82, 'invitado', 'invitado@gmail.com', '$2a$10$J/GzyB9pngIMkISeQpvVqu0bh4jAvIszW.VapNZzTCsjN9eQCYF/u', 'Invitado', 'chispitas.jpeg', NULL, 0, 0, NULL);
+INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`, `foto`, `direccion`, `documento`, `tipo_de_documento`, `telefono`) VALUES
+(53, 'darwin', 'darwin@gmail.com', '$2a$10$sq0RRxCCW634A..pUNSgG.hIBzwzCH05iTJO2o6SN601/KxZiWaL2', 'Usuario', 'Fox.jpeg', 'calle 2 barrio   jasmin', 2147483647, 'Cedula', '3026460489'),
+(82, 'invitado', 'invitado@gmail.com', '$2a$10$J/GzyB9pngIMkISeQpvVqu0bh4jAvIszW.VapNZzTCsjN9eQCYF/u', 'Invitado', 'chispitas.jpeg', NULL, NULL, NULL, '0'),
+(83, 'victor', 'victor@gmail.com', '$2a$10$Kmg8WAQ.1NIiMM2M5d.TNuT/tnR/7catW/D4gZM3FrdpaaOI0pppW', 'Administrador', 'chiribico.jpeg', 'calle 4', 68768, 'Cedula', '3144796742');
 
 -- --------------------------------------------------------
 
@@ -363,7 +358,7 @@ ALTER TABLE `razas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT de la tabla `vacunas`

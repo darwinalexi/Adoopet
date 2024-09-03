@@ -58,9 +58,9 @@ const actualizar_profile= async(e )=> {
 }
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-8 rounded-lg relative h-[89%] overflow-y-scroll">
-                <button onClick={closeModal} className="absolute top-2 right-2 text-red-500">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 h-full">
+            <div className="bg-white p-8 rounded-lg relative h-[64%] overflow-y-scroll ">
+                <button onClick={closeModal} className="absolute top-2 right-2 text-red-500 z-50">
                     <FontAwesomeIcon icon={faClose} />
                 </button>
                 <h1 className="text-2xl font-bold mb-4">Editar Perfil</h1>

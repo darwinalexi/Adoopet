@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { faBell, faPlus, faClose, faUser, faPaw, faSignOutAlt, faHeart } from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "../utils/axiosClent";
 
@@ -21,6 +22,7 @@ const Header = () => {
   const [adoptar, setadoptar]= useState([]);
   const[nombre, setNombre]= useState([])
   const [user, setuser]= useState([]);
+  const [administrador, setadmini]= useState([])
 
 
 
@@ -46,6 +48,7 @@ const navigate = useNavigate();
     listar_raza();
     listar_categoria();
     listar_gender();
+    listar_admin()
 
     listar_user();
    },[])
@@ -126,8 +129,22 @@ const navigate = useNavigate();
     }
   }
 
+  const listar_admin=async()=>{
+    try {
+      
+      const admin= await axiosClient.get("/administrador")
+     
+      const telefonoAdmin = admin.data[0].telefono;
+      setnumero(telefonoAdmin)
+
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const [usuario, setTipo] = useState([]);
+  const [numero, setnumero]= useState([])
 
   useEffect(() => {
     const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
@@ -135,6 +152,7 @@ const navigate = useNavigate();
     const nombre = usuarios ? usuarios.nombre:'';
     setTipo(tipo)
     setNombre(nombre)
+
   }, []);
 
   const borrar_adopcion_p= async(id_adopcion,id_mascota)=>{
@@ -172,6 +190,10 @@ window.location.reload();
   setcreate(false)
   }
 
+  const WhatsAppRedirect = (numero) => {
+    const url = `https://wa.me/${numero}`;
+    window.open(url, '_blank');
+};
   return (
     <>
       <header className=" sm:w-[30%] lg:w-[100%]  absolute top-0  left-0 h-24 border-b border-b-[#1999a6] lg:border-b border-b-[#1999a6] h-16  z-30 ">
@@ -203,6 +225,12 @@ window.location.reload();
         {usuario==="Usuario" &&(
           <>
            <div>
+          <div className="h-7">
+          <button  onClick={() => WhatsAppRedirect(numero)}>
+            <FontAwesomeIcon icon={faWhatsapp} className="size-11" color="#1999a6" />;
+            <h1>Comuniquese con  el Administrador</h1>
+            </button>
+          </div>
                       <div onClick={close_session} className="w-4 relative left-[94%]" >
                         <h1>Cerrar Sesion</h1>
                         <FontAwesomeIcon icon={faSignOutAlt} color="#1999a6" />;

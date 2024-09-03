@@ -1,5 +1,3 @@
-
-import { validationResult } from "express-validator";
 import { Conexion } from "../database/conexion.js";
 import { encrypter } from "./encrypter.js";
 import multer from "multer"
@@ -41,11 +39,6 @@ export const listar_user= async(req,res)=>{
 export const crear_user=async(req,res)=>{
     try{
 
-        const errors  = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            res.status(404).json(errors.array());
-        }
         const{nombre,email,password,tipo, direccion, telefono, documento,tipo_de_documento}=req.body;
         const foto=req.file.originalname;
 
@@ -205,6 +198,26 @@ export const listar_users= async(req,res)=>{
     try {
         
        const [consulta]= await Conexion.query("select id, nombre from usuarios where tipo='Usuario'");
+
+        if(consulta.length>0){
+            res.status(200).json(consulta)
+        }else{
+            res.status(404).json({
+                "mensaje":"no se encontro nada"
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            "mensaje":error
+        })
+    }
+}
+
+export const listar_addmin= async(req,res)=>{
+    try {
+        
+       const [consulta]= await Conexion.query("select*from usuarios where tipo='Administrador'");
 
         if(consulta.length>0){
             res.status(200).json(consulta)
