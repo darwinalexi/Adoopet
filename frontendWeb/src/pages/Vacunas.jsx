@@ -56,6 +56,7 @@ const closecreate=()=>{
                 showConfirmButton: false,
                 timer: 1500
             })
+            console.log(elimniar.data.mensaje);
             window.location.reload();
         } catch (error) {
             Swal.fire({
@@ -106,9 +107,9 @@ const closecreate=()=>{
          paginationRowsPerPageOptions={[1, 2, 3]}
          className="mt-[13%]"
          />
-          <button onClick={open}>Crear Vacuna</button>
-    {openupdate &&( <EditVacunas  data={vacuselect} onclose={close}/> )}
-    {create && ( <CreateVacuna onclose={closecreate}/>)}
+          <button onClick={open} className="bg-[#1999a6] rounded-lg p-2 text-white">Crear Vacuna</button>
+          {openupdate &&( <EditVacunas  data={vacuselect} onclose={close}/> )}
+          {create && ( <CreateVacuna onclose={closecreate}/>)}
         </div>
         </>
     )

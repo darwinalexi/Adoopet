@@ -45,8 +45,8 @@ function CreateVacuna({onclose}){
         }
     }
     return(
-        <div className="bg-[#707070]  h-full w-full absolute left-0 top-0">
-        <div className="bg-white h-[56%] w-[56%] relative left-[23%] top-[25%] rounded-xl flex justify-center grid  grid-cols-2">
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 h-full">
+            <div className="bg-white p-8 rounded-lg relative h-[64%]">
                 <div>
                   <button  className=" flex justify-start m-6 " onClick={onclose}> <FontAwesomeIcon icon={faClose} className="size-12" /></button>
                   <h1 className="text-3xl mt-[18%]  font-medium">Crear  Vacuna</h1>

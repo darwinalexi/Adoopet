@@ -12,8 +12,10 @@ import { Execel } from "./Component/GeneraatorExecel/Ecexel";
 import DataTable from "react-data-table-component";
 import Edit_Mascot from "./Component/Modal/EditMascotas";
 
+import { baseUrl } from "./utils/data";
 
 const Petsnadop = () => {
+  const [usuario, setUsuario] = useState('');
   const [mascotasp, setMascotasp] = useState([]);
   const [crear, setCrear] = useState(null);
   const [createPet, setCreatePet] = useState(false);
@@ -27,7 +29,7 @@ const Petsnadop = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setSelectedState] = useState("");
 
-  
+
   const openModal = (pet) => {
     setCrear(pet);
     setCurrentPetId(pet.id);
@@ -42,7 +44,6 @@ const Petsnadop = () => {
 
   const closeUpdate = () => {
     console.log("cerado")
-    setCurrentPetId(null);
     setActualizar(false);
   };
 
@@ -67,6 +68,13 @@ const Petsnadop = () => {
       console.log(error);
     }
   };
+
+
+  useEffect(() => {
+    const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
+    const tipo = usuarios ? usuarios.tipo : '';
+    setUsuario(tipo);
+  }, []);
 
   useEffect(() => {
     listarMascotasNoAdoptadas();
@@ -103,12 +111,12 @@ const Petsnadop = () => {
   // Encuentra la mascota seleccionada
   const selectedPet = mascotasp.find(mascota => mascota.id === idPet);
 
-  
+
 
   const getimage = (foto) => {
-    const baseUrl = 'http://localhost:4001/img/';
+    const baseUrls = `${baseUrl}/img/`;
     //si hay muchas img crea una url para cada una y las separa por una ,
-    return foto.split(',').map(image => `${baseUrl}${image.trim()}`);
+    return foto.split(',').map(image => `${baseUrls}${image.trim()}`);
   };
 
 
@@ -118,7 +126,7 @@ const Petsnadop = () => {
       selector: row => {
         const urls = getimage(row.foto);
         // Obtiene solo la primera imagen
-        const img = urls.length > 0 ? urls[0] : ''; 
+        const img = urls.length > 0 ? urls[0] : '';
         return (
           <img
             src={img}
@@ -136,9 +144,10 @@ const Petsnadop = () => {
       sortable: true,
     },
     {
-      name: 'Edad',
-      selector: row => `${row.edad} años`,
+      name: 'fecha de nacimiento',
+      selector: row => new Date(row.fecha_nacimiento).toLocaleDateString(), // Solo la fecha
       sortable: true,
+  
     },
     {
       name: 'Descripción',
@@ -149,7 +158,7 @@ const Petsnadop = () => {
       name: 'Acciones',
       cell: row => (
         <div className="flex gap-2">
-          {usuarioTipo === 'Administrador' && (
+          {usuarioTipo === 'SuperUsuario' && (
             <>
               <button onClick={() => borrarMascota(row.id)}>
                 <FontAwesomeIcon icon={faTrashAlt} className="text-red-500" />
@@ -160,11 +169,34 @@ const Petsnadop = () => {
               <button onClick={() => openShow(row)}>
                 <FontAwesomeIcon icon={faSearch} className="text-teal-500" />
               </button>
+            
               <PDFDownloadLink document={<PDF data={row} />} fileName={`Reporte-${row.nombre_mascota}.pdf`}>
+             
                 {({ loading }) => (loading ? 'Cargando documento...' : <button className="bg-teal-500 text-white p-2 rounded">Descargar PDF</button>)}
               </PDFDownloadLink>
             </>
           )}
+          {usuarioTipo== "Invitado" &&(
+             <button onClick={() => openShow(row)}>
+             <FontAwesomeIcon icon={faSearch} className="text-teal-500" />
+           </button>
+          )}
+            {usuarioTipo === 'Usuario' && (
+
+<>
+<PDFDownloadLink document={<PDF data={row} />} fileName={`Reporte-${row.nombre_mascota}.pdf`}>
+             
+             {({ loading }) => (loading ? 'Cargando documento...' : <button className="bg-teal-500 text-white p-2 rounded">Descargar PDF</button>)}
+           </PDFDownloadLink>
+           <button onClick={() => openShow(row)}>
+                <FontAwesomeIcon icon={faSearch} className="text-teal-500" />
+              </button>
+
+</>
+                
+                
+              )}
+                
         </div>
       ),
       sortable: false,
@@ -175,46 +207,62 @@ const Petsnadop = () => {
     <>
       <Header />
       <Sidebar />
-      <div className="w-[100%]   fixed  left-0 top-[23%]">
-        <div className="relative right-[40%] top-[67%]">
+      <div className="w-full mx-auto px-4 py-8 mt-28">
+        <div className="mb-4">
           <input
             type="text"
             placeholder="Buscar..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="p-2 border-b border-b-[#1999a6] focus:outline-0"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="relative left-[33%]">
-          <div>
-            <select
-              value={selectedState}
-              onChange={e => setSelectedState(e.target.value)}
-              className="p-2 border-b border-b-[#1999a6] border-t border-t-[#1999a6] border-l border-l-[#1999a6] border-r border-r-[#1999a6] focus:outline-0"
-            >
-              <option hidden>Categorías</option>
-              <option value="">Todos</option>
-              <option value="grande">Grande</option>
-              <option value="pequeño">Pequeño</option>
-            </select>
-          </div>
+        <div className="mt-4 mb-8">
+          <select
+            value={selectedState}
+            onChange={e => setSelectedState(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option hidden>Categorías</option>
+            <option value="">Todos</option>
+            <option value="grande">Grande</option>
+            <option value="pequeño">Pequeño</option>
+          </select>
         </div>
-
+        <div className="overflow-x-auto">
+    {datos.length > 0 ? (
+       <>
         <DataTable
-          columns={columns}
-          data={datos}
-          pagination
-          paginationPerPage={4}
-          paginationRowsPerPageOptions={[1, 2, 3]}
-        />
-
-        <button onClick={() => setOpenFile(true)} className="bg-[#1999a6] text-white font-bold p-6 rounded-lg h-[23%]">Generar Reporte En Excel</button>
-
-        {show && <Detalles data={idPet} onclose={closeShow} />}
-        {/*genera  el execl colos datos filtrados*/}
-        {file && <Execel data={datos} onclose={() => setOpenFile(false)} />}
-        {actualizar && <Edit_Mascot data={currentPetId} onclose={closeUpdate} />}
+        columns={columns}
+        data={datos}
+        pagination
+        paginationPerPage={6}
+        paginationRowsPerPageOptions={[1, 2, 3]}
+      />
+      {usuario === "SuperUsuario" && (
+           <button
+           onClick={() => setOpenFile(true)}
+           className="mt-4 bg-teal-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-teal-500 transition-colors duration-300"
+         >
+           Generar Reporte En Excel
+         </button>
+        )}
+      </>
+    
+    ) : (
+      <div className="text-center py-4">
+           <p>No Hay Registros Que Mostrar</p>
       </div>
+    )}
+  </div>
+
+        
+       
+      </div>
+
+      {show && <Detalles data={idPet} onclose={closeShow} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" />}
+      {file && <Execel data={datos} onclose={() => setOpenFile(false)} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" />}
+      {actualizar && <Edit_Mascot data={currentPetId} Cerrar={closeUpdate} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" />}
     </>
   );
 };

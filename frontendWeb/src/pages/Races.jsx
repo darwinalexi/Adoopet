@@ -170,17 +170,25 @@ return(
 </div>
    <div     className="absolute top-[26%] w-[89%]">
    <h1>Razas</h1>
-    <button onClick={open}>Crear Raza</button>
-    <DataTable
-    columns={column}
-    data={razas}
+    <button onClick={open} className="bg-[#1999a6] rounded-lg p-2 text-white">Crear Raza</button>
+    
+    <div className="pt-10 overflow-x-auto">
+        {razas.length>0?(
+            <DataTable
+            columns={column}
+            data={razas}
+            />
+        ):(
+            <p>No Hay Razas Registradas</p>
+        )}      
+    </div>
+    
 
-    />
    </div>
 
     {moodal &&(
           <>
-          <div className="h-[100%] w-full bg-[#707070] absolute top-0 left-0  ">
+             <div className="bg-[#707070]  h-full fixed left-0 top-0 w-full bg-opacity-50 z-50">
             <div className=" bg-white h-[45%] w-[50%] relative top-[34%] left-[24%] rounded-lg  z-20 p-6 shadow-lg">
                 <button  onClick={close}> <FontAwesomeIcon icon={faClose}/></button>
                 <h1 className="text-black  text-3xl">Crear  Raza</h1>

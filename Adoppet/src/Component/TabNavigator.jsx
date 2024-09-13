@@ -2,7 +2,7 @@ import Adopcionesp from '../Pages/Adopt';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AdopcionesAdop from '../Pages/AdopcionesAcept';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHouse, faUser, faFingerprint } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faUser, faFingerprint, faCheck, faProcedures } from '@fortawesome/free-solid-svg-icons';
 import Pendientes from '../Pages/Adopteraing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
@@ -36,10 +36,10 @@ tipo_user();
         iconName=faHouse
         break
         case 'Adopciones':
-          iconName=faFingerprint
+          iconName=faProcedures;
           break
           case 'AdopcionesA':
-            iconName=faFingerprint
+            iconName=faCheck;
             break
             default:
             iconName =faUser

@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
-
-
+import "react-datepicker/dist/react-datepicker.css"
+import DatePicker from"react-datepicker"
 import { useRef } from "react";
 
 function Creae_Pets({onclose}){
@@ -17,7 +17,12 @@ function Creae_Pets({onclose}){
     const [vacunas, setvacunas]= useState([])
     //se crea una const para guardar varias img
     const [fotos, setfotos]= useState([])
+    const [fecha, setfecha]= useState(new Date());
 
+
+    const onChange=(fecha)=>{
+      setfecha(fecha)
+    }
     const listar_raza=async()=>{
         try {
           const listar= await axiosClient.get("/listar_races")
@@ -32,7 +37,7 @@ function Creae_Pets({onclose}){
        try {
         const listar= await axiosClient.get("/listar")
         setuser(listar.data)
-        console.log("usurios",listar.data)
+
        } catch (error) {
         console.log("usurios",error)
        }
@@ -44,7 +49,7 @@ function Creae_Pets({onclose}){
           
           const categorias= await axiosClient.get("/listar_categories")
           setcategoria(categorias.data)
-          console.log("categorias",categorias.data)
+         
         } catch (error) {
           console.log(error)
         }
@@ -55,7 +60,7 @@ function Creae_Pets({onclose}){
           
           const generos= await axiosClient.get("/listar_gender")
           setgenero(generos.data)
-          console.log("genero",generos.data)
+       
         } catch (error) {
           console.log(error)
         }
@@ -64,12 +69,12 @@ function Creae_Pets({onclose}){
       const listar_municipio= async()=>{
         const municipio= await axiosClient.get("/listar_municipios")
         setmnuni(municipio.data)
-        console.log("municipio", municipio.data)
+      
       }
       const listar_departamento= async()=>{
         const municipio= await axiosClient.get("/departamento")
         setdepart(municipio.data)
-        console.log("depart", municipio.data)
+     
       }
 
     const nombre_mas = useRef(null);
@@ -79,7 +84,7 @@ function Creae_Pets({onclose}){
     const genero_idRef = useRef(null);
     const descripcionRef = useRef(null);
     const id_vacunaRef = useRef(null);
-    const edad = useRef(null);
+   
     const usuarioref= useRef(null);
     const historial_medicor= useRef(null);
     const municipioref= useRef(null)
@@ -112,7 +117,7 @@ function Creae_Pets({onclose}){
         !genero_idRef.current.value ||
         !descripcionRef.current.value ||
         !id_vacunaRef.current.value ||
-        !edad.current.value ||
+        
         !usuarioref.current.value ||
         !historial_medicor.current.value ||
         !municipioref.current.value ||
@@ -128,19 +133,10 @@ function Creae_Pets({onclose}){
         return;
     }
     
-      // Validación de tipos de datos
-      if (edad <0) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "La edad debe ser un número.",
-          showConfirmButton: true
-        });
-        return;
-      }
-    
+     
+    const regex = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ ]+$/;
       // Validación de patrones
-      if (!/^[a-zA-Z ]+$/.test(nombre_mas.current.value)) {
+      if (!regex.test(nombre_mas.current.value)) {
         Swal.fire({
             icon: "error",
             title: "Error",
@@ -150,7 +146,7 @@ function Creae_Pets({onclose}){
         return;
     }
 
-    if (!/^[a-zA-Z ]+$/.test(historial_medicor.current.value )) {
+    if (!regex.test(historial_medicor.current.value )) {
       Swal.fire({
           icon: "error",
           title: "Error",
@@ -159,7 +155,7 @@ function Creae_Pets({onclose}){
       });
       return;
   }
-  if (!/^[a-zA-Z ]+$/.test( descripcionRef.current.vacunas)) {
+  if (!regex.test( descripcionRef.current.vacunas)) {
     Swal.fire({
         icon: "error",
         title: "Error",
@@ -181,12 +177,12 @@ function Creae_Pets({onclose}){
           formData.append('genero_id', genero_idRef.current.value.trim());
           formData.append('descripcion', descripcionRef.current.value.trim());
           formData.append('id_vacuna', id_vacunaRef.current.value.trim());
-          formData.append('edad', edad.current.value.trim());
+          formData.append('fecha', fecha.toISOString());
           formData.append('usuario',usuarioref.current.value.trim());
           formData.append('historial_medico',historial_medicor.current.value.trim());
           formData.append('municipio', municipioref.current.value.trim());
           formData.append('departamento', departamentoref.current.value.trim());
-          formData.append('vacunas', idVacunaRef.current.value.trim());
+          formData.append('vacuna', idVacunaRef.current.value.trim());
   
     
           const register = await axiosClient.post("/crear_pets", formData);
@@ -200,6 +196,7 @@ function Creae_Pets({onclose}){
                   timer: 3500
               });
               onclose(); 
+              window.location.reload();
         
   
         
@@ -210,7 +207,7 @@ function Creae_Pets({onclose}){
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Ocurrió un error al crear la mascota.",
+                text: error,
                 showConfirmButton: true
             });
         }
@@ -316,7 +313,7 @@ function Creae_Pets({onclose}){
                             <div>
                               <label>Selecciona el usuario qure registra la mascota</label>
                               <br />
-                              <select  required ref={usuarioref}  className=" h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]">
+                              <select  required ref={usuarioref}   className="w-[50%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]">
                                 <>
                                 <option hidden>seleccione...</option>
                                 {user .map((usuario)=>(
@@ -326,23 +323,31 @@ function Creae_Pets({onclose}){
                               </select>
                             </div>
                             <div className="w-[50%] relative left-[24%]">
-                            <label>Ingrese la Edad</label>
+                            <label>selecciona la fecha de nacimiento</label>
                                     <br />
-                                    <input type="number" name="edad" placeholder="Ingrese la edad" required ref={edad}  className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"/>
+                                    <DatePicker  
+                                    //selecciona la fecha y la muesstra 
+                                    selected={fecha} 
+                                    onChange={(fecha)=>onChange(fecha)} 
+                                    //no permite que el user selecione una fecha adelantada 
+                                    maxDate={new Date()}
+                                    showYearDropdown
+                                    
+                                    className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"/>
                                     <br />
                               </div>     
 
                               <div className="w-[50%] relative left-[24%]">
                               <label>Ingrese  el Historia medico </label>
                                     <br />
-                                    <input type="text" name="historial_medico" placeholder="Ingrese la edad" required ref={historial_medicor}  className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"/>
+                                    <input type="text" name="historial_medico" placeholder="Ingrese la historia" required ref={historial_medicor}  className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"/>
                                     <br />
                               </div>   
 
                               <div className="w-[50%] relative left-[24%]">
                                 <label > Seleccion departamento de ubicacion</label>
                                 <br />
-                              <select  required ref={departamentoref}  className=" h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]">
+                              <select  required ref={departamentoref}   className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]">
                                 <>
                                 <option hidden>seleccione...</option>
                                 {depart .map((departa)=>(
@@ -356,7 +361,7 @@ function Creae_Pets({onclose}){
                               <div className="w-[50%] relative left-[24%]">
                                 <label > Seleccion municipio de ubicacion</label>
                                 <br />
-                              <select  required ref={municipioref}  className=" h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]">
+                              <select  required ref={municipioref}   className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]">
                                 <>
                                 <option hidden>seleccione...</option>
                                 {municipio .map((municipi)=>(
@@ -366,7 +371,9 @@ function Creae_Pets({onclose}){
                                 </>
                               </select>
                               </div>
-<label> Seleccione una Vacuna En caso de estar vacunado sino debe seleccionar ninguna</label>
+
+                              <div className="w-[50%] relative left-[23%] top-6">
+                              <label> Seleccione una Vacuna, En caso de estar vacunado o  Sino ve la vacuna debe seleccionar ninguna</label>
                               {vacunas.map((vacuna) => (
                             <div key={vacuna.id} className="flex items-center">
                                 <input
@@ -381,6 +388,8 @@ function Creae_Pets({onclose}){
                                 <label htmlFor={`vacuna-${vacuna.id}`}>{vacuna.nombre}</label>
                             </div>
                         ))}
+                              </div>
+
 
                                   <div className="w-[50%] relative left-[17%] m-12 h-10">
                                   <input type="submit" name="" className="w-[100%] border-2 bg-[#1999a6] h-full rounded-xl" />

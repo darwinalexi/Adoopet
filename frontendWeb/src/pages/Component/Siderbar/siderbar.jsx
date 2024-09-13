@@ -38,7 +38,7 @@ export const Sidebar = () => {
             </button>
               <ul>
           
-                {usuario === "Administrador" && (
+                {usuario === "SuperUsuario" && (
                   <>
                    
                     <SidebarItem to="/perfil">
@@ -89,6 +89,16 @@ export const Sidebar = () => {
                     </SidebarItem>
                     <SidebarItem to="/mascotas_por_adoptar">
                       <FontAwesomeIcon icon={faDog} className='size-8 mr-10'/>Mascotas por Adoptar
+                    </SidebarItem>
+                  </>
+                )}
+                {usuario == "Administrador" &&(
+                  <>
+                    <SidebarItem to="/perfil">
+                      <FontAwesomeIcon icon={faUser} /> Perfil
+                    </SidebarItem>
+                    <SidebarItem to="/adoptar">
+                      <FontAwesomeIcon icon={faDog} className='size-8 mr-10'/>Adoptar Mascota
                     </SidebarItem>
                   </>
                 )}

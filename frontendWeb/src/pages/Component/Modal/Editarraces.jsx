@@ -63,8 +63,8 @@ const EditRaces = ({ close, data }) => {
         }
     }
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+        <div className="bg-[#707070]  h-full fixed left-0 top-0 w-full bg-opacity-50 z-50">
+                 <div className="bg-white w-[56%]  grid grid-rows-1  gap-0 h-[75%] relative top-[18%] left-[23%] rounded-2xl flex justify-center">
                 <button onClick={close} className="absolute top-[37%] right-[34%]">
                     <FontAwesomeIcon icon={faClose} color="red" className="size-5" />
                 </button>

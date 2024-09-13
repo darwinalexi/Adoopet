@@ -7,6 +7,7 @@ import axiosClient from "../utils/axiosClent";
 
 import Swal from"sweetalert2"
 import Creae_Pets from "./Modal/Create_Mascotas";
+import { baseUrl } from "../utils/data";
 
 const Header = () => {
   
@@ -196,11 +197,11 @@ window.location.reload();
 };
   return (
     <>
-      <header className=" sm:w-[30%] lg:w-[100%]  absolute top-0  left-0 h-24 border-b border-b-[#1999a6] lg:border-b border-b-[#1999a6] h-16  z-30 ">
+      <header className=" sm:w-[100%] lg:w-[100%]  absolute top-0  left-0 h-24 border-b border-b-[#1999a6] lg:border-b border-b-[#1999a6] h-16  z-30 ">
      <div className=" sm:w-[70%]  lg:absolute left-[15%]">
-          {usuario==="Administrador" &&(
+          {usuario==="SuperUsuario" &&(
           <>
-          <div className=" grid grid-cols-4 w-[90%] gap-6 fixed right-[4%] lg:fixed top-0  ww-[34%]  lg:w-[60%] lg:grid lg:grid-cols-4 lg:absolute  lg:left-[54%] b">
+          <div className=" grid grid-cols-4 w-[90%] gap-6 fixed right-[4%] lg:fixed top-0  w-[34%]  lg:w-[60%] lg:grid lg:grid-cols-4 lg:absolute  lg:left-[54%] b">
                       <div  className="sm:w-4 lg:w-[70%] mt-5">
                         <p>Adopciones pendientes</p>
                           <button onClick={openModal}><FontAwesomeIcon icon={faBell} color="#1999a6"/></button>
@@ -224,11 +225,11 @@ window.location.reload();
         
         {usuario==="Usuario" &&(
           <>
-           <div>
-          <div className="h-7">
+           <div className="grid grid-cols-2 gap-1 w-[16%] relative left-[93%]">
+          <div className="h-1">
           <button  onClick={() => WhatsAppRedirect(numero)}>
-            <FontAwesomeIcon icon={faWhatsapp} className="size-11" color="#1999a6" />;
-            <h1>Comuniquese con  el Administrador</h1>
+            <FontAwesomeIcon icon={faWhatsapp} className="size-5" color="#1999a6" />;
+            <h1>Comuniquese con  el SuperUsuario</h1>
             </button>
           </div>
                       <div onClick={close_session} className="w-4 relative left-[94%]" >
@@ -238,36 +239,57 @@ window.location.reload();
             </div>
           </>
         )}
-         
+        { usuario === "Administrador" &&(
+          <>
+          <div className="grid grid-cols-2 gap-1 w-[16%] relative left-[93%]">
+              <div className="w-[90%] mt-3">
+                            <p>Crear Mascota</p>
+                          <p onClick={openpet}><FontAwesomeIcon icon={faPlus} color="#1999a6"/></p>
+                </div>
+
+                <div onClick={close_session} className="w-4 relative left-[94%]" >
+                      <h1>Cerrar Sesion</h1>
+                    <FontAwesomeIcon icon={faSignOutAlt} color="#1999a6" />;
+                </div>
+          </div>
+          </>
+        )}
+       {usuario ==="Invitado"&&(
+           <div onClick={close_session} className="w-4 relative left-[94%]" >
+           <h1>Cerrar Sesion</h1>
+         <FontAwesomeIcon icon={faSignOutAlt} color="#1999a6" />;
+     </div>
+       )}
 
      </div>
 
         {modal &&(
          <>
           <div className="overflow-y-scroll  border-y-2 rounded-xl border-x-2 lg:w-[29%] relative top-20   w-[78%]  lg:relative left-[25%] top-16 grid grid-cols-1 gap-7 bg-[#1999a6]  h-80 ">
-          <button onClick={closeModal} className="absolute right-[12%]"><FontAwesomeIcon icon={faClose} className="size-8 mt-"/></button>
-            <h3>Adopciones Pendientes</h3>
+          <button onClick={closeModal} className="absolute right-[10%] m-4 "><FontAwesomeIcon icon={faClose} className="size-8 mt-"/></button>
+            <h3 className="text-center  mt-[8%]">Adopciones Pendientes</h3>
             <div className="h-23">
               {mpendientes .map((mascota)=>(
                <>
-               <div className="h-auto mt-7  w-[60%]  hover:border-b border-slate-200 hover:border-t border-slate-200 " >
-                      <div className="grid grid-cols-2  w-[50%] w-full">
-                      <div className="grid grid-cols-2 w-[100%] w-full">
-                        <p className="w-36 mt-4 ">Nombre Mascota: {mascota.nombre_mascota}</p>
-                        <p  className="relative left-24   w-40"> Nombre del Adoptante: {mascota.nombre_usuario}</p>
-                       
+               <div className="h-[90%]   w-[100%]  mb-2 hover:border-b border-slate-200 hover:border-t border-slate-200 " >
+                      <div className="grid grid-cols-2  w-[50] ">
+                      <div className="grid grid-rows-2  gap-1 w-[100%] w-full ">
+                        <p className="w-36 mt-4 ml-8 ">Nombre Mascota: {mascota.nombre_mascota}</p>
+                        <img  src={`${baseUrl}/img/${mascota.foto}`} className="rounded-full  ml-6  relative bottom-[66%]" />
+                        <p className="absolute top-[100%] mt-14 ml-12">Edad: {mascota.edad} años</p>
+                      </div>
+                     
+                      <div className="">
+                        <p  className="relative left-[10%] top-5   w-40"> Nombre del Adoptante: {mascota.nombre_usuario}</p>
+                        <p  className=" w-40 relative left-[10%] top-8 "> Correo del Adoptante: {mascota.correo}</p>
+                      
+                        <div className="grid grid-cols-2 gap-5 relative left-[18%] top-[15%] mt-6 w-[70%] ">
+                          <button  className="bg-white   rounded-xl  p-1 w-[113%]"onClick={()=>adopt( mascota.id_mascota)}>Adoptar Macota</button>
+                          <button    className="bg-white rounded-xl   p-2 w-[100%]"  onClick={() => borrar_adopcion_p(mascota.id_adopcion,mascota.id_mascota)}>Borrar</button>
+                      </div>
+                      </div>
 
-                        <img  src={`http://localhost:4001/img/${mascota.foto}`} className="rounded-full h-[73%] ml-11" />
-                        <p  className="relative left-24 top-[2%] w-40 "> Correo del Adoptante: {mascota.correo}</p>
-                      </div>
-                      <div>
-                      <p className="relative top-[100%] right-[98%]  ">Edad: {mascota.edad} años</p>
-                      </div>
-                      <div className="grid grid-cols-2 relative left-[98%] mt-6 w-[166%] ">
-                      <button  className="bg-white   rounded-xl mr-2 "onClick={()=>adopt( mascota.id_mascota)}>Adoptar Macota</button>
-                      <button    className="bg-white rounded-xl"  onClick={() => borrar_adopcion_p(mascota.id_adopcion,mascota.id_mascota)}>Borrar</button>
-
-                      </div>
+                      
                   </div>
                </div>
                

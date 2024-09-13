@@ -3,13 +3,13 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 function Detalles({onclose, data}){
     return(
-        <div className="absolute top-20 left-[50%] transform -translate-x-1/2 bg-white p-4 shadow-lg rounded-lg w-1/2">
+        <div className="fixed top-[30%] left-[50%] transform -translate-x-1/2 bg-white p-4 shadow-lg rounded-lg w-1/2">
         <button onClick={onclose} className="absolute top-2 right-2">
           <FontAwesomeIcon icon={faClose}  className="size-10"/>
         </button>
         <h1 className="text-xl font-bold">Detalles de la Mascota</h1>
         <p><strong>Nombre:</strong> {data.nombre_mascota}</p>
-        <p><strong>Edad:</strong> {data.edad} años</p>
+        <p><strong>Edad:</strong> {data.edad==0 ? "la mascoota pose menos de 1 año de edad" :`${data.edad} años`}</p>
         <p><strong>Raza:</strong> {data.nombre_raza}</p>
         <p><strong>Categoría:</strong> {data.nombre_categoria}</p>
         <p><strong>Género:</strong> {data.genero}</p>

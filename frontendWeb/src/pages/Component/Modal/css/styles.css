@@ -6,10 +6,12 @@
     position: relative;
     top: 78px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    
 }
 
 .my-hot-table .ht_master {
     border: 1px solid #ddd; /* Borde alrededor de la tabla maestra */
+    
 
 }
 

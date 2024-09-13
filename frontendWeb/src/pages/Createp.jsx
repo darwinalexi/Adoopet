@@ -133,7 +133,7 @@ const listar_genero=async()=>{
                
                 <br />
                
-                <label className="text-white">Sube tu imagen de tu mascota</label>
+                <label className="text-white">Sube tus imagenes de tu mascota</label>
                 <br />
                 <input type="file" name="foto" onChange={handinputchange} className="bg-gray-500 w-60 rounded-full placeholder:pl-14"/>
                 <br />

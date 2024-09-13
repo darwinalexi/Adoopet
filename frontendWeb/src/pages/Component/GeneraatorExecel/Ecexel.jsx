@@ -32,23 +32,32 @@ export function Execel({ data }) {
 
     // Función para exportar a Excel
     const exportToExcel = () => {
-     try {
-        if (hotTableComponent.current) {
-            const hotInstance = hotTableComponent.current.hotInstance; // Obtén la instancia de Handsontable
-            const data = hotInstance.getData(); // Obtén los datos de la tabla
-            const ws = XLSX.utils.json_to_sheet(data, { header: [
-                "nombre_usuario", "genero", "nombre_categoria", "nombre_raza", "edad", "estado",
-                "estado_vacuna", "foto", "historial_medico", "municipio", "nombre_departamento",
-                "nombre_mascota", "descripcion"
-            ] }); // Convierte los datos a una hoja de Excel
+        try {
+          if (hotTableComponent.current) {
+            const hotInstance = hotTableComponent.current.hotInstance; // obtiene la instancia de Handsontable
+            const data = hotInstance.getData(); // obtiene los datos de la tabla
+            const headers = [
+              "Usuario", "Género", "Categoría", "Raza", "fecha nacimiento", "Estado",
+              "E.Vacuna", "Historial Médico", "Municipio", "Departamento",
+              "Nombre", "Descripción"
+            ];
+            //DATAWIDTH  se añade para poder combinar y mostra a tabla ordenadamente
+            const dataWithHeaders = data.map((row, index) => {
+              return headers.reduce((acc, header, columnIndex) => {
+                acc[header] = row[columnIndex];
+                return acc;
+              }, {});
+            });
+      
+            const ws = XLSX.utils.json_to_sheet(dataWithHeaders); // Convierte los datos a una hoja de Excel
             const wb = XLSX.utils.book_new(); // Crea un nuevo libro de trabajo
             XLSX.utils.book_append_sheet(wb, ws, 'datos'); // Añade la hoja al libro
             XLSX.writeFile(wb, 'reporte.xlsx'); // Escribe el archivo y lo descarga
+          }
+        } catch (error) {
+          console.log("paila", error)
         }
-     } catch (error) {
-        
-     }console.log("paila",error)
-    };
+      };
 
     return (
         <div className="bg-white h-full fixed left-0 top-0 w-full z-10">
@@ -72,7 +81,7 @@ export function Execel({ data }) {
                     <HotColumn data="genero" title="Género" />
                     <HotColumn data="nombre_categoria" title="Categoría" />
                     <HotColumn data="nombre_raza" title="Raza" />
-                    <HotColumn data="edad" title="Edad" />
+                    <HotColumn data="fecha_nacimiento" title="Fe.Na" />
                     <HotColumn data="estado" title="Estado" />
                     <HotColumn data="estado_vacuna" title="Estado Vacuna" />
                     <HotColumn data="historial_medico" title="Historial Médico" />

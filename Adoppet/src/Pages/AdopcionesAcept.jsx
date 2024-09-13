@@ -55,6 +55,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
                     <Text style={style.text}>Nombre: {item.nombre_mascota}</Text>
                     <Text style={style.text}>Edad: {item.edad}</Text>
                     <Text style={style.text}>Celular: {item.celular}</Text>
+                   
                     {/*toma los nommbre los separa por , y da el 1 nombre*/}
                     {item.foto && item.foto.split(',')[0] !== '' ? (
                         <Image
@@ -66,10 +67,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
                         <Text>No hay imagen disponible</Text>
                         )}
                          <Text style={style.text}>Estado: {item.estado}</Text>
+                         <View style={{backgroundColor:"red", height:12, width:"63%"}}>
+                           
+                    </View>
         
                 </View>
                 )}
                 />
+
      
         </SafeAreaView>
     )

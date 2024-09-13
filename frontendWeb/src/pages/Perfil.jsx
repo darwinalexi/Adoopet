@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import Header from "./Component/Header";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClose, faEnvelope, faLock, faPlus, faUser } from '@fortawesome/free-solid-svg-icons'
+import {  faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Sidebar } from "./Component/Siderbar/siderbar";
 import axiosClient from "./utils/axiosClent";
-import Swal from "sweetalert2";
+
 import Editarperfil from "./Component/Modal/Editaprofile";
 import Create_User from "./Component/Modal/CreateUser";
+import { baseUrl } from "./utils/data";
 
 const Perfil = () => {
     const [usuario, setUsuario] = useState([]);
@@ -46,6 +47,7 @@ const listar_profile=async()=>{
         const tipo= usuarios.tipo ? usuarios.tipo:'';
         setUsuario(tipo)
 
+
         const profile= await axiosClient.get(`/buscar/${id_user}`)
         //itera sobre el array que da la api ya que el id del user es un objeto almacenado en localstorage por lo cual devolvera un array y no un arreglo 
         for (const item of profile.data) {
@@ -82,7 +84,7 @@ const listar_profile=async()=>{
         <Sidebar />
            
            
-            {usuario === "Administrador" && (
+            {usuario === "SuperUsuario" && (
                 <>
                  <button onClick={Open} className="relative top-24">  <FontAwesomeIcon icon={faPlus}/> crear Usuario</button>
                  <div className="grid  grid-cols-2 rounded-xl shadow-2xl absolute top-[36%] ml-[13%] border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] w-[64%]">
@@ -103,7 +105,7 @@ const listar_profile=async()=>{
                     </div>
                 
                     <div>
-                        <img src={`http://localhost:4001/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
+                        <img src={`${baseUrl}/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
                     </div>
                 
                 </div>
@@ -114,10 +116,9 @@ const listar_profile=async()=>{
 
 
 
-            {usuario === "Usuario" && (
+            {usuario === "Administrador" && (
                 <>
-
-<div className="grid  grid-cols-2 rounded-xl shadow-2xl absolute top-[36%] ml-[13%] border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] w-[64%]">
+                <div className="grid  grid-cols-2 rounded-xl shadow-2xl absolute top-[36%] ml-[13%] border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] w-[64%]">
                         <div>
                         <h1 className="flex justify-start size-16 font-extrabold w-[100%] ml-7 mt-5">Perfil de Usuario</h1>
                         <p className="flex justify-start pb-6 ml-6">Nombre: {profile.nombre}</p>
@@ -128,7 +129,7 @@ const listar_profile=async()=>{
                         {update && <Editarperfil closeModal={closeupdate} profile={profile} />}
                         </div>
                         <div>
-                        <img src={`http://localhost:4001/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
+                        <img src={`http://localhost:6831/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
                         </div>
                         </div>
 
@@ -137,7 +138,7 @@ const listar_profile=async()=>{
                         {pets.map((pet) => (
                             <div key={pet.id} className="h-[54%] w-[53%] top-[35%] border-t-[#1999a6]  rounded-xl grid-rows-2 border-b border-b-[#1999a6] border-l border-l-[#1999a6] border-r border-r-[#1999a6] ">
                                 <div className="w-full h-[70%]">
-                                     <img src={`http://localhost:4001/img/${pet.foto}`} className="h-full w-full rounded-lg"/>
+                                     <img src={`http://localhost:6831/img/${pet.foto}`} className="h-full w-full rounded-lg"/>
                                 </div>
                                 <div className="p-4  relative bottom-0">
                                     <h1 className="font-bold">Nombre Mascota: {pet.nombre_mas}</h1>
@@ -147,10 +148,43 @@ const listar_profile=async()=>{
                             </div>
                         ))}
                 </div>
-
-
                 </>
             )}
+
+            {usuario === "Usuario" && (
+                    <>
+                    <div className="grid  grid-cols-2 rounded-xl shadow-2xl absolute top-[36%] ml-[13%] border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] w-[64%]">
+                            <div>
+                            <h1 className="flex justify-start size-16 font-extrabold w-[100%] ml-7 mt-5">Perfil de Usuario</h1>
+                            <p className="flex justify-start pb-6 ml-6">Nombre: {profile.nombre}</p>
+                            <p className="flex justify-start pb-6 ml-7">Tipo: {profile.tipo}</p>
+                            <p className="flex justify-start pb-6 ml-6">Correo: {profile.email}</p>
+                            <button onClick={updateProfile}>Editar Perfil</button>
+
+                            {update && <Editarperfil closeModal={closeupdate} profile={profile} />}
+                            </div>
+                            <div>
+                            <img src={`http://localhost:6831/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
+                            </div>
+                            </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3  h-[32%]   w-[80%] absolute left-[10%] top-[95%]  mb-14 gap-5">
+                        <h1 className="col-span-full  font-bold text-4xl   h-full">Adopciones Realizadas</h1>
+                            {pets.map((pet) => (
+                                <div key={pet.id} className="h-[54%] w-[53%] top-[35%] border-t-[#1999a6]  rounded-xl grid-rows-2 border-b border-b-[#1999a6] border-l border-l-[#1999a6] border-r border-r-[#1999a6] ">
+                                    <div className="w-full h-[70%]">
+                                        <img src={`http://localhost:6831/img/${pet.foto}`} className="h-full w-full rounded-lg"/>
+                                    </div>
+                                    <div className="p-4  relative bottom-0">
+                                        <h1 className="font-bold">Nombre Mascota: {pet.nombre_mas}</h1>
+                                        <p className="text-sm">Descripcion: {pet.descripcion}</p>
+                                        <p className="text-sm">Edad: {pet.edad} años</p>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                    </>
+             )}
         </>
     );
 };

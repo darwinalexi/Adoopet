@@ -1,11 +1,13 @@
 import { useState, useRef } from "react";
 import axiosClient from "../../utils/axiosClent";
 import Swal from "sweetalert2";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import  { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function Edituse({data, onclose}) {
     const [update, setUpdate] = useState({});
     const [selectedFile, setSelectedFile] = useState(null);
+    const [passwordvisible, setPasswordVisible]= useState(false)
 
 
     const nombreref = useRef(null);
@@ -18,7 +20,9 @@ function Edituse({data, onclose}) {
     const documentoref= useRef(null)
     const tipo_documentoref= useRef(null)
    
-
+const toogle  = () => {
+ setPasswordVisible(!passwordvisible)
+}
     const actualizar = async (e) => {
         e.preventDefault(); 
 
@@ -55,33 +59,7 @@ function Edituse({data, onclose}) {
             // Verifica si el valor tiene exactamente 10 dígitos
             return /^\d{10}$/.test(valor);
         };
-    
 
-
-if (!nombre  || !email || !tipo || !direccion  || !celular  || !numero_documento || !tipo_documento) {
-    Swal.fire({
-        icon: "error",
-        title: "",
-        text: "los campos  deben ser llenados correctamente",
-        showConfirmButton: true,
-        timer: 1500
-    });
-    return;
-}
-
-const telefono = telefonoref.current.value;
-const documento = documentoref.current.value;
-         
-        if (telefono && !validarCampoNumerico(telefono)  ||  documento && !validarCampoNumerico(documento)) {
-            Swal.fire({
-                icon: "error",
-                title: "",
-                text: "los campos numericos deben tener exactamente 10 dígitos",
-                showConfirmButton: true,
-                timer: 1500
-            });
-            return;
-        }
         const correo = emailref.current.value;
         if ( correo && !validarEmail(correo)) {
             Swal.fire({
@@ -93,7 +71,44 @@ const documento = documentoref.current.value;
             });
             return;
         }
-
+        const validarPassword = (password) => {
+            return password.length >= 8 && password.length <= 16;
+        };
+        
+       
+        const telefono = telefonoref.current.value;
+        const documento = documentoref.current.value;
+        if (telefono && !validarCampoNumerico(telefono)  ||  documento && !validarCampoNumerico(documento)) {
+            Swal.fire({
+                icon: "error",
+                title: "",
+                text: "los campos numericos deben tener exactamente 10 dígitos",
+                showConfirmButton: true,
+                timer: 1500
+            });
+            return;
+        }
+        if (!nombre  || !email || !tipo || !direccion  || !celular  || !numero_documento || !tipo_documento) {
+            Swal.fire({
+                icon: "error",
+                title: "",
+                text: "los campos  deben ser llenados correctamente",
+                showConfirmButton: true,
+                timer: 1500
+            });
+            return;
+        }
+        if (!validarPassword(claveref.current.value)) {
+            Swal.fire({
+                icon: "error",
+                title: "",
+                text: "La contraseña debe ser mínimo 8 caracteres y máximo 16",
+                showConfirmButton: true,
+                timer: 3000
+            });
+            return;
+        }
+        
         try {
             const response = await axiosClient.put(`/actualizar/${data.id}`, formData )
             console.log(response.data.mensaje);
@@ -103,7 +118,6 @@ const documento = documentoref.current.value;
             console.log("Error al actualizar:", error);
         }
     };
-
 
 
 
@@ -135,13 +149,20 @@ const documento = documentoref.current.value;
                 <div className="mb-4">
                     <label className="block text-gray-700">Clave</label>
                     <input
-                        type="password"
+                         type={passwordvisible ? "text" : "password"}
                         name="password"
                          ref={claveref}
                        
                         className="border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"
                     />
+                              <button
+                                    onClick={toogle}
+                                    className="relative  bottom-9 left-[36%]"
+                                >    /{/*permite cambiar icono segun correspnda el estado del input   */}
+                                    <FontAwesomeIcon icon={passwordvisible ? faEyeSlash : faEye} color="#1999a6"  className="size-8"/>
+                            </button>
                 </div>
+      
                 <div className="mb-4">
                     <label className="block text-gray-700">Tipo</label>
                     <select

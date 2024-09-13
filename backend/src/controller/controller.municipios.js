@@ -62,6 +62,14 @@ export const  actualizar_municipio =async( req, res)=> {
 export const  elimninar_municipio =async( req, res)=> {
     try {
         const {id}= req.params;
+        const [relacion] = await Conexion.query("SELECT COUNT(*) AS total FROM mascotas WHERE municipio = ?", [id]);
+
+        if (relacion[0].total > 0) {
+            return res.status(404).json({
+                "mensaje": "No se puede eliminar el municipio porque está relacionado con una mascota."
+            });
+        }
+
         const [actualizo]= await Conexion.query("delete  from municipio where id=?",[id])
         if (actualizo.affectedRows>0) {
             res.status(200).json({

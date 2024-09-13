@@ -1,4 +1,4 @@
-import { SafeAreaView,Text,StyleSheet, ScrollView, View, Image, TextInput, TouchableOpacity, FlatList, Alert} from "react-native"
+import { SafeAreaView,Text,StyleSheet, View, Image, TextInput, TouchableOpacity, FlatList, Alert} from "react-native"
 import axiosClient from "../utils/AxiosClient"
 import { useEffect, useState} from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -26,7 +26,7 @@ const Pendientes = () => {
         setselectpet(user)
          setmodal(true)
        } catch (error) {
-        console.log("errorrrrrrrrrrrrrrrr")
+        console.log("error")
        }
     };
 
@@ -119,10 +119,10 @@ const Pendientes = () => {
     return (
         <SafeAreaView style={style.main}>
 
-                {tipo_user === "Usuario" && (
+              
                     <View>
                       <Buttom/>
-                        <Text style={{ fontSize: 45, textAlign:"center", fontWeight:"bold", color:"#000" }}>Adopciones en proceso</Text>
+                      <Text style={{ fontSize: 45, textAlign:"center", fontWeight:"bold", color:"#000" }}>Adopciones en proceso</Text>
                         <TextInput
                             style={style.searchBar}
                             placeholder="Buscar mascotas"
@@ -147,6 +147,8 @@ const Pendientes = () => {
                                         <Text style={style.text}>Edad: {item.edad} Años</Text>
                                         <Text style={style.text}>Municipio: {item.municipio}</Text>
                                         <Text style={style.text}>Departamento: {item.departamento}</Text>
+                                        <View style={{backgroundColor:"orange", height:12, width:"63%"}}>
+                                        </View>
                                     </View>
 
                                     <View style={{flexDirection:"row", width:"50%",}}>
@@ -174,7 +176,7 @@ const Pendientes = () => {
                             )}
                         />
                     </View>
-                )}
+                
         </SafeAreaView>
     );
 };

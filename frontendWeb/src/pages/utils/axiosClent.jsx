@@ -1,7 +1,8 @@
 import axios from 'axios'
+import { baseUrl } from './data'
 
 const axiosClient = axios.create({
-    baseURL: 'http://localhost:4001'
+    baseURL: baseUrl
 })
 
 axiosClient.interceptors.request.use((request) => {

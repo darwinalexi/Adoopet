@@ -44,6 +44,10 @@ const LoginModal = ({ visible, onClose }) => {
                 if (usuario) {
                     const users = JSON.parse(usuario);
                     const tipo = users.tipo;
+                    if (tipo=="Administrador") {
+                        Alert.alert("Su usuario no pose permisos para ingresar a nuestra App")
+                       return;
+                    }
                     navigation.navigate("Home2");
                 }
             } else if (response.status === 404) {

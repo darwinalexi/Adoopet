@@ -14,7 +14,7 @@ import { ruta_d } from "./src/router/router.departamentro.js";
 import { vacunas } from "./src/router/router.vacunas.js";
 const server= express();
 
-const port= 4001;
+const port= 6831;
 
 server.use(body_parser.json());
 server.use(body_parser.urlencoded({extended:false}))
@@ -22,6 +22,10 @@ server.use(body_parser.urlencoded({extended:false}))
 server.use(cors());
 
 server.use(express.static('./public'))
+
+server.get('/', (req, res) =>{
+    res.send('Hola mundo')
+})
 
 server.use(ruta_Auth)
 server.use(validarToken,ruta_races)
@@ -34,5 +38,5 @@ server.use(validarToken, ruta_muni)
 server.use(validarToken, ruta_d)
 server.use(validarToken,vacunas)
 server.listen(port,()=>{
-    console.log("servidor corriendo en el pureto "+port)
+    console.log("servidor corriendo en el puerto "+port)
 })

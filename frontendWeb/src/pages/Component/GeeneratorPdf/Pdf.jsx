@@ -1,11 +1,11 @@
 import { Document, Text, Page, StyleSheet, View, Image } from '@react-pdf/renderer';
 import { useEffect } from 'react';
+import { baseUrl } from '../../utils/data';
 
 function PDF({ data }) {
-useEffect(()=>{
    
-  console.log(`Ruta de la imagen: http://localhost:4001/img/${data.foto}`);
-},[])
+  const image = `${baseUrl}/img/${data.foto.split(',')[0].trim()}`;
+
   return (
     <Document>
       <Page style={styles.pageBackground}>
@@ -13,11 +13,11 @@ useEffect(()=>{
         <View style={styles.date}>
           
           <Text style={styles.text}>Nombre: {data.nombre_mascota}</Text>
-          <Text style={styles.text}>Edad: {data.edad} años</Text>
+          <Text style={styles.text}>Edad: {data.edad==0 ? "la mascoota pose menos de 1 año de edad" :`${data.edad} años`}</Text>
           <Text style={styles.text}>Descripción: {data.descripcion}</Text>
           <Text style={styles.text}>Historial Medico : {data.historial_medico}</Text>
           <Text style={styles.text}>Estado : {data.estado}</Text>
-          <Text style={styles.text}>Edad : {data.edad} años</Text>
+          
           <Text style={styles.text}>Genero : {data.genero}</Text>
           <Text style={styles.text}> Depatreamento: {data.nombre_departamento}</Text>
           <Text style={styles.text}> Municipio: {data.municipio}</Text>
@@ -26,12 +26,12 @@ useEffect(()=>{
         </View>
         <View>
         <Image
-  style={styles.img}
-  src={`http://localhost:4001/img/${data.foto}`}
-  alt={"kokok"}
-  onLoad={() => console.log('Imagen cargada correctamente')}
-  onError={(error) => console.error(`Error al cargar la imagen: ${error}`)}
-/>
+          style={styles.img}
+          src={image}
+          alt={"kokok"}
+          onLoad={() => console.log('Imagen cargada correctamente')}
+          onError={(error) => console.error(`Error al cargar la imagen: ${error}`)}
+        />
         </View>
       </Page>
     </Document>

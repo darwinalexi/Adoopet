@@ -48,15 +48,20 @@ function Departamento() {
             const  eliminar= await axiosClient.delete(`/departamento/${id}`)
             setdepart(eliminar.data.mensaje)
             Swal.fire({
-                icon: "success",
-                title: "",
-                text:eliminar.data.mensaje,
-                showConfirmButton: true,
+                text: 'Departamento eliminado con éxito',
+                showConfirmButton: false,
                 timer: 1500
-              })
+              });
+              console.log(eliminar.data.mensaje);
               window.location.reload();
         } catch (error) {
-            console.log(error)
+            Swal.fire({
+                text: 'No fue posible  eliminar el departamento',
+                showConfirmButton: false,
+                timer: 1500
+              });
+              console.log(response.data.mensaje);
+              window.location.reload();
         }
     }
 
@@ -99,7 +104,7 @@ function Departamento() {
         <>
 <Header/>
 <Sidebar/>
-        <div className="grid  grid-rows-2 h-full gap-0">
+        <div className="grid  grid-rows-2 h-full gap-0 ml-[10%]">
         <div className="relative right-[40%] top-28  ">
         <input
             type="text"
@@ -113,13 +118,21 @@ function Departamento() {
         <div className=" absolute top-[40%] w-[78%]">
             <h1>Departamento</h1>
             <button className="bg-[#1999a6] rounded-lg p-2 text-white" onClick={opencreae}>Crear Departamento</button>
-            <DataTable
-            columns={column}
-            data={depar}
-            pagination
-            paginationPerPage={4}
-            paginationRowsPerPageOptions={[1, 2, 3]}
-            />
+            <div className="overflow-x-auto">
+            {depar.length>0?(
+                <DataTable
+                columns={column}
+                data={depar}
+                pagination
+                paginationPerPage={4}
+                paginationRowsPerPageOptions={[1, 2, 3]}
+                />
+            ):(
+                <p>No Hay Departamento</p>
+            )}
+            
+            </div>
+           
             {create &&(<Create_depart onclose={closecreate} />)}
             {openupdate &&(<EditDepart data={select} onclose={close} />)}
         </div>

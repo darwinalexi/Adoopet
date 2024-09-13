@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2024 a las 23:33:25
+-- Tiempo de generación: 13-09-2024 a las 02:43:17
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -46,7 +46,10 @@ INSERT INTO `adopciones` (`id`, `id_adoptante`, `edad`, `id_mascota`, `estado`) 
 (124, 53, 45, 119, 'Adoptado'),
 (125, 53, 18, 120, 'Adoptado'),
 (126, 53, 28, 150, 'Adoptado'),
-(127, 53, 78, 151, 'Pendiente');
+(128, 53, 19, 179, 'Adoptado'),
+(129, 53, 18, 201, 'Adoptado'),
+(131, 117, 34, 212, 'Adoptado'),
+(133, 117, 90, 210, 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -65,8 +68,7 @@ CREATE TABLE `categorias` (
 --
 
 INSERT INTO `categorias` (`id`, `nombre`, `estado`) VALUES
-(1, 'grande', 'Activo'),
-(2, 'Pequeño', 'Activo');
+(1, 'grande', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -85,9 +87,7 @@ CREATE TABLE `departamento` (
 --
 
 INSERT INTO `departamento` (`id`, `nombre`, `codigo_dane`) VALUES
-(17, 'casanare', 990),
-(19, 'Cundinamarca', 345),
-(21, 'Huila', 7867);
+(26, 'Pitalito', 454);
 
 -- --------------------------------------------------------
 
@@ -123,34 +123,22 @@ CREATE TABLE `mascotas` (
   `nombre_mas` varchar(34) DEFAULT NULL,
   `id_vacuna` enum('Vacunado','No Vacunado') DEFAULT NULL,
   `descripcion` varchar(87) DEFAULT NULL,
-  `edad` int(11) NOT NULL,
+  `fecha_nacimiento` varchar(45) DEFAULT NULL,
   `usuario` int(11) DEFAULT NULL,
   `estado` enum('Por adoptar','Adoptado','En proceso') DEFAULT 'Por adoptar',
   `historial_medico` varchar(200) DEFAULT NULL,
   `municipio` int(11) DEFAULT NULL,
   `departamento` int(11) DEFAULT NULL,
-  `vacunas` int(11) DEFAULT NULL
+  `vacunas` int(11) DEFAULT NULL,
+  `edad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_roman_ci;
 
 --
 -- Volcado de datos para la tabla `mascotas`
 --
 
-INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `edad`, `usuario`, `estado`, `historial_medico`, `municipio`, `departamento`, `vacunas`) VALUES
-(91, 1, 2, NULL, 2, 'koko', 'Vacunado', 'fghfhgf', 6, 53, 'Adoptado', 'ghjghgjg', 30, 17, 1),
-(92, 1, 1, '0', 2, 'luna ', 'Vacunado', 'es jugueton', 678, 53, 'Por adoptar', 'koko', NULL, NULL, NULL),
-(98, 1, 2, '0', 1, 'chispas', 'No Vacunado', 'es jugueton', 7, 53, 'Adoptado', 'koko', 32, 17, NULL),
-(105, 1, 1, '0', 1, 'chispas', 'No Vacunado', 'es lklk', 5, 53, '', 'koko', 30, 17, NULL),
-(107, 1, 1, 'rufo.JPG', 1, 'kokoko', 'No Vacunado', 'es jugueton', 6, 53, '', 'lkkljkljk', 30, 21, NULL),
-(108, 1, 1, 'solovino.JPG', 1, 'gggfghfhg', 'No Vacunado', 'es jugueton', 6, 53, '', 'lkkljkljk', 30, 21, NULL),
-(119, 1, 2, 'Chillon.JPG', 1, 'chispas', 'Vacunado', 'jhkjh', 6, 53, 'Adoptado', 'hjkhk', 31, 17, NULL),
-(120, 2, 2, 'solovino.JPG', 1, 'luna', 'Vacunado', '668768', 9, 53, 'Adoptado', 'koko', 31, 17, NULL),
-(126, 1, 1, 'rufo.JPG,solovino.JPG,Vainilla.JPG,Zuricata.jpeg', 1, 'chispas', 'Vacunado', 'hkjhkjh', 7, 53, '', 'lkkljkljk', 30, 17, NULL),
-(146, 1, 1, 'nena.JPG,nuche.JPG,princesa.JPG,rifle.JPG', 1, 'hghjhk', 'Vacunado', 'jhkjh', 7, 53, '', 'hjhkj', 30, 19, NULL),
-(147, 1, 1, 'rufo.JPG,solovino.JPG,Vainilla.JPG,Zuricata.jpeg', 1, 'miguel', 'Vacunado', 'jhkjh', 7, 53, '', 'hjhkj', 30, 19, NULL),
-(149, 1, 1, 'chispitas.JPG,Dante.JPG,Fox.jpeg,mascara.JPG', 1, 'hghjhk', 'Vacunado', 'jhkjh', 7, 53, '', 'hjhkj', 30, 19, NULL),
-(150, 1, 1, 'Chillon.JPG,chiribico.jpeg,chispitas.jpeg,chispitas.JPG,', 1, 'darwin', 'Vacunado', 'mbmbn', 6, 53, 'Adoptado', 'koko', 30, 17, NULL),
-(151, 1, 1, 'rufo.JPG,solovino.JPG,Vainilla.JPG,Zuricata.jpeg', 2, 'chispas', 'Vacunado', 'lhgjhgj', 9, 53, 'En proceso', 'koko', 31, 17, NULL);
+INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `fecha_nacimiento`, `usuario`, `estado`, `historial_medico`, `municipio`, `departamento`, `vacunas`, `edad`) VALUES
+(213, 1, 1, 'perfil.jfif,descarga.jfif', 2, 'mascara', 'Vacunado', 'es juguetona', '2024-06-03T00:37:20.000Z', 83, 'Por adoptar', 'koko', 37, 26, 80, 0);
 
 -- --------------------------------------------------------
 
@@ -169,9 +157,7 @@ CREATE TABLE `municipio` (
 --
 
 INSERT INTO `municipio` (`id`, `nombre`, `codigo_dane`) VALUES
-(30, 'Pitalito', 8908),
-(31, 'algeciras', 3453),
-(32, 'koko', 787);
+(37, 'Pitalito', 6880);
 
 -- --------------------------------------------------------
 
@@ -189,8 +175,7 @@ CREATE TABLE `razas` (
 --
 
 INSERT INTO `razas` (`id`, `nombre_r`) VALUES
-(1, 'criollo '),
-(2, 'Pincher');
+(1, 'criollo ');
 
 -- --------------------------------------------------------
 
@@ -203,7 +188,7 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(54) NOT NULL,
   `email` varchar(64) NOT NULL,
   `password` varchar(213) DEFAULT NULL,
-  `tipo` enum('Administrador','Usuario','Invitado') DEFAULT NULL,
+  `tipo` enum('Invitado','Administrador','Usuario','SuperUsuario') DEFAULT NULL,
   `foto` varchar(768) DEFAULT NULL,
   `direccion` varchar(67) DEFAULT NULL,
   `documento` int(11) DEFAULT NULL,
@@ -216,9 +201,10 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`, `foto`, `direccion`, `documento`, `tipo_de_documento`, `telefono`) VALUES
-(53, 'darwin', 'darwin@gmail.com', '$2a$10$sq0RRxCCW634A..pUNSgG.hIBzwzCH05iTJO2o6SN601/KxZiWaL2', 'Usuario', 'Fox.jpeg', 'calle 2 barrio   jasmin', 2147483647, 'Cedula', '3026460489'),
-(82, 'invitado', 'invitado@gmail.com', '$2a$10$J/GzyB9pngIMkISeQpvVqu0bh4jAvIszW.VapNZzTCsjN9eQCYF/u', 'Invitado', 'chispitas.jpeg', NULL, NULL, NULL, '0'),
-(83, 'victor', 'victor@gmail.com', '$2a$10$Kmg8WAQ.1NIiMM2M5d.TNuT/tnR/7catW/D4gZM3FrdpaaOI0pppW', 'Administrador', 'chiribico.jpeg', 'calle 4', 68768, 'Cedula', '3144796742');
+(53, 'darwin', 'darwin@gmail.co', '$2a$10$SPp2cTW2WK6J2rh.MA3Bwuan1Fj7ER1KUE11R4kwHE4QgyTqHfCEe', 'SuperUsuario', 'Vainilla.JPG', 'calle 2 barrio   jasmin', 100426678, 'Cedula', '3026460489'),
+(83, 'victor', 'victor@gmail.com', '$2a$10$9XBYpTOa9.vtqW4n12IGb.mtmgEn8nvrG7dMxDk4qomUNc86bd/sG', 'Administrador', 'perfil.jfif', 'calle 4', 2147483647, 'Cedula', '3144796742'),
+(117, 'maria', 'maria@gmail.com', '$2a$10$Ylbovwp5RemIJPKVaC4mEeq6LUIWa0bDDfHl/K0/x0qBswsYImova', 'Usuario', 'perfil.jfif', 'calle 9', 100987634, 'Cedula', '3165766564'),
+(119, 'invitado', 'invitado@gmail.com', '$2a$10$08SVHNK1g2DuWr98Ng0KKeiRH3suC6xTNX3wdili9Jg3VoKnzPAOi', 'Invitado', 'perfil.jfif', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -236,9 +222,7 @@ CREATE TABLE `vacunas` (
 --
 
 INSERT INTO `vacunas` (`id`, `nombre`) VALUES
-(1, 'Parvo'),
-(39, 'parva'),
-(65, 'Ninguna');
+(80, 'Pitalito');
 
 --
 -- Índices para tablas volcadas
@@ -316,19 +300,19 @@ ALTER TABLE `vacunas`
 -- AUTO_INCREMENT de la tabla `adopciones`
 --
 ALTER TABLE `adopciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `departamento`
 --
 ALTER TABLE `departamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `genero`
@@ -340,13 +324,13 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
 
 --
 -- AUTO_INCREMENT de la tabla `municipio`
 --
 ALTER TABLE `municipio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT de la tabla `razas`
@@ -358,13 +342,13 @@ ALTER TABLE `razas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
 -- AUTO_INCREMENT de la tabla `vacunas`
 --
 ALTER TABLE `vacunas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- Restricciones para tablas volcadas

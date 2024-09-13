@@ -65,6 +65,16 @@ export const update_department= async(req, res)=> {
 export const delete_department= async(req, res)=> {
     try {
         const {id}= req.params;
+
+        const [relacion] = await Conexion.query("SELECT COUNT(*) AS total FROM mascotas WHERE  departamento = ?", [id]);
+
+        if (relacion[0].total > 0) {
+            return res.status(404).json({
+                "mensaje": "No se puede eliminar el departamento porque está relacionado con una mascota."
+            });
+        }
+
+
         const [update]= await Conexion.query("delete from departamento where id=?",[id])
         if (update.affectedRows>0) {
             res.status(200).json({

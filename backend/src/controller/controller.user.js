@@ -19,7 +19,7 @@ export const saveimg=upload.single('foto')
 export const listar_user= async(req,res)=>{
     try {
         
-       const [consulta]= await Conexion.query("select*from usuarios where tipo='Usuario'");
+       const [consulta]= await Conexion.query("select*from usuarios where tipo in ('Usuario', 'Administrador') ");
 
         if(consulta.length>0){
             res.status(200).json(consulta)
@@ -36,6 +36,7 @@ export const listar_user= async(req,res)=>{
     }
 }
 
+
 export const crear_user=async(req,res)=>{
     try{
 
@@ -45,20 +46,29 @@ export const crear_user=async(req,res)=>{
 
         const clave =  await encrypter(password)
 
+        const [correoexiste]=  await Conexion.query("select email from usuarios where email=?",[email])
+        const [identificacionex]=  await Conexion.query("select documento from usuarios  where documento=?",[documento])
+        
+        if(correoexiste.length>0 || identificacionex.length>0){
+           return res.status(404).json({
+                "mensaje":"el correo o identificacion ya existe en nuestra base de datos"
+            })
+        }
+
         const [crear]= await Conexion.query("insert into usuarios(nombre,email,password,tipo,foto, direccion, telefono,documento, tipo_de_documento)values(?,?,?,?,?,?,?,?,?)",[nombre,email,clave,tipo,foto, direccion,telefono,documento,tipo_de_documento])
 
         if (crear.affectedRows>0) {
-            res.status(200).json({
+           return res.status(200).json({
                 "mensaje":"se creo con exito"
             })
         }else{
-            res.status(404).json({
+           return res.status(404).json({
                 "mensaje":"no se pudo crear el usurio"
             })
         }
     }catch(error){
         console.log(error)
-        res.status(500).json({
+        return res.status(500).json({
                 "mensaje":error
         })
     }
@@ -84,15 +94,23 @@ export const actualizar_user = async (req, res) => {
         // Verifica si se debe encriptar la nueva contraseña
         const clave = password ? await encrypter(password) : oldUser[0].password;
 
-       
+        const [correoexiste]=  await Conexion.query("select email from usuarios where email=?",[email])
+   
+        
+        if(correoexiste.length>0 ){
+           return res.status(404).json({
+                "mensaje":"el correo  ya existe en nuestra base de datos"
+            })
+        }
+
         const [actualiza] = await Conexion.query(
             "UPDATE usuarios SET nombre = ?, email = ?, password = ?, tipo = ?, foto = ?, direccion = ?, telefono = ?, documento = ?, tipo_de_documento = ? WHERE id = ?",
             [
                 nombre || oldUser[0].nombre,
                 email || oldUser[0].email,
-                clave,
+                clave || oldUser[0].password,
                 tipo || oldUser[0].tipo,
-                foto,
+                foto || oldUser[0].foto,
                 direccion || oldUser[0].direccion,
                 telefono || oldUser[0].telefono,
                 documento || oldUser[0].documento,
@@ -102,17 +120,17 @@ export const actualizar_user = async (req, res) => {
         );
 
         if (actualiza.affectedRows > 0) {
-            res.status(200).json({
+           return res.status(200).json({
                 "mensaje": "Se actualizó su perfil con éxito"
             });
         } else {
-            res.status(404).json({
+          return  res.status(404).json({
                 "mensaje": "No se pudo actualizar el usuario"
             });
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+       return res.status(500).json({
             "mensaje": error.message
         });
     }
@@ -143,6 +161,20 @@ export const buscar_user=async(req,res)=>{
 export const contarUsuarios = async (req, res) => {
     try {
         const [resultado] = await Conexion.query("SELECT COUNT(*) as total FROM usuarios where tipo='Usuario'");
+        if (resultado[0].total > 0) {
+            res.status(200).json({ total: resultado[0].total });
+           
+        } else {
+            res.status(404).json({ mensaje: "No se encontraron usuarios" });
+        }
+    } catch (error) {
+        res.status(500).json({ mensaje: error.message });
+    }
+};
+
+export const contarAdmin = async (req, res) => {
+    try {
+        const [resultado] = await Conexion.query("SELECT COUNT(*) as total FROM usuarios where tipo='Administrador'");
         if (resultado[0].total > 0) {
             res.status(200).json({ total: resultado[0].total });
            
@@ -214,22 +246,3 @@ export const listar_users= async(req,res)=>{
     }
 }
 
-export const listar_addmin= async(req,res)=>{
-    try {
-        
-       const [consulta]= await Conexion.query("select*from usuarios where tipo='Administrador'");
-
-        if(consulta.length>0){
-            res.status(200).json(consulta)
-        }else{
-            res.status(404).json({
-                "mensaje":"no se encontro nada"
-            })
-        }
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            "mensaje":error
-        })
-    }
-}

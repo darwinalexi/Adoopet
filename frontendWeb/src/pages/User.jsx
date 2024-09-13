@@ -6,6 +6,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Header from "./Component/Header";
 import { Sidebar } from "./Component/Siderbar/siderbar";
 import Edituse from "./Component/Modal/Edituser";
+import { baseUrl } from "./utils/data";
 
 const Usuarios = () => {
     const [user, setUser] = useState([]);
@@ -67,7 +68,7 @@ const Usuarios = () => {
             selector: row => row.foto,
             cell: row => (
                 <img
-                    src={`http://localhost:4001/img/${row.foto}`}
+                    src={`${baseUrl}/img/${row.foto}`}
                     alt="Foto de usuario"
                     style={{ width: '50px', height: '50px', borderRadius: '50%' }} 
                 />
@@ -113,14 +114,19 @@ const Usuarios = () => {
                         className="p-2 border-b border-b-[#1999a6] focus:outline-0"
                     />
                 </div>
-            <div className="pt-40">
-                <DataTable
+            <div className="pt-40 overflow-x-auto">
+                {users.length >0 ?(
+                    <DataTable
                     columns={columns}
                     data={users}
                     pagination
                     paginationPerPage={4}
                     paginationRowsPerPageOptions={[1, 2, 3]}
-                />
+                    />
+                ):(
+                    <p className="text-center">No Hay Registros</p>
+                )}
+              
             </div>
             {openUpdate && (<Edituse data={userselect} onclose={close}/>)}
         </>

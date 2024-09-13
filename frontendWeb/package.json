@@ -23,6 +23,7 @@
     "handsontable": "^14.5.0",
     "react": "^18.3.1",
     "react-data-table-component": "^7.6.2",
+    "react-datepicker": "^7.3.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-router-dom": "^6.23.1",
@@ -30,7 +31,8 @@
     "recharts": "^2.12.7",
     "save": "^2.9.0",
     "sweetalert2": "^11.11.1",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "xlsx-style": "^0.8.13"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

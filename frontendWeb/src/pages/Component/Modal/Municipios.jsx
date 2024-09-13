@@ -59,7 +59,7 @@ function Municicipioscreate({onclose}){
     return(
     < >
       <Header/>
-        <div className="bg-[#707070]  h-full absolute left-0 top-0 w-full">
+      <div className="bg-[#707070]  h-full fixed left-0 top-0 w-full bg-opacity-50 z-50">
                 <div className="bg-white w-[56%]  grid grid-rows-1  gap-0 h-[75%] relative top-[17%] left-[23%] rounded-2xl flex justify-center">
                 <div className="relative  h-[89%] ">
                         <button className="relative left-[45%]" onClick={onclose}>  <FontAwesomeIcon icon={faClose}  className='size-12 m-5'/></button>

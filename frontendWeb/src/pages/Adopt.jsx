@@ -36,30 +36,48 @@ const Adoptar = ()=>{
           ...prevadop,
             [name]: value
           };
-          console.log('Updated usuarios:', updatedUsuarios);
+   
           return updatedUsuarios;
         });
       }
      
       const crear_adopcion = async (e) => {
         e.preventDefault(); 
+        if (!adoptar.id_adoptante || !adoptar.edad || !adoptar.id_mascota || ! adoptar.estado) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Por favor, llene todos los campos obligatorios.",
+            showConfirmButton: false,
+            timer: 3000
+          });
+          return ;
+        }
         try {
           const respuesta = await axiosClient.post("/crear_adopcion", adoptar);
           console.log("Respuesta del servidor:", respuesta.data.mensaje);
           
-          if (respuesta.status===200) {
+     
             Swal.fire({
               icon: "success",
               title: "Adopcion",
-              text:respuesta.data.mensaje,
+              text:"Has  adoptado una mascota con exito",
               showConfirmButton: true,
               timer: 3500
             })
            
 window.location.reload();
-          }
+          
         } catch (error) {
-          console.log("Error al crear la adopción:", error);
+          
+          Swal.fire({
+            icon: "error",
+            title: "Adopcion",
+            text:"no cumples con los datos requeridos",
+            showConfirmButton: true,
+            timer: 3500
+          })
+         
         }
       };
     useEffect(()=>{
@@ -85,6 +103,8 @@ window.location.reload();
             </select>
             <br />
             <label>Ingresa Tu Edad</label>
+            <br />
+            <strong>Recuerde  (Para hacer una adopcion debe tener 18 años)</strong>
             <br />
             <input type="number" name="edad" placeholder="Edad...." onChange={handinputchange}  className="w-[30%] h-11  text-center rounded-lg focus-within:"/>
             <br />

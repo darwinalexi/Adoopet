@@ -42,7 +42,7 @@ function Municipios() {
     try {
       const response = await axiosClient.get("/listar_municipios");
       setMunicipios(response.data);
-      console.log(response.data);
+      console.log("municipio",response.data);
     } catch (error) {
       console.log(error);
     }
@@ -55,16 +55,20 @@ function Municipios() {
   const eliminarMunicipio = async (id) => {
     try {
       const response = await axiosClient.delete(`/eliminiar_municipio/${id}`);
-      console.log("respuesta", response.data.mensaje);
+        Swal.fire({
+          text: 'Municipio eliminado con éxito',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        console.log(response.data.mensaje);
+        window.location.reload();
+      
+    } catch (error) {
       Swal.fire({
-        icon: "success",
-        text: response.data.mensaje,
+        text: 'No se pudo eliminar el municipio porque esta en uso', 
         showConfirmButton: false,
         timer: 1500
       });
-      listar(); // Refresh list without reload
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -116,16 +120,24 @@ function Municipios() {
       </div>
       <div className="mt-32">
         <h1>Municipios</h1>
-        <button className="bg-[#1999a6] rounded-lg p-2" onClick={openCreate}>
+        <button className="bg-[#1999a6] rounded-lg p-2 text-white" onClick={openCreate}>
           Crear Municipio
         </button>
-        <DataTable 
-          columns={columns}
-          data={filteredMunicipios}
-          pagination
-          paginationPerPage={4}
-          paginationRowsPerPageOptions={[1, 2, 3]}
-        />
+        <div className="overflow-x-auto">
+              {filteredMunicipios.length>0 ? (
+                <DataTable 
+                        columns={columns}
+                        data={filteredMunicipios}
+                        pagination
+                        paginationPerPage={4}
+                        paginationRowsPerPageOptions={[1, 2, 3]}
+                      />
+              ):(
+                <p>No hay municipios</p>
+              )}
+        
+        </div>
+       
         {openUpdate && selection && (
           <EditMunicipio onclose={close} datos={selection} />
         )}

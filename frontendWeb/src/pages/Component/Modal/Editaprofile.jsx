@@ -28,6 +28,17 @@ const Editarperfil = ({ closeModal, profile }) => {
 
 const actualizar_profile= async(e )=> {
     e.preventDefault();
+    const claveValida = clave.current.value.length >= 8 && clave.current.value.length <= 16;
+    if (!claveValida) {
+        Swal.fire({
+            icon: "error",
+            title: "",
+            text :"la clave tiene que ser minimo  8 caracteres y maximo 16",
+            showConfirmButton: true,
+            timer: 3000
+          })
+          return;
+    }
     try {
         const datos = new FormData();
         datos.append('nombre',nombre.current.value);
@@ -39,8 +50,7 @@ const actualizar_profile= async(e )=> {
         datos.append('password',clave.current.value);
 
         datos.append('foto',foto.current.files[0])
-        const actualizar = await axiosClient.put(`/actualizar/${profile.id}`,datos)
-        if (actualizar.status==200) {
+        const actualizar = await axiosClient.put(`/actualizar/53`,datos)
             Swal.fire({
                 icon: "success",
                 title: "",
@@ -48,12 +58,18 @@ const actualizar_profile= async(e )=> {
                 showConfirmButton: true,
                 timer: 3000
               })
-        }
+        
      
         window.location.reload();
 
     } catch (error) {
-        console.log(error)
+        Swal.fire({
+            icon: "error",
+            title: "",
+            text:"Revisa los datos tal vez estan en nuestra Base de Datos",
+            showConfirmButton: true,
+            timer: 3000
+          })
     }
 }
 
@@ -107,7 +123,7 @@ const actualizar_profile= async(e )=> {
                     <label>Ingresa Una Foto</label>
                     <input 
                      type="file" 
-                     required ref={foto}
+                     ref={foto}
                      className=" p-3 border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] block w-full mb-4 focus:outline-none" 
                     />
                       <label>Ingrese el  su   Direccion</label>
@@ -118,21 +134,21 @@ const actualizar_profile= async(e )=> {
                      className=" p-3 border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] block w-full mb-4 focus:outline-none" 
                     />
                    <div>
-                    <label>Actualice su clave</label>
+                    <label>Actualice o reescriba su clave</label>
                         <input 
-                            /*depende de un estado para vwer o no ver la clave  */
+                            /*depende de un estado para ver o no ver la clave  */
                                 type={passwordVisible ? "text" : "password"}
-                            required ref={clave}
-                  
-                            className=" p-3 border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] block w-full mb-4 focus:outline-none" 
+                         ref={clave} className=" p-3 border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] block w-full mb-4 focus:outline-none" 
                             />
-                            <button
+                        <div>
+                        <button
                                     type="button"
                                     onClick={togglePasswordVisibility}
-                                    className="absolute right-[12%] top-[125%]"
+                                    className="absolute right-[12%] top-[192%]"
                                 >    /{/*permite cambiar icono segun correspnda el estado del input   */}
                                     <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} color="#1999a6"  className="size-8"/>
                             </button>
+                        </div>
                    </div>
                         <input type="submit"  className="bg-[#1999a6] w-full rounded-lg h-[8%]" />
                 </form>

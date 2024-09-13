@@ -42,6 +42,16 @@ export const crear_vacunas= async(req,res)=>{
 export const borrar_vacunas= async(req,res)=>{
     try {
         const{id}= req.params;
+
+        
+        const [relacion] = await Conexion.query("SELECT COUNT(*) AS total FROM mascotas WHERE vacunas = ?", [id]);
+
+        if (relacion[0].total > 0) {
+            return res.status(404).json({
+                "mensaje": "No se puede eliminar la vacuna porque está relacionado con una mascota."
+            });
+        }
+
         const [borrar]= await Conexion.query("delete from  vacunas where id=?",[id])
 
         if (borrar.affectedRows>0) {

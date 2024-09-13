@@ -13,6 +13,7 @@ function Login() {
     correo: '',
     contrasena: ''
   });
+  const [user, setUsuario]= useState([])
 
   const [mensaje, setMensaje] = useState('');
   const [token, setToken] = useState('');
@@ -43,15 +44,29 @@ const correo= usuarios.correo;
       if (consulta.status === 200) {
         Swal.fire({
           icon: "success",
-          title: "Ingreso exiosamente a nuestro sistema;",
+          title: "Ingresó exitosamente a nuestro sistema;",
           showConfirmButton: true,
           timer: 1500
         })
+
         setMensaje(consulta.data.mensaje);
         setToken(consulta.data.token);
         localStorage.setItem('token', consulta.data.token);
+        
         localStorage.setItem('usuario', JSON.stringify(consulta.data.mensaje));
-        navigate('/mascotap'); 
+        const usuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
+        const tipo = usuarios ? usuarios.tipo : '';
+        if (tipo=="Invitado") {
+          Swal.fire({
+            icon: "error",
+            title: "No posee permisos para ingresar al sistema",
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }else{
+          navigate('/mascotap'); 
+        }
+        
       } 
       if (consulta.status==404) {
         Swal.fire({
@@ -73,6 +88,31 @@ const correo= usuarios.correo;
     }
   };
 
+
+  const modeinvite =async () => {
+    try {
+      const data={
+        correo:"invitado@gmail.com",
+        contrasena:"123456789"
+      }
+      const consulta = await axiosClient.post(`/login`, data);
+    if (consulta.status==200) {
+      Swal.fire({
+        icon: "success",
+        title: "Ingreso exitoso",
+       showConfirmButton: false,
+      });
+      localStorage.setItem('token', consulta.data.token)
+      localStorage.setItem('usuario', JSON.stringify(consulta.data.mensaje))
+      navigate('/mascotas_por_adoptar')
+    }
+  
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   const handinputchange = (event) => {
     const { name, value } = event.target;
     setusuarios((prevUsuarios) => {
@@ -80,7 +120,7 @@ const correo= usuarios.correo;
       ...prevUsuarios,
         [name]: value
       };
-      console.log('Updated usuarios:', updatedUsuarios);
+
       return updatedUsuarios;
     });
   }
@@ -88,7 +128,7 @@ const correo= usuarios.correo;
   return (
     <div className="w-[100%] grid grid-cols-2 h-[37%]  border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] h-screen overflow-hidden rounded-xl shadow-2xl" >
             <div className="w-[100%]">
-            <img src="./src/img/login.jpg" className="w-[100%] h-[100%]" />
+            <img src="./src/img/login.JPG" className="w-[100%] h-[100%]" />
             </div>
             <div >
               <div className="relative top-[30%] left-4">
@@ -108,6 +148,13 @@ const correo= usuarios.correo;
                       />
                       <br />
                       <input type="submit" className="bg-sky-800 p-4 w-full m-2 rounded-full text-white" value="Ingresar" />
+                      <br />
+                      <button onClick={modeinvite} 
+                      className="border-b border-b-sky-800 border-t border-t-sky-800  border-r border-r-sky-800 border-l border-l-sky-800 p-4 w-full m-2 rounded-full text-sky-800"
+                      >Ingresar como Invitado
+                      </button>
+                      
+
                     </form>
                 </div>
                     

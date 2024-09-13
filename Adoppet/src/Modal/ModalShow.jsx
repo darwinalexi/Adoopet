@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 
 const ModalShow = ({ visible, onClose, data }) => {
-  console.log('Data recibida:', data);
+ 
   if (!data) return null; // No renderizar el modal si no hay mascota seleccionada
   
   

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClose, faEnvelope, faUser, faLock } from "@fortawesome/free-solid-svg-icons"
 import { useRef } from "react"
 import axiosClient from "../../utils/axiosClent"
+import Swal from "sweetalert2"
 
 
 
@@ -55,24 +56,36 @@ import axiosClient from "../../utils/axiosClent"
             const crear = await axiosClient.post("/crear", datos);
             
             console.log("respuesta",crear.data.mensaje)
-            Swal.fire({
-                icon: "success",
-                title: "",
-                text:crear.data.mensaje,
-                showConfirmButton: true,
-                timer: 1500
-              })
+
+
+             if (crear.status==404) {
+                Swal.fire({
+                    icon: "error",
+                    title: "",
+                    text:crear.data.mensaje,
+                    showConfirmButton: true,
+                    timer: 1500
+                  })
+            }else if (crear.status==200) {
+                Swal.fire({
+                    icon: "success",
+                    title: "",
+                    text:crear.data.mensaje,
+                    showConfirmButton: true,
+                    timer: 1500
+                  })
+            }
             
         } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "",
-                text:"no se creo el usuario",
-                showConfirmButton: true,
-                timer: 1500
-              })
+                Swal.fire({
+                    icon: "error",
+                    title: "",
+                    text: "No se pudo crear el usuario",
+                    showConfirmButton: true,
+                    timer: 1500
+                });
+            }
         }
-    };
 
 
     return(
@@ -150,7 +163,6 @@ import axiosClient from "../../utils/axiosClent"
         </div>
 
     )
- }
-
+};
 
  export default Create_User;
