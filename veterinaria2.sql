@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-09-2024 a las 02:43:17
+-- Tiempo de generación: 20-09-2024 a las 22:54:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -40,16 +40,8 @@ CREATE TABLE `adopciones` (
 --
 
 INSERT INTO `adopciones` (`id`, `id_adoptante`, `edad`, `id_mascota`, `estado`) VALUES
-(117, 53, 34, 80, 'Adoptado'),
-(119, 53, 25, 82, 'Adoptado'),
-(123, 53, 78, 91, 'Adoptado'),
-(124, 53, 45, 119, 'Adoptado'),
-(125, 53, 18, 120, 'Adoptado'),
-(126, 53, 28, 150, 'Adoptado'),
-(128, 53, 19, 179, 'Adoptado'),
-(129, 53, 18, 201, 'Adoptado'),
-(131, 117, 34, 212, 'Adoptado'),
-(133, 117, 90, 210, 'Pendiente');
+(135, 117, 19, 216, 'Adoptado'),
+(138, 117, 19, 217, 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -68,7 +60,7 @@ CREATE TABLE `categorias` (
 --
 
 INSERT INTO `categorias` (`id`, `nombre`, `estado`) VALUES
-(1, 'grande', 'Activo');
+(29, 'koko', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -87,7 +79,7 @@ CREATE TABLE `departamento` (
 --
 
 INSERT INTO `departamento` (`id`, `nombre`, `codigo_dane`) VALUES
-(26, 'Pitalito', 454);
+(27, 'Huila', 159);
 
 -- --------------------------------------------------------
 
@@ -138,7 +130,8 @@ CREATE TABLE `mascotas` (
 --
 
 INSERT INTO `mascotas` (`id`, `raza`, `categoria_id`, `foto`, `genero_id`, `nombre_mas`, `id_vacuna`, `descripcion`, `fecha_nacimiento`, `usuario`, `estado`, `historial_medico`, `municipio`, `departamento`, `vacunas`, `edad`) VALUES
-(213, 1, 1, 'perfil.jfif,descarga.jfif', 2, 'mascara', 'Vacunado', 'es juguetona', '2024-06-03T00:37:20.000Z', 83, 'Por adoptar', 'koko', 37, 26, 80, 0);
+(216, 11, 29, 'descarga.jfif', 1, 'mascara', 'Vacunado', 'es jugueton', '2020-11-30T17:04:44.000Z', 117, 'Adoptado', 'lkkljkljk', 54, 27, 81, 3),
+(217, 11, 29, 'perfil.jfif', 1, 'rufo', 'Vacunado', 'jhkjh', '2024-09-02T19:18:25.000Z', 117, 'En proceso', 'lkkljkljk', 54, 27, 81, 0);
 
 -- --------------------------------------------------------
 
@@ -157,7 +150,7 @@ CREATE TABLE `municipio` (
 --
 
 INSERT INTO `municipio` (`id`, `nombre`, `codigo_dane`) VALUES
-(37, 'Pitalito', 6880);
+(54, 'Pitalito', 456);
 
 -- --------------------------------------------------------
 
@@ -175,7 +168,7 @@ CREATE TABLE `razas` (
 --
 
 INSERT INTO `razas` (`id`, `nombre_r`) VALUES
-(1, 'criollo ');
+(11, 'koko');
 
 -- --------------------------------------------------------
 
@@ -201,10 +194,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `tipo`, `foto`, `direccion`, `documento`, `tipo_de_documento`, `telefono`) VALUES
-(53, 'darwin', 'darwin@gmail.co', '$2a$10$SPp2cTW2WK6J2rh.MA3Bwuan1Fj7ER1KUE11R4kwHE4QgyTqHfCEe', 'SuperUsuario', 'Vainilla.JPG', 'calle 2 barrio   jasmin', 100426678, 'Cedula', '3026460489'),
+(53, 'darwin', 'darwin@gmail.com', '$2a$10$uI9ss3G2RZptYbQzSq0byOscsuSBx92RDossZ6mX167KcptlyvCAS', 'SuperUsuario', 'Vainilla.JPG', 'calle 2 barrio   jasmin', 100426678, 'Cedula', '3026460489'),
 (83, 'victor', 'victor@gmail.com', '$2a$10$9XBYpTOa9.vtqW4n12IGb.mtmgEn8nvrG7dMxDk4qomUNc86bd/sG', 'Administrador', 'perfil.jfif', 'calle 4', 2147483647, 'Cedula', '3144796742'),
 (117, 'maria', 'maria@gmail.com', '$2a$10$Ylbovwp5RemIJPKVaC4mEeq6LUIWa0bDDfHl/K0/x0qBswsYImova', 'Usuario', 'perfil.jfif', 'calle 9', 100987634, 'Cedula', '3165766564'),
-(119, 'invitado', 'invitado@gmail.com', '$2a$10$08SVHNK1g2DuWr98Ng0KKeiRH3suC6xTNX3wdili9Jg3VoKnzPAOi', 'Invitado', 'perfil.jfif', NULL, NULL, NULL, NULL);
+(119, 'invitado', 'invitado@gmail.com', '$2a$10$08SVHNK1g2DuWr98Ng0KKeiRH3suC6xTNX3wdili9Jg3VoKnzPAOi', 'Invitado', 'perfil.jfif', NULL, NULL, NULL, NULL),
+(124, 'oscar', 'oscar@gmail.com', '$2a$10$Yi4Q8mNUTg06ZcGet/GbdevQ5/0xscqddZDqOflTM3KIXOGz4NZ1y', 'Administrador', 'descarga.jfif', 'lpl klpp', 1234566975, 'Cedula', '3213410842');
 
 -- --------------------------------------------------------
 
@@ -222,7 +216,7 @@ CREATE TABLE `vacunas` (
 --
 
 INSERT INTO `vacunas` (`id`, `nombre`) VALUES
-(80, 'Pitalito');
+(81, 'rabia');
 
 --
 -- Índices para tablas volcadas
@@ -300,19 +294,19 @@ ALTER TABLE `vacunas`
 -- AUTO_INCREMENT de la tabla `adopciones`
 --
 ALTER TABLE `adopciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `departamento`
 --
 ALTER TABLE `departamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `genero`
@@ -324,31 +318,31 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT de la tabla `mascotas`
 --
 ALTER TABLE `mascotas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=218;
 
 --
 -- AUTO_INCREMENT de la tabla `municipio`
 --
 ALTER TABLE `municipio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de la tabla `razas`
 --
 ALTER TABLE `razas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- AUTO_INCREMENT de la tabla `vacunas`
 --
 ALTER TABLE `vacunas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- Restricciones para tablas volcadas

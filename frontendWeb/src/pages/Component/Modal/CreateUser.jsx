@@ -30,6 +30,36 @@ import Swal from "sweetalert2"
         const tipo_documento = tipo_de_docr.current.value.trim() 
         const foto = fotor.current.files[0];
         
+        const validarCampoNumerico = (valor) => {
+            // Verifica si el valor tiene exactamente 10 dígitos
+            return /^\d{10}$/.test(valor);
+        };
+
+        const validarPassword = (password) => {
+            return password.length >= 8 && password.length <= 16;
+        };
+        if (!validarPassword(claver.current.value)) {
+            Swal.fire({
+                icon: "error",
+                title: "",
+                text: "La contraseña debe ser mínimo 8 caracteres y máximo 16",
+                showConfirmButton: true,
+                timer: 3000
+            });
+            return;
+        }
+        const telefono = telefonor.current.value;
+        const documento = documentor.current.value;
+        if (telefono && !validarCampoNumerico(telefono)  ||  documento && !validarCampoNumerico(documento)) {
+            Swal.fire({
+                icon: "error",
+                title: "",
+                text: "los campos numericos deben tener exactamente 10 dígitos",
+                showConfirmButton: true,
+                timer: 1500
+            });
+            return;
+        }
         if (!nombre || !email  || !tipo || !password || !tipo || !direccion || !celular  || !numero_documento || !tipo_documento ) {
             Swal.fire({
                 icon: "error",
@@ -38,6 +68,7 @@ import Swal from "sweetalert2"
                 showConfirmButton: true,
                 timer: 1500
               })
+              return;
         }
 
         try {
@@ -52,12 +83,8 @@ import Swal from "sweetalert2"
             datos.append('telefono', celular);
             datos.append('documento', numero_documento);
             datos.append('tipo_de_documento', tipo_documento);
-        console.log("datos",datos)
             const crear = await axiosClient.post("/crear", datos);
             
-            console.log("respuesta",crear.data.mensaje)
-
-
              if (crear.status==404) {
                 Swal.fire({
                     icon: "error",
@@ -77,12 +104,13 @@ import Swal from "sweetalert2"
             }
             
         } catch (error) {
+            
                 Swal.fire({
                     icon: "error",
                     title: "",
-                    text: "No se pudo crear el usuario",
+                    text: "No se pudo crear el usuario, Posiblemente Esten En La Base De Datos Algunos Datos",
                     showConfirmButton: true,
-                    timer: 1500
+                    timer: 3500
                 });
             }
         }
@@ -144,7 +172,7 @@ import Swal from "sweetalert2"
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Ingrese el documento de Identidad </label>
                          <br />
-                         <input type="text" required ref={documentor}  className="border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" />
+                         <input type="number" required ref={documentor}  className="border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" />
                          <br />
                      </div>
                      <div className="w-[90%] ml-5 rounded-lg">

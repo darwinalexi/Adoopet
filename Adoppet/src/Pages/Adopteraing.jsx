@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ModalShow from "../Modal/ModalShow"; 
 import ModalVer from "../Modal/ModalVer";
 import Buttom from "../Component/btn/butoom";
+import { baseURL } from "../utils/data";
  
 const Pendientes = () => {
     const [merraing, seterraing] = useState([]);
@@ -107,7 +108,7 @@ const Pendientes = () => {
 
    
     const getimage = (foto) => {
-        const baseUrl = 'http://192.168.1.7:4001/img/';
+        const baseUrl = baseURL;
         //si hay muchas img crea una url para cada una y las separa por una ,
         const urls = foto.split(',').map(image => `${baseUrl}${image.trim()}`);
         //  URL generadas
@@ -129,52 +130,57 @@ const Pendientes = () => {
                             onChangeText={(text) => setsearch(text)}
                             value={search}
                             />
-                        <FlatList
-                            data={datos}
-                            renderItem={({ item }) => (
-                                <View style={style.itemContainer}>
-                                    <View style={{width:"50%"}}>
-                                    <Image
-                                        source={{ uri: getimage(item.foto) }} // Usa getimage para obtener solo la primera imagen
-                                        style={style.image} 
-                                    />
-                                    </View>
-                                    <View style={{flexDirection:"column"}}>
+                            {datos.length>0? (
+                                            <FlatList
+                                            data={datos}
+                                            renderItem={({ item }) => (
+                                                <View style={style.itemContainer}>
+                                                    <View style={{width:"50%"}}>
+                                                    <Image
+                                                        source={{ uri: getimage(item.foto) }}
+                                                        style={style.image} 
+                                                    />
+                                                    </View>
+                                                    <View style={{flexDirection:"column"}}>
 
-                                    <View style={style.infoContainer}>
-                                        <Text style={style.text}>Nombre: {item.nombre_mascota}</Text>
-                                        <Text style={style.text}>{item.descripcion}</Text>
-                                        <Text style={style.text}>Edad: {item.edad} Años</Text>
-                                        <Text style={style.text}>Municipio: {item.municipio}</Text>
-                                        <Text style={style.text}>Departamento: {item.departamento}</Text>
-                                        <View style={{backgroundColor:"orange", height:12, width:"63%"}}>
-                                        </View>
-                                    </View>
+                                                    <View style={style.infoContainer}>
+                                                        <Text style={style.text}>Nombre: {item.nombre_mascota}</Text>
+                                                        <Text style={style.text}>{item.descripcion}</Text>
+                                                        <Text style={style.text}>Edad: {item.edad} Años</Text>
+                                                        <Text style={style.text}>Municipio: {item.municipio}</Text>
+                                                        <Text style={style.text}>Departamento: {item.departamento}</Text>
+                                                        <View style={{backgroundColor:"orange", height:12, width:"63%"}}>
+                                                        </View>
+                                                    </View>
 
-                                    <View style={{flexDirection:"row", width:"50%",}}>
-                                        <TouchableOpacity onPress={() => openmodal(item)}>
-                                            <FontAwesomeIcon icon={faSearch} size={34} style={{ position:"absolute", bottom:1, left:88, color: "#1999a6" }} />
-                                        </TouchableOpacity>
+                                                    <View style={{flexDirection:"row", width:"50%",}}>
+                                                        <TouchableOpacity onPress={() => openmodal(item)}>
+                                                            <FontAwesomeIcon icon={faSearch} size={34} style={{ position:"absolute", top:1, left:88, color: "#1999a6" }} />
+                                                        </TouchableOpacity>
 
-                                        {/*error aqui en el modal datos no se van */}
-                                        <ModalVer
-                                            visible={modal}
-                                            onClose={closemodal}
-                                            data={selectpet}
-                                        />
+                                                        {/*error aqui en el modal datos no se van */}
+                                                        <ModalVer
+                                                            visible={modal}
+                                                            onClose={closemodal}
+                                                            data={selectpet}
+                                                        />
 
-                                        {tipo_user === "Administrador" && (
-                                            <TouchableOpacity onPress={() => eliminar(item.id)}>
-                                                <FontAwesomeIcon icon={faTrash} size={34} style={{ color: "red",position:"absolute", bottom:1, }} />
-                                            </TouchableOpacity>
-                                        )}
-                                    </View>
+                                                        {tipo_user === "Administrador" && (
+                                                            <TouchableOpacity onPress={() => eliminar(item.id)}>
+                                                                <FontAwesomeIcon icon={faTrash} size={34} style={{ color: "red",position:"absolute", bottom:1, }} />
+                                                            </TouchableOpacity>
+                                                        )}
+                                                    </View>
 
-                                    </View>
-                                   
-                                </View>
+                                                    </View>
+                                                    
+                                                </View>
+                                            )}
+                                            />
+                            ):(
+                                <Text style={style.text}>No Hay Registros</Text>
                             )}
-                        />
+                     
                     </View>
                 
         </SafeAreaView>

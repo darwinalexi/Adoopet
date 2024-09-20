@@ -97,8 +97,12 @@ export const Sidebar = () => {
                     <SidebarItem to="/perfil">
                       <FontAwesomeIcon icon={faUser} /> Perfil
                     </SidebarItem>
+                    
                     <SidebarItem to="/adoptar">
                       <FontAwesomeIcon icon={faDog} className='size-8 mr-10'/>Adoptar Mascota
+                    </SidebarItem>
+                    <SidebarItem to="/mascotas_por_adoptar">
+                      <FontAwesomeIcon icon={faDog} className='size-8 mr-5'/>Mascotas por Adoptar
                     </SidebarItem>
                   </>
                 )}

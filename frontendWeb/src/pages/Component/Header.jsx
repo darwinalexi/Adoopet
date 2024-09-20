@@ -49,8 +49,7 @@ const navigate = useNavigate();
     listar_raza();
     listar_categoria();
     listar_gender();
-    listar_admin()
-
+    numbersuper();
     listar_user();
    },[])
  
@@ -58,9 +57,7 @@ const navigate = useNavigate();
   const listar_pendientes= async()=>{
     try {
       const listar= await axiosClient.get("/listar_adopciones")
-       setmascotas(listar.data)
-        console.log("datos67", listar.data)
-      
+       setmascotas(listar.data)      
     } catch (error) {
       console.log(error.response)
     }
@@ -107,7 +104,6 @@ const navigate = useNavigate();
     try {
     const adoptar= await axiosClient.put(`/adoptar/${id_mascota}`)
        setadoptar(adoptar.data.mensaje)
-    console.log("adopcion",adoptar.data.mensaje)
         Swal.fire({
           icon: "success",
           title: "Felicidades, Paso de Estar En Proceso A Adoptado ",
@@ -130,19 +126,7 @@ const navigate = useNavigate();
     }
   }
 
-  const listar_admin=async()=>{
-    try {
-      
-      const admin= await axiosClient.get("/administrador")
-     
-      const telefonoAdmin = admin.data[0].telefono;
-      setnumero(telefonoAdmin)
-
-      
-    } catch (error) {
-      console.log(error)
-    }
-  }
+ 
 
   const [usuario, setTipo] = useState([]);
   const [numero, setnumero]= useState([])
@@ -190,11 +174,26 @@ window.location.reload();
   const close_modal=()=>{
   setcreate(false)
   }
+  
+  const numbersuper= async()=>{
+    try {
+      const  response = await axiosClient.get('/numero_super');
+      setnumero(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
 
   const WhatsAppRedirect = (numero) => {
-    const url = `https://wa.me/${numero}`;
-    window.open(url, '_blank');
-};
+
+    const telefono = numero[0]?.telefono; // Obtiene el primer objeto del array y su propiedad 'telefono' 
+    
+    if (telefono) {
+      const url = `https://wa.me/${telefono}`;
+      window.open(url, '_blank');
+    } 
+  };
   return (
     <>
       <header className=" sm:w-[100%] lg:w-[100%]  absolute top-0  left-0 h-24 border-b border-b-[#1999a6] lg:border-b border-b-[#1999a6] h-16  z-30 ">

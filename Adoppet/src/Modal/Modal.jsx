@@ -44,7 +44,7 @@ const LoginModal = ({ visible, onClose }) => {
                 if (usuario) {
                     const users = JSON.parse(usuario);
                     const tipo = users.tipo;
-                    if (tipo=="Administrador") {
+                    if (tipo=="Administrador" || tipo=="SuperUsuario") {
                         Alert.alert("Su usuario no pose permisos para ingresar a nuestra App")
                        return;
                     }

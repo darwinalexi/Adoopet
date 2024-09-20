@@ -272,14 +272,14 @@ function Creae_Pets({onclose}){
                                       <label>Ingrese una foto de la mascota</label>
                                       <br />
                                       <input 
-        type="file" 
-        name="foto" 
-        onChange={saveimg} 
-        required ref={fotoRef} 
-        multiple
-        maxFiles={6}
-        className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"
-      />
+                                        type="file" 
+                                        name="foto" 
+                                        onChange={saveimg} 
+                                        required ref={fotoRef} 
+                                        multiple
+                                        maxFiles={6}
+                                        className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"
+                                      />
                                     </div>
 
                                   <div className="w-[50%] relative left-[24%]">
@@ -399,7 +399,5 @@ function Creae_Pets({onclose}){
        </div>
         
       )
-
-
     }
     export default Creae_Pets;

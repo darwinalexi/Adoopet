@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { View, Text, SafeAreaView, ScrollView, StyleSheet, Image, FlatList, TextInput } from "react-native"
 import axiosClient from "../utils/AxiosClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseURL } from "../utils/data";
 
 
  const AdopcionesAdop=()=>{
@@ -59,7 +60,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
                     {/*toma los nommbre los separa por , y da el 1 nombre*/}
                     {item.foto && item.foto.split(',')[0] !== '' ? (
                         <Image
-                        source={{ uri: `http://192.168.1.7:4001/img/${item.foto.split(',')[0]}` }}
+                        source={{ uri: `${baseURL}/img/${item.foto.split(',')[0]}` }}
                             style={style.image}
                             onError={(e) => console.error('Image load error:', e.nativeEvent.error)}
                         />

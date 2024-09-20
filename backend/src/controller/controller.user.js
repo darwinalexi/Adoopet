@@ -188,7 +188,7 @@ export const contarAdmin = async (req, res) => {
 
 export const listar_type_user=async(req,res)=>{
     try{
-        const [actualiza]= await Conexion.query("select*from usuarios where tipo='Usuario'")
+        const [actualiza]= await Conexion.query("select*from usuarios where tipo='Usuario' or tipo='Administrador'")
 
         if (actualiza.length>0) {
             res.status(200).json(actualiza)
@@ -246,3 +246,16 @@ export const listar_users= async(req,res)=>{
     }
 }
 
+export const number_superuser= async(req, res)=>{
+    try {
+        const [number]= await Conexion.query("select telefono  from usuarios where tipo='SuperUsuario'");
+
+        if (number.length>0) {
+            res.status(200).json(number)
+        }else{
+            res.status(404).json({"WARNING":"posiblemente no hay un superusuario"})
+        }
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}

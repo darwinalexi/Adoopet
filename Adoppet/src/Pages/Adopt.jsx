@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SelectList } from "react-native-dropdown-select-list";
 import ModalColor from "../Modal/ModalColor";
 import Buttom from "../Component/btn/butoom";
+import { baseURL } from "../utils/data";
 
 
 
@@ -116,7 +117,7 @@ setraza(datos)
   });
   
   const getimage = (foto) => {
-    const baseUrl = 'http://192.168.1.7:4001/img/';
+    const baseUrl = `${baseURL}/img/`;
     //si hay muchas img crea una url para cada una y las separa por una ,
     const urls = foto.split(',').map(image => `${baseUrl}${image.trim()}`);
     //  URL generadas
@@ -128,7 +129,7 @@ setraza(datos)
 
 
     return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}> 
        <Buttom/>
         
         <TextInput
@@ -157,37 +158,42 @@ setraza(datos)
               />
               </View>
         </View>
-        <FlatList
-          data={maco}
-          renderItem={({ item }) => (
-            <View style={styles.itemContainer}>
-             <Image
-                  source={{ uri: getimage(item.foto) }} // Usa getimage para obtener solo la primera imagen
-                  style={styles.image}
-                  onError={(e) => console.error('Image load error:', e.nativeEvent.error)} // Maneja errores de carga
-                />
-              <View style={styles.infoContainer}>
-                <Text style={styles.text}>Nombre: {item.nombre_mascota}</Text>
-                <Text style={styles.text}>{item.descripcion}</Text>
-                <Text style={styles.text}>Edad: {item.edad} Años</Text>
-                <Text style={styles.text}>Municipio: {item.municipio}</Text>
-                <Text style={styles.text}>Departamento: {item.nombre_departamento}</Text>
-                <View style={{backgroundColor:"blue", height:7}}></View>
-              </View>
-              <TouchableOpacity onPress={()=>openModal(item)}>
-              <FontAwesomeIcon icon={faSearch} size={34} style={{marginRight:"7%", marginTop:"22%", color:"#1999a6"}}/>
-              </TouchableOpacity>
+        {maco.length >0?(
+              <FlatList
+              data={maco}
+              renderItem={({ item }) => (
+                <View style={styles.itemContainer}>
+                  <Image
+                      source={{ uri: getimage(item.foto) }} // Usa getimage para obtener solo la primera imagen
+                      style={styles.image}
+                      onError={(e) => console.error('Image load error:', e.nativeEvent.error)} // Maneja errores de carga
+                    />
+                  <View style={styles.infoContainer}>
+                    <Text style={styles.text}>Nombre: {item.nombre_mascota}</Text>
+                    <Text style={styles.text}>{item.descripcion}</Text>
+                    <Text style={styles.text}>Edad: {item.edad} Años</Text>
+                    <Text style={styles.text}>Municipio: {item.municipio}</Text>
+                    <Text style={styles.text}>Departamento: {item.nombre_departamento}</Text>
+                    <View style={{backgroundColor:"blue", height:7}}></View>
+                  </View>
+                  <TouchableOpacity onPress={()=>openModal(item)}>
+                  <FontAwesomeIcon icon={faSearch} size={34} style={{marginRight:"7%", marginTop:"22%", color:"#1999a6"}}/>
+                  </TouchableOpacity>
 
-              {user=="Administrador" &&(
-                <TouchableOpacity  onPress={()=>eliminar(item.id)}>
-                <FontAwesomeIcon icon={faTrash} size={34} style={{marginRight:"5%", marginTop:"22%", color:"red"}}/>
-                </TouchableOpacity>
+                  {user=="Administrador" &&(
+                    <TouchableOpacity  onPress={()=>eliminar(item.id)}>
+                    <FontAwesomeIcon icon={faTrash} size={34} style={{marginRight:"5%", marginTop:"22%", color:"red"}}/>
+                    </TouchableOpacity>
+                  )}
+                  
+                </View>
               )}
-             
-            </View>
-          )}
-          keyExtractor={(item) => item.id.toString()}
-        />
+              keyExtractor={(item) => item.id.toString()}
+            />
+        ):(
+     <Text  style={styles.text} >No Hay Un Registro</Text>
+        )}
+     
       <ModalShow
         visible={modal}
         onClose={closeModal}

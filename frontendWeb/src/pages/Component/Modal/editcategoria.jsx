@@ -74,44 +74,48 @@ function  Editcategories({data, onclose}) {
     };
 
   return(
-            <div className="bg-[#1999a6] absolute left-[29%] w-[45%] rounded-xl p-5">
-            <button onClick={onclose} className="absolute top-2 right-2">
-                <FontAwesomeIcon icon={faClose} />
-            </button>
-            <h1>Actualizar Categoria</h1>
-            <form onSubmit={actualizar_categoria}>
-                <label>Ingrese El Nombre</label>
-                <br />
-                <input
-                    type="text"
-                    name="nombre"
-                    className="w-[60%] border-2 bg-slate-200 h-full rounded-xl pl-5"
-                    placeholder="Ingrese El Nombre de La Categoria"
-                    value={register.nombre}
-        
-                    onChange={handinputchange}
-                />
-                <br />
-                <label>Seleccione Un Estado</label>
-                <br />
-                <select
-                    className="w-[60%] border-2 bg-slate-200 h-full rounded-xl pl-5"
-                    name="estado" value={register.estado}
+    <div  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 h-full">
+        <div className="bg-white p-8 rounded-lg relative h-[64%] w-[56%] ">
+                    <button onClick={onclose} className="absolute top-6 right-6">
+                        <FontAwesomeIcon icon={faClose} className="size-11"/>
+                    </button>
+                   
+                    <form onSubmit={actualizar_categoria} className="relative top-[14%]">
+                    <h1>Actualizar Categoria</h1>
+                        <label>Ingrese El Nombre</label>
+                        <br />
+                        <input
+                            type="text"
+                            name="nombre"
+                            className="w-full h-[3%] color-[#0000] rounded-full opacity-50 placeholder:text-slate-400 focus:outline-none p-4 bg-custom-gray border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] relative top-[35%]"
+                            placeholder="Ingrese El Nombre de La Categoria"
+                            value={register.nombre}
+                
+                            onChange={handinputchange}
+                        />
+                        <br />
+                        <label>Seleccione Un Estado</label>
+                        <br />
+                        <select
+                            className="w-full h-[3%] color-[#0000] rounded-full opacity-50 placeholder:text-slate-400 focus:outline-none p-4 bg-custom-gray border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] relative top-[35%]"
+                            name="estado" value={register.estado}
 
-                    onChange={handinputchange}
-                >
-                    <option hidden>Seleccione</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Desactivo">Desactivo</option>
-                </select>
-                <br />
-                <input
-                    type="submit"
-                    className="w-[60%] border-2 bg-slate-200 h-full rounded-xl mt-10 mb-20"
-                    value="Actualizar"
-                />
-            </form>
+                            onChange={handinputchange}
+                        >
+                            <option hidden>Seleccione</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Desactivo">Desactivo</option>
+                        </select>
+                        <br />
+                        <input
+                            type="submit"
+                     className="bg-sky-800 mt-4 w-full  p-3 rounded-full text-white"
+                            value="Actualizar"
+                        />
+                    </form>
         </div>
+    </div>
+            
   )  
 }
 

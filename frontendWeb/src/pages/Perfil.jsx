@@ -129,25 +129,33 @@ const listar_profile=async()=>{
                         {update && <Editarperfil closeModal={closeupdate} profile={profile} />}
                         </div>
                         <div>
-                        <img src={`http://localhost:6831/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
+                        <img src={`${baseUrl}/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
                         </div>
                         </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3  h-[32%]   w-[80%] absolute left-[10%] top-[95%]  mb-14 gap-5">
+                    {pets.length > 0 ?(
+                    <div className="grid grid-cols-1 md:grid-cols-3  h-[32%]   w-[80%] absolute left-[10%] top-[95%]  mb-14 gap-5">
                     <h1 className="col-span-full  font-bold text-4xl   h-full">Adopciones Realizadas</h1>
                         {pets.map((pet) => (
                             <div key={pet.id} className="h-[54%] w-[53%] top-[35%] border-t-[#1999a6]  rounded-xl grid-rows-2 border-b border-b-[#1999a6] border-l border-l-[#1999a6] border-r border-r-[#1999a6] ">
                                 <div className="w-full h-[70%]">
-                                     <img src={`http://localhost:6831/img/${pet.foto}`} className="h-full w-full rounded-lg"/>
+                                    <img src={`${baseUrl}/img/${pet.foto}`} className="h-full w-full rounded-lg"/>
                                 </div>
                                 <div className="p-4  relative bottom-0">
-                                    <h1 className="font-bold">Nombre Mascota: {pet.nombre_mas}</h1>
-                                    <p className="text-sm">Descripcion: {pet.descripcion}</p>
+                                    <h1 className="font-bold">Nombre Mascota: {pet.nombre_mascota}</h1>
                                     <p className="text-sm">Edad: {pet.edad} años</p>
                                 </div>
                             </div>
                         ))}
-                </div>
+                    </div>
+                    ):(
+                        <>
+                        <div className="absolute top-[96%] left-[33%] "> 
+                        <h1 className="text-3xl flex justify-center">No Has  Realizado Adopciones</h1>
+                        </div>
+                        </>
+
+                    )}
                 </>
             )}
 
@@ -164,25 +172,32 @@ const listar_profile=async()=>{
                             {update && <Editarperfil closeModal={closeupdate} profile={profile} />}
                             </div>
                             <div>
-                            <img src={`http://localhost:6831/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
+                            <img src={`${baseUrl}/img/${profile.foto}`} className="w-[40%] h-[80%] ml-[15%] first:rounded-xl mt-[7%]" />
                             </div>
                             </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3  h-[32%]   w-[80%] absolute left-[10%] top-[95%]  mb-14 gap-5">
-                        <h1 className="col-span-full  font-bold text-4xl   h-full">Adopciones Realizadas</h1>
-                            {pets.map((pet) => (
-                                <div key={pet.id} className="h-[54%] w-[53%] top-[35%] border-t-[#1999a6]  rounded-xl grid-rows-2 border-b border-b-[#1999a6] border-l border-l-[#1999a6] border-r border-r-[#1999a6] ">
-                                    <div className="w-full h-[70%]">
-                                        <img src={`http://localhost:6831/img/${pet.foto}`} className="h-full w-full rounded-lg"/>
+                            {pets.length > 0 ?(
+                            <div className="grid grid-cols-1 md:grid-cols-3  h-[32%]   w-[80%] absolute left-[10%] top-[95%]  mb-14 gap-5">
+                            <h1 className="col-span-full  font-bold text-4xl   h-full">Adopciones Realizadas</h1>
+                                {pets.map((pet) => (
+                                    <div key={pet.id} className="h-[84%] w-[53%] top-[35%] border-t-[#1999a6]  rounded-xl grid-rows-2 border-b border-b-[#1999a6] border-l border-l-[#1999a6] border-r border-r-[#1999a6] ">
+                                        <div className="w-full h-[70%]">
+                                            <img src={`${baseUrl}/img/${pet.foto}`} className="h-full w-full rounded-lg"/>
+                                        </div>
+                                        <div className="p-4  relative bottom-0">
+                                            <h1> <strong>Nombre Mascota: </strong> {pet.nombre_mascota}</h1>
+                                            <p className="text-sm"><strong>Edad: </strong> {pet.edad} años</p>
+                                        </div>
                                     </div>
-                                    <div className="p-4  relative bottom-0">
-                                        <h1 className="font-bold">Nombre Mascota: {pet.nombre_mas}</h1>
-                                        <p className="text-sm">Descripcion: {pet.descripcion}</p>
-                                        <p className="text-sm">Edad: {pet.edad} años</p>
-                                    </div>
+                                ))}
+                            </div>
+                            ):(
+                                <>
+                                <div className="absolute top-[96%] left-[33%] "> 
+                                <h1 className="text-3xl flex justify-center">No Has  Realizado Adopciones</h1>
                                 </div>
-                            ))}
-                    </div>
+                                </>
+                            )}
+                 
                     </>
              )}
         </>

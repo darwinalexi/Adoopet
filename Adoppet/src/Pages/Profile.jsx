@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, SafeAreaVi
 import axiosClient from "../utils/AxiosClient"
 import EditProfile from "../Modal/EditProfile"
 import Logout from "../Component/Logout"
+import { baseURL } from "../utils/data"
 
 const Profile = ({ navigation }) => {
   const [user, setuser] = useState()
@@ -78,7 +79,7 @@ const Profile = ({ navigation }) => {
                       <Text style={style.text}>Documento: {user?.documento}</Text>
                       <Text style={style.text}>Email: {user?.email}</Text>
                       <View style={{ borderRadius: 23, width: "53%", position: "relative", left: 84 }}>
-                        <Image style={style.image} source={{ uri: `http://192.168.1.7:4001/img/${user?.foto}` }} />
+                        <Image style={style.image} source={{ uri: `${baseURL}/img/${user?.foto}` }} />
                       </View>
                       <Text style={style.text}>Tipo: {user?.tipo}</Text>
                       <Text style={style.text}>Tipo de documento: {user?.tipo_de_documento}</Text>
@@ -91,7 +92,7 @@ const Profile = ({ navigation }) => {
                        <Text style={style.text}>Nombre: {user?.nombre}</Text>
                        <Text style={style.text}>Email: {user?.email}</Text>
                        <View style={{ borderRadius: 23, width: "53%", position: "relative", left: 84 }}>
-                        <Image style={style.image} source={{ uri: `http://192.168.1.7:4001/img/${user?.foto}` }} />
+                        <Image style={style.image} source={{ uri: `${baseURL}/img/${user?.foto}` }} />
                       </View>
                       <Text style={style.text}>Tipo: {user?.tipo}</Text>
                      </>

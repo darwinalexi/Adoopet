@@ -1,10 +1,11 @@
 import { Modal, View, FlatList, Text, Image, TouchableOpacity , StyleSheet} from "react-native"
+import { baseURL } from "../utils/data";
 
 function ModalVer({visible, onClose, data}) {
 
     if (!data) return null; // No renderizar el modal si no hay mascota seleccionada
 
-    const images = data.foto ? data.foto.split(',').map(image => `http://192.168.1.7:4001/img/${image.trim()}`) : [];
+    const images = data.foto ? data.foto.split(',').map(image => `${baseURL}/img/${image.trim()}`) : [];
 
     return(
 <Modal

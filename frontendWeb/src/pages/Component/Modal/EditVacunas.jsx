@@ -63,7 +63,7 @@ return(
                         />
                         <input
                                 type="submit"
-                                className="bg-sky-800 mt-4 w-full  rounded-full text-white"
+                                className="bg-sky-800 mt-4 w-full  p-3 rounded-full text-white"
                                 value="Actualizar"
                                 />
 

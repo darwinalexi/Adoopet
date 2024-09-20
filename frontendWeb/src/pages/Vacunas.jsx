@@ -20,6 +20,7 @@ const [create, setopencreate]= useState(false)
 const update=(vacuna)=>{
     setopenupdate(true)
     setvacuselect(vacuna)
+    console.log("abierto")
 }
 
 const close=()=>{
@@ -98,18 +99,26 @@ const closecreate=()=>{
          <Header/> 
          <Sidebar/> 
          <div>
-           
-         <DataTable
-         columns={columns}
-         data={vacunas}
-         pagination
-         paginationPerPage={4}
-         paginationRowsPerPageOptions={[1, 2, 3]}
-         className="mt-[13%]"
-         />
+           {vacunas.length>0?(
+              <DataTable
+              columns={columns}
+              data={vacunas}
+              pagination
+              paginationPerPage={4}
+              paginationRowsPerPageOptions={[1, 2, 3]}
+              className="mt-[13%]"
+              />
+              
+           ):(
+         <div  className="absolute top-[34%] left-[48%]">
           <button onClick={open} className="bg-[#1999a6] rounded-lg p-2 text-white">Crear Vacuna</button>
-          {openupdate &&( <EditVacunas  data={vacuselect} onclose={close}/> )}
-          {create && ( <CreateVacuna onclose={closecreate}/>)}
+             <p>Noy Hay  Vacunas</p>
+         </div>
+
+           )}
+         {openupdate &&( <EditVacunas  data={vacuselect} onclose={close}/> )}
+         {create && ( <CreateVacuna onclose={closecreate}/>)}
+          
         </div>
         </>
     )
