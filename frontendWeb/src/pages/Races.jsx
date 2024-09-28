@@ -40,7 +40,7 @@ const Razas=()=>{
           ...prevUsuarios,
             [name]: value
           };
-          console.log('Updated usuarios:', updatedUsuarios);
+         
           return updatedUsuarios;
         });
       }
@@ -116,7 +116,7 @@ e.preventDefault();
 const eliminar_raza=async(id)=>{
     try {
         const borrar=await axiosClient.delete(`eliminar_races/${id}`)
-        console.log(borrar.data.mensaje)
+       
         if (borrar.status==200) {
             Swal.fire({
                 icon: "success",

@@ -19,7 +19,7 @@ export const saveimg=upload.single('foto')
 export const listar_user= async(req,res)=>{
     try {
         
-       const [consulta]= await Conexion.query("select*from usuarios where tipo in ('Usuario', 'Administrador') ");
+       const [consulta]= await Conexion.query("select*from usuarios where tipo in ('SuperUsuario','Administrador') ");
 
         if(consulta.length>0){
             res.status(200).json(consulta)

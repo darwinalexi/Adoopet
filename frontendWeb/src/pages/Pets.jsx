@@ -33,7 +33,7 @@ const listar_mascotas= async()=>{
     
     const listar= await axiosClient.get("/listar_pets")
     setmascotas(listar.data)
-    console.log("mascot",listar.data)
+   
   } catch (error) {
     console.log(error)
   }

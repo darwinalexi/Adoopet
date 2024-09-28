@@ -14,7 +14,7 @@ import { ruta_d } from "./src/router/router.departamentro.js";
 import { vacunas } from "./src/router/router.vacunas.js";
 const server= express();
 
-const port= 6831;
+const port= 6832;
 
 server.use(body_parser.json());
 server.use(body_parser.urlencoded({extended:false}))

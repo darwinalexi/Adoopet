@@ -26,10 +26,6 @@ const Usuarios = () => {
     const borrarUsuario = async (id) => {
         try {
             const response = await axiosClient.delete(`/eliminar/${id}`);
-          
-          if (response.status==200) {
-            console.log(response.data.mensaje);
-          }
             listarUser();
             
         } catch (error) {
@@ -39,9 +35,9 @@ const Usuarios = () => {
 
     const listarUser = async () => {
         try {
-            const response = await axiosClient.get("/listar");
+            const response = await axiosClient.get("/listar_user");
             setUser(response.data);
-            console.log("user",response.data);
+         
         } catch (error) {
             console.log(error);
         }

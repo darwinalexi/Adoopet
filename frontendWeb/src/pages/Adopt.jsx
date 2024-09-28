@@ -19,14 +19,14 @@ const Adoptar = ()=>{
     const user= async()=>{
         const listar_user = await axiosClient.get("/listar_user")
         setadoptantes(listar_user.data)
-        console.log("adoptantes",listar_user.data)
+    
     }
 
    const mascotas = async()=>{
         
         const mascotas = await axiosClient.get("/listar_no_adoptados") 
         setmascota(mascotas.data)
-        console.log("mascotas2",mascotas.data)
+  
     }
 
     const handinputchange = (event) => {
@@ -55,7 +55,7 @@ const Adoptar = ()=>{
         }
         try {
           const respuesta = await axiosClient.post("/crear_adopcion", adoptar);
-          console.log("Respuesta del servidor:", respuesta.data.mensaje);
+   
           
      
             Swal.fire({

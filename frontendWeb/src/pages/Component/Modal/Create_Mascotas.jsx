@@ -322,8 +322,8 @@ function Creae_Pets({onclose}){
                                 </>
                               </select>
                             </div>
-                            <div className="w-[50%] relative left-[24%]">
-                            <label>selecciona la fecha de nacimiento</label>
+                            <div className="w-[90%]  relative right-[10%]">
+                            <label className="justify-center">selecciona la fecha de nacimiento</label>
                                     <br />
                                     <DatePicker  
                                     //selecciona la fecha y la muesstra 
@@ -333,7 +333,7 @@ function Creae_Pets({onclose}){
                                     maxDate={new Date()}
                                     showYearDropdown
                                     
-                                    className="w-[100%] h-11  text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"/>
+                                    className="w-[200%] h-11   text-center rounded-lg focus:outline-none border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6]"/>
                                     <br />
                               </div>     
 

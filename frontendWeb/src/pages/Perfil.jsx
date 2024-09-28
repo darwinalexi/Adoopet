@@ -51,7 +51,7 @@ const listar_profile=async()=>{
         const profile= await axiosClient.get(`/buscar/${id_user}`)
         //itera sobre el array que da la api ya que el id del user es un objeto almacenado en localstorage por lo cual devolvera un array y no un arreglo 
         for (const item of profile.data) {
-            console.log("dato3",item); 
+       
             setprofileUser(item)
         }
 
@@ -70,7 +70,7 @@ const listar_profile=async()=>{
             const id= usuarios? usuarios.id:'';
             const listar = await axiosClient.get(`/solicitudes_aceptadas/${id}`);
             setPets(listar.data);
-            console.log("adop",listar.data)
+        
         } catch (error) {
             console.log(error);
         }

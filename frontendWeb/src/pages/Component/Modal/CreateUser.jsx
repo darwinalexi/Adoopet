@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faClose, faEnvelope, faUser, faLock } from "@fortawesome/free-solid-svg-icons"
+import { faClose, faEnvelope, faUser, faLock, faHome, faPhone, faIdCard } from "@fortawesome/free-solid-svg-icons"
 import { useRef } from "react"
 import axiosClient from "../../utils/axiosClent"
 import Swal from "sweetalert2"
@@ -122,70 +122,81 @@ import Swal from "sweetalert2"
              <button onClick={onclose}>  <FontAwesomeIcon icon={faClose} className="size-6"/> </button>
                  <h1>Crear Usuario</h1>
                  <form onSubmit={registerUser} >
+                     
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Ingrese el nombre</label>
                          <br />
                          <FontAwesomeIcon icon={faUser} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
-                         <input type="text" required ref={nombrer} placeholder="Ingrese el nombre"  className="text-center  border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none"  />
+                         <input type="text" required ref={nombrer} placeholder="Ingrese el nombre"  className="rounded-xl text-center  border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none"  />
                      </div>
+                     
                      <br />
+                     
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Ingrese el correo</label>
                          <br />
                          <FontAwesomeIcon icon={faEnvelope} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
-                         <input type="email" required ref={correor}  placeholder="Ingrese el correo"  className=" text-center border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" />
+                         <input type="email" required ref={correor}  placeholder="Ingrese el correo"  className="rounded-xl text-center border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" />
                      </div>
+                     
                      <br />
+                     
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Ingrese Clave</label>
                          <br />
                          <FontAwesomeIcon icon={faLock} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
-                         <input type="password" required ref={claver}  placeholder="Ingrese la contraseña" className="text-center border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none"  />
+                         <input type="password" required ref={claver}  placeholder="Ingrese la contraseña" className="rounded-xl text-center border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none"  />
                      </div>
+
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Seleccione su foto de Perfil</label>
                          <br />
-                     
-                         <input type="file" required ref={fotor} className="border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none text-center"  />
+                         <input type="file" required ref={fotor} className="rounded-xl border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none text-center"  />
                      </div>
+                     
                      <br />
-                     <label>Seleccione el rol</label>
-                     <br />
-                     <select required ref={tipor}  className=" text-center border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" >
-                         <option hidden>Seleccione...</option>
-                         <option value="Administrador">Administrador</option>
-                         <option value="Usuario">Usuario</option>
-                     </select>
+                    <div className="w-[90%] ml-4">
+                    <label>Seleccione el rol</label>
+                                        <br />
+                                        <select required ref={tipor}  className=" rounded-lg text-center border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none " >
+                                            <option hidden>Seleccione...</option>
+                                            <option value="Administrador">Administrador</option>
+                                            <option value="Usuario">Usuario</option>
+                                        </select>
+                    </div>
                      <br />
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Ingrese La direccion</label>
                          <br />
-                         <input type="text" required ref={direccionr} className="border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" />
+                         <FontAwesomeIcon icon={faHome} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
+                         <input type="text" required ref={direccionr} placeholder="Ingrese su direccion de domicilio" className=" text-center rounded-xl border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" />
                          <br />
                      </div>
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Ingrese el Telefono</label>
                          <br />
-                         <input type="number" required ref={telefonor} className="border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none"  />
+                         <FontAwesomeIcon icon={faPhone} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
+                         <input type="number" required ref={telefonor} placeholder="Ingrese el número de telefono" className=" text-center rounded-xl border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none"  />
                          <br />
                      </div>
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Ingrese el documento de Identidad </label>
                          <br />
-                         <input type="number" required ref={documentor}  className="border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" />
+                         <FontAwesomeIcon icon={faIdCard} color="#1999a6" className="relative top-9 left-[-42%] size-6" />
+                         <input type="number" required ref={documentor} placeholder="Ingrese el número de identificación" className="text-center rounded-xl border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" />
                          <br />
                      </div>
                      <div className="w-[90%] ml-5 rounded-lg">
                          <label>Seleccione el tipo de documento de Identidad </label>
                          <br />
-                         <select required ref={tipo_de_docr}  className="border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" >
+                         <select required ref={tipo_de_docr}  className="rounded-xl border p-2 w-full border-t border-t-[#1999a6] border-b border-b-[#1999a6] border-r border-r-[#1999a6] border-l border-l-[#1999a6] focus:outline-none" >
                              <option  hidden>Seleccione...</option>
                              <option value="Cedula">Cedula</option>
                              <option value="Cdula Extrnjera">Cedula Extranjera</option>
                          </select>
                          <br />
                      </div>
-                     <input type="submit" value="Registrar" className="mt-7 w-[50%] h-11 text-center rounded-lg  border-t  border-t-[#1999a6] border-b border-b-[#1999a6]  border-r border-r-[#1999a6] border-l border-l-[#1999a6] hover:bg-[#1999a6] cursor-pointer focus:outline-none" />
+                     <input type="submit" value="Registrar" className="rounded-xl mt-7 w-[50%] h-11 text-center rounded-lg  border-t  border-t-[#1999a6] border-b border-b-[#1999a6]  border-r border-r-[#1999a6] border-l border-l-[#1999a6] hover:bg-[#1999a6] cursor-pointer focus:outline-none" />
                  </form>
              </div>
         </div>

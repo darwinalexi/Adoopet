@@ -17,6 +17,23 @@ export const listar_vacunas= async(req,res)=>{
         })   
     }
 }
+export const listar_vacunas_n= async(req,res)=>{
+    try {
+        const [listar]= await Conexion.query("SELECT * FROM vacunas WHERE nombre != 'Ninguna'")
+
+        if (listar.length>0) {
+            res.status(200).json(listar)
+        }else{
+            res.status(404).json({
+                "mensaje":"algo salio mal no se encontro registros"
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            "mensaje":error
+        })   
+    }
+}
 
 export const crear_vacunas= async(req,res)=>{
     try {

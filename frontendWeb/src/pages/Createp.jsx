@@ -21,7 +21,7 @@ const Create_Pets = () => {
     const  listar_categorias=async()=>{
             const mostra= await axiosClient.get("/listar_categories")
             setmascotas(mostra.data)
-            console.log("categori".mostra.data);
+          
   
     }
 
@@ -29,7 +29,6 @@ const Create_Pets = () => {
         try {            
             const mostraraza= await axiosClient.get("/listar_races");
             setrazas(mostraraza.data)
-            console.log("razas",mostraraza)
         } catch (error) {
             console.log(error)
         }
@@ -41,7 +40,6 @@ const listar_genero=async()=>{
     try {
         const trar=await axiosClient.get("/listar_gender",)
         setgenero(trar.data)
-        console.log("gender",trar.data)
     } catch (error) {
         console.log(error);
     }

@@ -52,7 +52,6 @@ function Departamento() {
                 showConfirmButton: false,
                 timer: 1500
               });
-              console.log(eliminar.data.mensaje);
               window.location.reload();
         } catch (error) {
             Swal.fire({

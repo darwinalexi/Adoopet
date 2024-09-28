@@ -42,7 +42,7 @@ function Municipios() {
     try {
       const response = await axiosClient.get("/listar_municipios");
       setMunicipios(response.data);
-      console.log("municipio",response.data);
+    
     } catch (error) {
       console.log(error);
     }

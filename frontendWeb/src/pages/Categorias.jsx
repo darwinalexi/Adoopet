@@ -23,12 +23,12 @@ const Categorias = () => {
 
     const open = () => {
         setmodal(true);
-        console.log("Modal abierto");
+        
     };
 
     const close = () => {
         setmodal(false);
-        console.log("Modal cerrado");
+       
     };
 
     const openupdate = (categoria) => {
@@ -47,7 +47,7 @@ const Categorias = () => {
         try {
             const response = await axiosClient.get("/listar_categories");
             setCategoria(response.data);
-            console.log("listar", response.data);
+           
         } catch (error) {
             console.log("Error al listar categorías:", error.response);
         }

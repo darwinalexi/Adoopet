@@ -228,7 +228,7 @@ window.location.reload();
           <div className="h-1">
           <button  onClick={() => WhatsAppRedirect(numero)}>
             <FontAwesomeIcon icon={faWhatsapp} className="size-5" color="#1999a6" />;
-            <h1>Comuniquese con  el SuperUsuario</h1>
+            <h1>el SuperUsuario</h1>
             </button>
           </div>
                       <div onClick={close_session} className="w-4 relative left-[94%]" >

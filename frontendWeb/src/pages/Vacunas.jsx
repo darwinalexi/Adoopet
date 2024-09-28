@@ -20,7 +20,7 @@ const [create, setopencreate]= useState(false)
 const update=(vacuna)=>{
     setopenupdate(true)
     setvacuselect(vacuna)
-    console.log("abierto")
+
 }
 
 const close=()=>{
@@ -36,7 +36,7 @@ const closecreate=()=>{
 
     const listar_vacunas= async()=>{
         try {
-            const listar= await axiosClient.get("/vacunas")
+            const listar= await axiosClient.get("/vacunas_ni")
             setvacunas(listar.data)
 
         } catch (error) {
@@ -50,14 +50,14 @@ const closecreate=()=>{
     const elimniar= async(id)=>{
         try {
             const elimniar =  await axiosClient.delete(`/vacunas/${id}`)
-            console.log(elimniar.data.mensaje);
+        
             Swal.fire({
                 icon: "succes",
                 text:elimniar.data.mensaje,
                 showConfirmButton: false,
                 timer: 1500
             })
-            console.log(elimniar.data.mensaje);
+          
             window.location.reload();
         } catch (error) {
             Swal.fire({
@@ -99,6 +99,7 @@ const closecreate=()=>{
          <Header/> 
          <Sidebar/> 
          <div>
+         <button onClick={open} className="bg-[#1999a6] absolute top-[24%] rounded-lg p-2 text-white">Crear Vacuna</button>
            {vacunas.length>0?(
               <DataTable
               columns={columns}
@@ -111,7 +112,6 @@ const closecreate=()=>{
               
            ):(
          <div  className="absolute top-[34%] left-[48%]">
-          <button onClick={open} className="bg-[#1999a6] rounded-lg p-2 text-white">Crear Vacuna</button>
              <p>Noy Hay  Vacunas</p>
          </div>
 

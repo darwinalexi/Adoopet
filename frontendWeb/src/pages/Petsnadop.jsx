@@ -37,13 +37,13 @@ const Petsnadop = () => {
   };
 
   const openUpdate = (mascota) => {
-    console.log("openmodal")
+  
     setCurrentPetId(mascota);
     setActualizar(true);
   };
 
   const closeUpdate = () => {
-    console.log("cerado")
+  
     setActualizar(false);
   };
 
@@ -63,7 +63,7 @@ const Petsnadop = () => {
     try {
       const listar = await axiosClient.get("/listar_no_adoptados");
       setMascotasp(listar.data);
-      console.log("masss", listar.data);
+      
     } catch (error) {
       console.log(error);
     }
