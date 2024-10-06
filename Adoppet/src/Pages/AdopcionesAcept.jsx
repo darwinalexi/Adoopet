@@ -48,13 +48,18 @@ import { baseURL } from "../utils/data";
                         value={buscador}
                         />
                 </View >
+               {/*{datos.length<0 ?(
+
+                ):(
+
+                )}* */} 
                 <FlatList
                 data={datos}
                 style={style.register}
                 renderItem={({item})=>(
                     <View style={style.conten}>
                     <Text style={style.text}>Nombre: {item.nombre_mascota}</Text>
-                    <Text style={style.text}>Edad: {item.edad}</Text>
+                    <Text style={style.text}>Edad: {item.edad} años</Text>
                     <Text style={style.text}>Celular: {item.celular}</Text>
                    
                     {/*toma los nommbre los separa por , y da el 1 nombre*/}
@@ -96,7 +101,7 @@ import { baseURL } from "../utils/data";
     image: {
         width: "50%",
         borderRadius:23,
-        height: 200,
+        height: 150,
         margin:12,
        
       },
@@ -111,9 +116,10 @@ import { baseURL } from "../utils/data";
         fontWeight:"bold",
         color:"#000"
       },
-      register:{
-        height:"74%",
-      },
+   register: {
+        
+        paddingBottom: 20, // Espacio adicional para el scroll
+    },   
       searchBar: {
         height: 40,
         borderColor: '#1999a6',

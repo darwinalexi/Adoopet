@@ -97,7 +97,7 @@ const Profile = ({ navigation }) => {
                       <Text style={style.text}>Tipo: {user?.tipo}</Text>
                      </>
                   )}
-                    <Logout/>
+           
                 </View>
               )}
          
@@ -111,6 +111,9 @@ const Profile = ({ navigation }) => {
             </TouchableOpacity>
       )}
             <EditProfile visible={openmodal} close={close} />
+            <View style={style.butomm}>
+                      <Logout />
+                    </View>
           </View>
           </ScrollView>
     </SafeAreaView>
@@ -121,6 +124,8 @@ const style = StyleSheet.create({
   container: {
     marginTop: "15%",
     flex:1,
+    height:"100%",
+    
 
   },
   image: {
@@ -181,6 +186,13 @@ const style = StyleSheet.create({
     paddingHorizontal: 10, // Añadir algo de padding para asegurarse de que el color se muestre correctamente
     height: 50,
     width:"100%"
+  },
+  butomm:{
+    position:"absolute",
+  left:"60%",
+  marginTop:14,
+    width:"50%",
+    height:"20%"
   }
 })
 

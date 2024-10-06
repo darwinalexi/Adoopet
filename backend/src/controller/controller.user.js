@@ -94,15 +94,6 @@ export const actualizar_user = async (req, res) => {
         // Verifica si se debe encriptar la nueva contraseña
         const clave = password ? await encrypter(password) : oldUser[0].password;
 
-        const [correoexiste]=  await Conexion.query("select email from usuarios where email=?",[email])
-   
-        
-        if(correoexiste.length>0 ){
-           return res.status(404).json({
-                "mensaje":"el correo  ya existe en nuestra base de datos"
-            })
-        }
-
         const [actualiza] = await Conexion.query(
             "UPDATE usuarios SET nombre = ?, email = ?, password = ?, tipo = ?, foto = ?, direccion = ?, telefono = ?, documento = ?, tipo_de_documento = ? WHERE id = ?",
             [

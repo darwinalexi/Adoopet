@@ -19,7 +19,7 @@ const Logout = () => {
 
     return (
         <TouchableOpacity style={style.btn} onPress={logout}>
-            <Text style={{textAlign:"center", fontWeight:"bold", color:"white"}}>Salir</Text>
+            <Text style={{textAlign:"center", justifyContent:"center", fontWeight:"bold", color:"white"}}>Salir</Text>
         </TouchableOpacity>
     );
 };

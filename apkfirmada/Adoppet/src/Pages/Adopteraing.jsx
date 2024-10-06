@@ -107,7 +107,7 @@ const Pendientes = () => {
 
    
     const getimage = (foto) => {
-        const baseUrl = 'http://192.168.1.7:4001/img/';
+        const baseUrl = ${}/img/';
         //si hay muchas img crea una url para cada una y las separa por una ,
         const urls = foto.split(',').map(image => `${baseUrl}${image.trim()}`);
         //  URL generadas

@@ -126,8 +126,6 @@ setraza(datos)
     return urls.length > 0 ? urls[0] : ''; 
   };
   
-
-
     return (
     <SafeAreaView style={{ flex: 1 }}> 
        <Buttom/>
@@ -191,7 +189,7 @@ setraza(datos)
               keyExtractor={(item) => item.id.toString()}
             />
         ):(
-     <Text  style={styles.text} >No Hay Un Registro</Text>
+     <Text  style={styles.text} >No Hay Registros</Text>
         )}
      
       <ModalShow

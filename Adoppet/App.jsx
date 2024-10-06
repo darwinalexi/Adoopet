@@ -42,8 +42,24 @@ function App() {
             </View>
           ),
       }}/>
-       <Stack.Screen name='Adoptar' component={Adoptar}/>
-
+       <Stack.Screen name='Adoptar' component={Adoptar} options={{
+          title:"ADDOPPET",
+          headerTintColor:'white',
+        
+          headerStyle:{
+            position:"relative",
+            top:0,
+            backgroundColor:"#1999a6"
+          },
+          headerRight: () => (
+            <View  style={style.view}>
+           <Image
+  source={require('./src/Component/img/icono.png')}
+  style={style.img}
+/>
+            </View>
+          ),
+      }}/>
 <Stack.Screen 
           name="Home2" 
           component={TabNavigator} 

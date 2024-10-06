@@ -10,6 +10,15 @@ export const crear_adopcion = async (req, res) => {
                 "mensaje": "La edad mínima para adoptar es mayor a 18 años."
             });
         }
+
+        const [consulta]= await  Conexion.query("select*from mascotas where id=? and estado='En Proceso'",[id_mascota])
+        if(consulta.length>0){
+             res.status(200).json({
+                "mensaje": "La mascota ya tiene un proceso de adopcion"
+            })
+            return;
+        }
+
         const [crear] = await Conexion.query("INSERT INTO adopciones (id_adoptante, edad, id_mascota, estado) VALUES (?, ?, ?, ?)",[id_adoptante, edad, id_mascota, estado])
         if (crear.affectedRows>0) {
             const [mascota]= await Conexion.query("update mascotas set estado='En Proceso', usuario=? where id=?",[id_adoptante,id_mascota])

@@ -87,6 +87,11 @@ const Adoptar = () => {
       Alert.alert("Por favor, llene todos los campos.");
       return;
     } 
+
+    if(edadIngresada <=17){
+      Alert.alert("No poses la  edad minima para adoptar");
+      return;
+    }
   try {
     const crear= await axiosClient.post("/crear_adopcion",{
       id_adoptante: adoptante.current,
@@ -96,7 +101,7 @@ const Adoptar = () => {
     })
     setcrar(crear.data.mensaje)
   if (crear.status==200) {
-    Alert.alert("Creast una Solicitud de adopcion");
+    Alert.alert(crear.data.mensaje);
   }
 
 
@@ -127,35 +132,44 @@ const Adoptar = () => {
 
           <View style={styles.cuadro}>
 
-            <Text style={styles.subtitle}>Selecciona Un Adoptante</Text>
-            <SelectList
-          setSelected={(key) => {
-            //TOMA EL VALOR DEL SELECT
-            setSelectedAdoptante(key);
-               //se le aasigna el valor del select a la variable que se va en la consulta
-            adoptante.current=key;
-            console.log("Adoptante seleccionado:", key);
-          }}
-              data={data}
-              onSelect={(key) => console.log(key)}
-              placeholder="Selecciona una Opcion"
-              style={styles.selector}
-            />
+            <Text style={styles.subtitle}>Selecciona Tu Nombre</Text>
+            {data.length > 0 ? (
+                <SelectList
+                setSelected={(key) => {
+                  //TOMA EL VALOR DEL SELECT
+                  setSelectedAdoptante(key);
+                    //se le aasigna el valor del select a la variable que se va en la consulta
+                  adoptante.current=key;
+                  console.log("Adoptante seleccionado:", key);
+                }}
+                    data={data}
+                    onSelect={(key) => console.log(key)}
+                    placeholder="Selecciona una Opcion"
+                    style={styles.selector}
+                  />
+            ):(
+              <Text style={{ fontSize: 16, color: "gray" }}>No hay Adoptantes disponibles</Text>
+            )}
+          
 
             <Text style={styles.subtitle}>Selecciona Una Mascota</Text>
-            <SelectList
-              setSelected={(key) => {
-                 //TOMA EL VALOR DEL SELECT
-                setpet(key);
-                //se le aasigna el valor del select a la variable que se va en la consulta
-                mascota.current=key;
-                console.log("Mascota seleccionada:", key);
-              }}
-              // se pasa el dato a mostrar 
-              data={pet}
-              placeholder="Selecciona una Opcion"
-              style={styles.selector}
-            />
+            {pet.length > 0 ? (
+                <SelectList
+                setSelected={(key) => {
+                    //TOMA EL VALOR DEL SELECT                  setpet(key);
+                  //se le asigna el valor del select a la variable que se va en la consulta
+                  mascota.current=key;
+                  console.log("Mascota seleccionada:", key);
+                }}
+                // se pasa el dato a mostrar 
+                data={pet}
+                placeholder="Selecciona una Opcion"
+                style={styles.selector}
+                />
+            ):(
+              <Text style={{ fontSize: 16, color: "gray" }}>No hay Mascotas disponibles</Text>
+            )}
+           
 
             <Text style={styles.subtitle}>Ingrese Su Edad</Text>
             <Text style={{fontSize:14, color:"black"}}> <Text style={{color:"red", fontSize:18}}>Aviso:</Text>  Si usted es Menor de edad no podra hace la solicitud de Adopcion</Text>
